@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Lyve</string>
+
+    <!-- ONBOARDING PROCESS -->
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="title_welcome_back">Welcome back</string>
+    <string name="title_join_us">Join us</string>
+    <string name="desc_join_us">Ready to learn?</string>
+    <string name="desc_welcome_back">What\'s up? Haven\'t heard from you!</string>
+    <string name="txt_have_an_account">Already have an account?</string>
+    <string name="txt_no_account_yet">Don\'t have an account yet?</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">E-mail address</string>
+    <string name="hint_name">First name</string>
+    <string name="hint_family_name">Family name</string>
+    <string name="hint_phone_number">Phone number</string>
+    <string name="btn_create_account">Create account</string>
+    <string name="txt_sign_in">Sign in</string>
+</resources>
