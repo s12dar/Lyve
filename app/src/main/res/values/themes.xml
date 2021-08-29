@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Lyve" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/aquaAccent</item>
         <item name="colorPrimaryVariant">@color/black_dinner</item>
         <item name="colorOnPrimary">@color/baby_powder</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/aquaAccent</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black_dinner</item>
         <!-- Status bar color. -->
@@ -15,6 +15,8 @@
         <item name="fontFamily">@font/poppins_regular</item>
         <!-- Text color. -->
         <item name="android:textColor">@color/black_dinner</item>
+        <!-- Text size -->
+        <item name="android:textSize">@dimen/twelve</item>
     </style>
 
     <!-- Main Button. -->

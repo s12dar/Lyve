@@ -7,65 +7,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".onboarding.LoginFragment">
 
-    <TextView
-        android:id="@+id/tv_title_welcome_back"
+        <TextView
+            android:id="@+id/tv_title_welcome_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="@string/title_welcome_back"
+            android:textSize="@dimen/title_twenty_four"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_desc_welcome_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:textSize="@dimen/subtitle_sixteen"
+            android:text="@string/desc_join_us"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_welcome_back" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".3" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:gravity="center"
-        android:text="@string/title_welcome_back"
-        android:textSize="@dimen/twenty_four"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/gl_20">
 
-    <TextView
-        android:id="@+id/tv_desc_welcome_back"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="center"
-        android:text="@string/desc_join_us"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_welcome_back" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:hint="@string/hint_email"
+            android:textSize="@dimen/twelve"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeErrorColor="@color/redError"
+            app:errorContentDescription="@string/hint_email"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
+            app:errorEnabled="true"
+            app:errorIconTint="?colorAccent"
+            app:errorTextColor="?colorAccent"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_cool_black_24dp"
+            app:startIconTint="@color/goodGray">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".3" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:padding="0dp"
+                android:textCursorDrawable="@drawable/custom_cursor" />
 
-    <EditText
-        android:id="@+id/et_login_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_border"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:textColor="@color/black_dinner"
-        android:textSize="@dimen/twelve"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gl_20" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/et_login_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_border"
-        android:hint="@string/hint_password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:textColor="@color/black_dinner"
-        android:textSize="@dimen/twelve"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_email" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_login_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:hint="@string/hint_password"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeErrorColor="@color/redError"
+            app:errorContentDescription="@string/hint_password"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
+            app:errorEnabled="true"
+            app:errorIconTint="?colorAccent"
+            app:errorTextColor="?colorAccent"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_smile_24dp"
+            app:startIconTint="@color/goodGray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:padding="0dp"
+                android:textCursorDrawable="@drawable/custom_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_in"
@@ -79,7 +129,7 @@
         android:text="@string/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_password" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_1" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_vertical_17"
@@ -122,5 +172,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_join_us"
         tools:targetApi="lollipop" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
