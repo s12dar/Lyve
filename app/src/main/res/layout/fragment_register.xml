@@ -51,9 +51,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:hint="@string/hint_email"
-            android:textSize="@dimen/twelve"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -66,9 +64,7 @@
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
-            app:startIconDrawable="@drawable/ic_cool_black_24dp"
-            app:startIconTint="@color/goodGray">
+            app:hintTextColor="?colorAccent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_email"
@@ -76,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:padding="0dp"
+                android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -86,8 +82,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:hint="@string/hint_password"
+            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -100,9 +96,7 @@
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
-            app:startIconDrawable="@drawable/ic_smile_24dp"
-            app:startIconTint="@color/goodGray">
+            app:hintTextColor="?colorAccent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_password"
@@ -110,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
-                android:padding="0dp"
+                android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,8 +113,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:hint="@string/hint_confirm_password"
+            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -133,9 +127,7 @@
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
-            app:startIconDrawable="@drawable/ic_smile_24dp"
-            app:startIconTint="@color/goodGray">
+            app:hintTextColor="?colorAccent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_confirm_password"
@@ -143,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
-                android:padding="0dp"
+                android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -153,9 +145,6 @@
         style="@style/Buttons.MainAndDisabled"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/btn_create_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +163,6 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:text="@string/txt_no_account_yet"
-        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/gl_vertical_17"
         app:layout_constraintTop_toBottomOf="@id/btn_create_account" />
 
@@ -185,7 +173,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/txt_sign_in"
-        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_already_have_account"
         app:layout_constraintTop_toBottomOf="@id/btn_create_account" />
 

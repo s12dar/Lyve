@@ -116,6 +116,7 @@ class LoginFragment : Fragment() {
         maAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this.requireActivity()) { task ->
                 if (task.isSuccessful) {
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     Log.d(TAG, "signInWithEmailAndPassword:success")
                     val user: User
                 } else {

@@ -37,6 +37,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -51,4 +58,9 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.lyvetech.lyve.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

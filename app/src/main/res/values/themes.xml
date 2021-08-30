@@ -21,8 +21,8 @@
 
     <!-- Main Button. -->
     <style name="Buttons.MainAndDisabled" parent="Widget.MaterialComponents.Button">
-        <item name="android:padding">10dp</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="android:padding">@dimen/field_padding</item>
+        <item name="cornerRadius">@dimen/rounded_corners</item>
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -37,8 +37,8 @@
 
     <!-- Secondary Button. -->
     <style name="Buttons.SecondaryNoDisabled" parent="Widget.MaterialComponents.Button">
-        <item name="android:padding">10sp</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="android:padding">@dimen/field_padding</item>
+        <item name="cornerRadius">@dimen/rounded_corners</item>
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
         <item name="elevation">2dp</item>

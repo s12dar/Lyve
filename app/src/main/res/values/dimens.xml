@@ -17,7 +17,8 @@
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">8dp</dimen>
     <dimen name="card_stroke">2dp</dimen>
-    <dimen name="rounded_corners">16dp</dimen>
+    <dimen name="rounded_corners">10dp</dimen>
+    <dimen name="field_padding">10dp</dimen>
     <dimen name="card_image_height">72dp</dimen>
     <dimen name="card_image_padding">8dp</dimen>
     <dimen name="list_vertical_padding">4dp</dimen>
