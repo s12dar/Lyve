@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lyvetech.lyve.home.HomeFragment"
+        android:name="com.lyvetech.lyve.home.HomeBottomNav"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_bottom_nav" />
 </navigation>

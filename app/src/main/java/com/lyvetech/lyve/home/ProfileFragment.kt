@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lyvetech.lyve.databinding.FragmentHomeBinding
-import com.lyvetech.lyve.onboarding.LoginFragment
+import com.lyvetech.lyve.databinding.FragmentProfileBinding
 
-class HomeFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
-    private var TAG = LoginFragment::class.qualifiedName
-    private lateinit var binding: FragmentHomeBinding
+    private var TAG = ProfileFragment::class.qualifiedName
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +21,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 }
