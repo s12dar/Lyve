@@ -6,7 +6,7 @@ import com.lyvetech.lyve.datamodels.User
 class LyveApplication : Application() {
 
     companion object {
-        lateinit var mInstance: LyveApplication
+        var mInstance: LyveApplication = LyveApplication()
     }
 
     var currentUser: User? = null
