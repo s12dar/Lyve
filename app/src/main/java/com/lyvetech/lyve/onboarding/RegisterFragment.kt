@@ -185,8 +185,10 @@ class RegisterFragment : Fragment() {
                             }
                         }
                     })
+
+                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 } else {
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Log.e(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(context, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
                 }
