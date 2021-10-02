@@ -1,11 +1,11 @@
 package com.lyvetech.lyve.datamanager
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.WriteBatch
+import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kopxyz.olayi.utils.Constants.Companion.COLLECTION_USER
 import com.lyvetech.lyve.datamodels.User
@@ -34,6 +34,45 @@ class DataManager : DataManagerInterface {
                     listener.onData(true, null)
                 } else {
                     listener.onData(false, task.exception)
+                }
+            }
+        }
+    }
+
+    override fun getCurrentUser(listener: DataListener<User>) {
+        val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
+        if (firebaseUser == null) {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+        } else {
+            val userDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(firebaseUser.uid)
+
+            FirebaseFirestore.getInstance().runTransaction { transaction ->
+                val userDoc: DocumentSnapshot = transaction.get(userDocRef)
+
+                val currentUser: User? = userDoc.toObject(User::class.java)
+                if (currentUser != null) {
+                    if (!currentUser.email.equals(firebaseUser.email)) {
+                        currentUser.email = firebaseUser.email.toString()
+                    }
+
+                    if (currentUser.email.isEmpty()) {
+                        currentUser.email = firebaseUser.email.toString()
+                    }
+
+                    transaction.set(userDocRef, currentUser.toMap(), SetOptions.merge())
+                    currentUser
+                } else {
+                    null
+                }
+            }.addOnCompleteListener {task ->
+                run {
+                    if (task.isSuccessful && task.result != null) {
+                        val currentUser: User = task.result!!
+                        listener.onData(currentUser, null)
+                    } else {
+                        listener.onData(null, task.exception)
+                    }
                 }
             }
         }
