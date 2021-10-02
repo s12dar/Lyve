@@ -15,7 +15,7 @@ class DataManager : DataManagerInterface {
     companion object {
         const val AUTHENTICATION = "Authentication"
         const val INVALID_USER = "Invalid User"
-        lateinit var mInstance: DataManager
+        var mInstance: DataManager = DataManager()
     }
 
     override fun createUser(user: User, listener: DataListener<Boolean>) {

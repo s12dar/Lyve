@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentBottomNavBinding
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
@@ -62,7 +63,8 @@ class HomeBottomNav : Fragment() {
 
                 else -> false
             }
-        }
 
+//            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        }
     }
 }

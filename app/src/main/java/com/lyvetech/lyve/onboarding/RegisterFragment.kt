@@ -4,18 +4,25 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Log.INFO
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
+import com.lyvetech.lyve.datamanager.DataListener
+import com.lyvetech.lyve.datamanager.DataManager
+import com.lyvetech.lyve.datamanager.DataManager.Companion.mInstance
 import com.lyvetech.lyve.datamodels.User
+import java.lang.Exception
 import java.util.*
 
 class RegisterFragment : Fragment() {
@@ -101,6 +108,9 @@ class RegisterFragment : Fragment() {
             val email = binding.etRegisterEmail.text.toString().trim()
             val password = binding.etRegisterPassword.text.toString().trim()
             val confirmPassword = binding.etRegisterConfirmPassword.text.toString().trim()
+            val firstName = binding.etRegisterPassword.text.toString().trim()
+            val lastName = binding.etRegisterPassword.text.toString().trim()
+            val phoneNumber = binding.etRegisterPassword.text.toString().trim()
 
             if (email.isEmpty()) {
                 binding.tilRegisterEmail.error =
@@ -119,7 +129,7 @@ class RegisterFragment : Fragment() {
             }
 
             if (password == confirmPassword) {
-                createAccount(email, password)
+                createAccount(email, password, firstName, lastName, phoneNumber)
             } else {
                 binding.tilRegisterConfirmPassword.error =
                     getString(R.string.err_password_match)
@@ -138,40 +148,55 @@ class RegisterFragment : Fragment() {
     private fun createAccount(
         email: String,
         password: String,
+        firstName: String,
+        lastName: String,
+        phoneNumber: String,
     ) {
         binding.progressBar.visibility = View.VISIBLE
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this.requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
-                    val user: User
-//                    if (OlayiApplication.mInstance.currentUser == null) {
+                    val user =  User()
+
+                    val firebaseUser = FirebaseAuth.getInstance().currentUser
+                    if (firebaseUser != null) {
+                        user.userId = FirebaseAuth.getInstance().currentUser!!.uid
+                    }
+
+                    user.firstName = firstName
+                    user.lastName = lastName
+                    user.email = email
+                    user.phoneNumber = phoneNumber
+                    user.createdAt = Timestamp(Date()).toString()
+//                    if (LyveApplication.mInstance.currentUser == null) {
 //                        user = User()
-//                        if (FirebaseAuth.getInstance().currentUser != null) {
-//                            user.userId = mAuth.currentUser?.uid!!
-//                        }
+//                        val firebaseUser = FirebaseAuth.getInstance().currentUser
 //
-//                        val firebaseUser: FirebaseUser = mAuth.currentUser!!
-//                        firebaseUser.sendEmailVerification().addOnSuccessListener { Log.d(TAG, "Verification link is successfully sent to the user")}
+                        if (firebaseUser != null) {
+                            user.userId = FirebaseAuth.getInstance().currentUser!!.uid
+                        }
 //
-//                        user.firstName = name
+//                        user.firstName = firstName
 //                        user.lastName = lastName
 //                        user.email = email
 //                        user.phoneNumber = phoneNumber
 //                        user.createdAt = Timestamp(Date()).toString()
 //
-//                        OlayiApplication.mInstance.currentUser = user
+//                        LyveApplication.mInstance.currentUser = user
 //                    } else {
-//                        user = OlayiApplication.mInstance.currentUser!!
+//                        user = LyveApplication.mInstance.currentUser
 //                    }
 
-//                    DataManager.mInstance.createUser(user, (false) -> {
-//                        if (success != null && success) {
-//                            try {
-//
-//                            }
-//                        }
-//                    })
+                    mInstance.createUser(user!!, object: DataListener<Boolean>{
+                        override fun onData(data: Boolean?, exception: Exception?) {
+                            if (data != null && data) {
+//                                LyveApplication.mInstance.currentUser = user
+                            } else {
+                                Log.e(TAG,"Hey Serdar, Data is null!")
+                            }
+                        }
+                    })
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(context, "Authentication failed.",
