@@ -3,6 +3,8 @@
 buildscript {
     dependencies {
         classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.39.1'
     }
     repositories {
         google()
