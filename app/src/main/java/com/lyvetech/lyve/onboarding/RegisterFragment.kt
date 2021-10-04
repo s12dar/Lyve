@@ -127,7 +127,12 @@ class RegisterFragment : Fragment() {
             }
 
             if (password == confirmPassword) {
-                createAccount(email, password, firstName, lastName, phoneNumber)
+                createAccount(
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    phoneNumber)
             } else {
                 binding.tilRegisterConfirmPassword.error =
                     getString(R.string.err_password_match)
@@ -169,7 +174,11 @@ class RegisterFragment : Fragment() {
                         user.lastName = lastName
                         user.email = email
                         user.phoneNumber = phoneNumber
-                        user.createdAt = Timestamp(Date()).toString()
+                        user.createdAt = Timestamp(Date())
+                        user.isVerified = false
+                        user.bio = ""
+                        user.nrOfFollowers = 0
+                        user.nrOfFollowings = 0
 
                         LyveApplication.mInstance.currentUser = user
                     } else {

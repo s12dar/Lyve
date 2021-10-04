@@ -1,4 +1,4 @@
-package com.kopxyz.olayi.utils
+package com.lyvetech.lyve.utils
 
 class Constants {
 
@@ -12,9 +12,11 @@ class Constants {
         const val PHONE_NUMBER = "phoneNumber"
         const val EMAIL = "email"
         const val UID = "uid"
-        const val STATUS = "status"
         const val CREATED_AT = "createdAt"
+        const val BIO = "bio"
         const val IS_VERIFIED = "isVerified"
+        const val NR_OF_FOLLOWERS = "nrOfFollowers"
+        const val NR_OF_FOLLOWINGS = "nrOfFollowings"
 
         /**
          * FIREBASE DATA

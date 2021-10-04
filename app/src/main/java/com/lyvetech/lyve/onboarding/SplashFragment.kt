@@ -20,12 +20,12 @@ class SplashFragment : Fragment() {
 
     private lateinit var binding: FragmentSplashBinding
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var mUser: FirebaseUser
+    private var mUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        mUser = mAuth.currentUser!!
+        mUser = mAuth.currentUser
     }
 
     override fun onCreateView(

@@ -28,4 +28,7 @@
     <string name="menu_search">Search</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_schedule">Schedule</string>
+
+    <!-- HOME PAGE -->
+    <string name="desc_ppic">Profile picture</string>
 </resources>

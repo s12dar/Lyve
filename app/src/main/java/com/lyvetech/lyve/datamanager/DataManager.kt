@@ -1,5 +1,6 @@
 package com.lyvetech.lyve.datamanager
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
@@ -7,7 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.kopxyz.olayi.utils.Constants.Companion.COLLECTION_USER
+import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
 import com.lyvetech.lyve.datamodels.User
 
 class DataManager : DataManagerInterface {
@@ -52,7 +53,7 @@ class DataManager : DataManagerInterface {
 
                 val currentUser: User? = userDoc.toObject(User::class.java)
                 if (currentUser != null) {
-                    if (!currentUser.email.equals(firebaseUser.email)) {
+                    if (currentUser.email != firebaseUser.email) {
                         currentUser.email = firebaseUser.email.toString()
                     }
 

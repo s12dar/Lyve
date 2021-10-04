@@ -36,7 +36,7 @@ class HomeBottomNav : Fragment() {
     private fun manageBottomNav() {
 
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragment_container, HomeFragment())?.commit()
+            ?.replace(R.id.fragment_container, ProfileFragment())?.commit()
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when(item.itemId) {
