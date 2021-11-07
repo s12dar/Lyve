@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.onboarding
+package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,13 +8,15 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.lyvetech.lyve.LyveApplication
+import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
 import com.lyvetech.lyve.datamanager.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
+import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
 import java.lang.Exception
+import java.util.*
 
 class SplashFragment : Fragment() {
 
@@ -40,14 +42,23 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        DataManager.mInstance.getCurrentUser(object: DataListener<User> {
+        DataManager.mInstance.getCurrentUser(object : DataListener<User> {
             override fun onData(data: User?, exception: Exception?) {
                 if (data != null) {
                     LyveApplication.mInstance.currentUser = data
                 }
-                goToNextScreen()
+                DataManager.mInstance.getActivities(object : DataListener<List<Activity?>> {
+                    override fun onData(data: List<Activity?>?, exception: Exception?) {
+                        if (data != null) {
+                            LyveApplication.mInstance.allActivities = data
+                        } else {
+                            LyveApplication.mInstance.allActivities = LinkedList()
+                        }
+                    }
+                })
             }
         })
+        goToNextScreen()
     }
 
     private fun goToNextScreen() {

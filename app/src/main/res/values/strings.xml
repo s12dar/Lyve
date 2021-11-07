@@ -24,11 +24,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- BOTTOM NAV-->
-    <string name="menu_home">Home</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_profile">Profile</string>
-    <string name="menu_schedule">Schedule</string>
-
+    <string name="menu_search_title">Search</string>
+    <string name="menu_search_desc">Menu search</string>
+    <string name="menu_more_title">More</string>
+    <string name="menu_more_desc">Menu more</string>
     <!-- HOME PAGE -->
     <string name="desc_ppic">Profile picture</string>
 </resources>

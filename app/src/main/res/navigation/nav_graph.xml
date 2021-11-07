@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.lyvetech.lyve.onboarding.WelcomeFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.WelcomeFragment"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" >
+        tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -27,9 +27,9 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.lyvetech.lyve.onboarding.LoginFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
@@ -49,9 +49,9 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.lyvetech.lyve.onboarding.RegisterFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -71,14 +71,14 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lyvetech.lyve.home.HomeBottomNav"
+        android:name="com.lyvetech.lyve.ui.fragments.main.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_bottom_nav" />
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.lyvetech.lyve.onboarding.SplashFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.SplashFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment"

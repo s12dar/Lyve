@@ -1,6 +1,7 @@
 package com.lyvetech.lyve.datamanager
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
@@ -8,8 +9,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
 import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
+import java.util.*
 
 class DataManager : DataManagerInterface {
 
@@ -76,6 +80,34 @@ class DataManager : DataManagerInterface {
                     }
                 }
             }
+        }
+    }
+
+    override fun getActivities(listener: DataListener<List<Activity?>>) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+        } else {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_ACTIVITIES)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        val activities: MutableList<Activity?> =
+                            LinkedList<Activity?>()
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            listener.onData(null, null)
+                            return@addOnCompleteListener
+                        }
+                        for (document in querySnapshot) {
+                            activities.add(document.toObject(Activity::class.java))
+                        }
+                        listener.onData(activities, null)
+                    } else {
+                        listener.onData(null, task.exception)
+                    }
+                }
         }
     }
 }

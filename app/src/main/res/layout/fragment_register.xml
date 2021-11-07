@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="24dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".onboarding.RegisterFragment">
+    tools:context=".ui.fragments.onboarding.RegisterFragment">
 
     <TextView
         android:id="@+id/tv_title_join_us"
@@ -14,8 +14,8 @@
         android:gravity="center"
         android:text="@string/title_join_us"
         android:textSize="@dimen/title_twenty_four"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -59,8 +59,8 @@
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeErrorColor="@color/redError"
             app:errorContentDescription="@string/hint_email"
-            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
@@ -83,7 +83,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
-            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -91,12 +90,13 @@
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeErrorColor="@color/redError"
             app:errorContentDescription="@string/hint_password"
-            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent">
+            app:hintTextColor="?colorAccent"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_password"
@@ -114,7 +114,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_confirm_password"
-            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -122,12 +121,13 @@
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeErrorColor="@color/redError"
             app:errorContentDescription="@string/hint_confirm_password"
-            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent">
+            app:hintTextColor="?colorAccent"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_register_confirm_password"

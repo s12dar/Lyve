@@ -19,9 +19,29 @@ class Constants {
         const val NR_OF_FOLLOWINGS = "nrOfFollowings"
 
         /**
+         * ACTIVITY DATA
+         */
+        const val ACTIVITY_ID = "aid"
+        const val ACTIVITY_TITLE = "acTitle"
+        const val ACTIVITY_DESC = "acDesc"
+        const val ACTIVITY_TYPE = "acType"
+        const val ACTIVITY_TIME = "acTime"
+        const val ACTIVITY_DATE_AND_TIME = "acDateAndTime"
+        const val ACTIVITY_LOCATION = "acLocation"
+        const val ACTIVITY_CREATED_BY = "acCreatedBy"
+        const val ACTIVITY_PARTICIPANTS = "acParticipants"
+
+        /**
          * FIREBASE DATA
          */
         const val COLLECTION_USER = "Users"
+        const val COLLECTION_ACTIVITIES = "Activities"
+
+        /**
+         * BUNDLE CONSTANTS
+         */
+        const val EXISTING_USER = "existingUser"
+        const val USER_STATUS = "userStatus"
     }
 
 

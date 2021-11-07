@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.onboarding
+package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,7 +14,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.lyvetech.lyve.LyveApplication
+import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
 import com.lyvetech.lyve.datamanager.DataListener
@@ -132,7 +132,8 @@ class RegisterFragment : Fragment() {
                     password,
                     firstName,
                     lastName,
-                    phoneNumber)
+                    phoneNumber
+                )
             } else {
                 binding.tilRegisterConfirmPassword.error =
                     getString(R.string.err_password_match)
@@ -185,12 +186,12 @@ class RegisterFragment : Fragment() {
                         user = LyveApplication.mInstance.currentUser!!
                     }
 
-                    mInstance.createUser(user!!, object: DataListener<Boolean>{
+                    mInstance.createUser(user!!, object : DataListener<Boolean> {
                         override fun onData(data: Boolean?, exception: Exception?) {
                             if (data != null && data) {
                                 LyveApplication.mInstance.currentUser = user
                             } else {
-                                Log.e(TAG,"data has problems")
+                                Log.e(TAG, "data has problems")
                             }
                         }
                     })
@@ -198,8 +199,10 @@ class RegisterFragment : Fragment() {
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 } else {
                     Log.e(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }

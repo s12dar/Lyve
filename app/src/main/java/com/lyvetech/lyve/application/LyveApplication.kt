@@ -1,6 +1,7 @@
-package com.lyvetech.lyve
+package com.lyvetech.lyve.application
 
 import android.app.Application
+import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
 
 class LyveApplication : Application() {
@@ -10,6 +11,8 @@ class LyveApplication : Application() {
     }
 
     var currentUser: User? = null
+    var activity: Activity? = null
+    var allActivities: List<Activity?>? = null
 
     override fun onCreate() {
         super.onCreate()

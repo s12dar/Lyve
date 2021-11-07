@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.onboarding
+package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.onboarding
+package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
 import android.text.Editable
@@ -121,8 +121,10 @@ class LoginFragment : Fragment() {
                     val user: User
                 } else {
                     Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }

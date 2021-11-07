@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="24dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".onboarding.LoginFragment">
+    tools:context=".ui.fragments.onboarding.LoginFragment">
 
-        <TextView
-            android:id="@+id/tv_title_welcome_back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center"
-            android:text="@string/title_welcome_back"
-            android:textSize="@dimen/title_twenty_four"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_title_welcome_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="@string/title_welcome_back"
+        android:textSize="@dimen/title_twenty_four"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_desc_welcome_back"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:textSize="@dimen/subtitle_sixteen"
-            android:text="@string/desc_join_us"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_welcome_back" />
+    <TextView
+        android:id="@+id/tv_desc_welcome_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="@string/desc_join_us"
+        android:textSize="@dimen/subtitle_sixteen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_welcome_back" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".3" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".3" />
 
 
     <LinearLayout
@@ -61,8 +61,8 @@
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeErrorColor="@color/redError"
             app:errorContentDescription="@string/hint_email"
-            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
@@ -85,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
-            app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
@@ -93,12 +92,13 @@
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeErrorColor="@color/redError"
             app:errorContentDescription="@string/hint_password"
-            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_alert_black_24dp"
             app:errorIconTint="?colorAccent"
             app:errorTextColor="?colorAccent"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent">
+            app:hintTextColor="?colorAccent"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_login_password"
@@ -142,12 +142,12 @@
         android:id="@+id/tv_join_us"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/title_join_us"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_already_have_account"
-        app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@id/btn_sign_in" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
