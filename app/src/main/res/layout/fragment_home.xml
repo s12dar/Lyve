@@ -9,31 +9,32 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_activity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="56dp" />
+        android:layout_height="match_parent" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="10dp"
-        app:fabCradleVerticalOffset="10dp"
-        app:hideOnScroll="true"
-        app:menu="@menu/bottom_nav_menu">
+        android:layout_height="wrap_content">
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Lyve"
+            app:titleCentered="true"
+            app:navigationIcon="@drawable/ic_menu_24dp" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha=".7"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/color_secondary"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_add_24"
         app:borderWidth="0dp"
         app:elevation="24dp"
-        app:layout_anchor="@id/bottomAppBar" />
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|right"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

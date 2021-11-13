@@ -23,11 +23,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- BOTTOM NAV-->
-    <string name="menu_search_title">Search</string>
-    <string name="menu_search_desc">Menu search</string>
-    <string name="menu_more_title">More</string>
-    <string name="menu_more_desc">Menu more</string>
     <!-- HOME PAGE -->
     <string name="desc_ppic">Profile picture</string>
+
+    <!-- BOTTOM SHEET -->
+    <string name="title_bsh">Alright, let\'s create one</string>
+    <string name="subtitle_bsh">But which one?</string>
+    <string name="btn_virtual_ac">Virtual</string>
+    <string name="btn_physical_ac">Physical</string>
 </resources>

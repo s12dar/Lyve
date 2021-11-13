@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Text sizes -->
-    <dimen name="title_twenty_four">24sp</dimen>
+    <dimen name="title_twenty_four">20sp</dimen>
     <dimen name="subtitle_sixteen">16sp</dimen>
     <dimen name="twelve">12sp</dimen>
 
