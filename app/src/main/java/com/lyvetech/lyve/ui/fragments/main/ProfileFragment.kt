@@ -21,15 +21,7 @@ class ProfileFragment : Fragment() {
 
         // THIS NEEDS TO BE HANDLED WHEN LOG IN ACTION IS DONE, BECAUSE FROM LOG IN TO PROFILE THERE IS NO SPLASH
 
-//        DataManager.mInstance.getCurrentUser(object: DataListener<User> {
-//            override fun onData(data: User?, exception: Exception?) {
-//                if (data != null) {
-//                    LyveApplication.mInstance.currentUser = data
-//                } else {
-//                    Log.i(TAG, "We can't get the data")
-//                }
-//            }
-//        })
+
 
         mUser = LyveApplication.mInstance.currentUser
     }

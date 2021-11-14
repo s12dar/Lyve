@@ -31,4 +31,13 @@
     <string name="subtitle_bsh">But which one?</string>
     <string name="btn_virtual_ac">Virtual</string>
     <string name="btn_physical_ac">Physical</string>
+
+    <!-- NAV DRAWER -->
+    <string name="menu_group_settings">Configure Lyve</string>
+    <string name="menu_item_account">Account</string>
+    <string name="menu_item_notifications">Notifications</string>
+    <string name="menu_item_dark_mode">Dark mode</string>
+    <string name="menu_item_logout">Log out</string>
+    <string name="menu_item_chat">Chat</string>
+    <string name="menu_item_search">Search</string>
 </resources>

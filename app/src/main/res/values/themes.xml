@@ -64,4 +64,9 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
+
+    <!--NAV DRAWER-->
+    <style name="nav_drawer_font">
+        <item name="fontFamily">@font/poppins_regular</item>
+    </style>
 </resources>

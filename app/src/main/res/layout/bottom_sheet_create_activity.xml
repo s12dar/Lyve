@@ -8,26 +8,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <TextView
-            android:id="@+id/tv_title_bsh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_bsh"
-            android:textSize="@dimen/title_twenty_four"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/tv_title_bsh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_bsh"
+        android:textSize="@dimen/title_twenty_four"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tv_subtitle_bsh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/subtitle_sixteen"
-            android:text="@string/subtitle_bsh"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_bsh" />
+    <TextView
+        android:id="@+id/tv_subtitle_bsh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/subtitle_sixteen"
+        android:text="@string/subtitle_bsh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_bsh" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_virtual_ac"
@@ -45,37 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
-        android:text="@string/btn_virtual_ac"
+        android:text="@string/btn_physical_ac"
         app:layout_constraintStart_toEndOf="@+id/btn_virtual_ac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh"/>
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/ll_create_ac_buttons"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:gravity="center_horizontal"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh">-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btn_virtual_ac"-->
-<!--            style="@style/Buttons.MainAndDisabled"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="56dp"-->
-<!--            android:text="@string/btn_virtual_ac"/>-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btn_physical_ac"-->
-<!--            style="@style/Buttons.SecondaryNoDisabled"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="56dp"-->
-<!--            android:text="@string/btn_physical_ac"/>-->
-
-<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
