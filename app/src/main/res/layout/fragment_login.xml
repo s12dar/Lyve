@@ -38,7 +38,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".3" />
 
-
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="0dp"
