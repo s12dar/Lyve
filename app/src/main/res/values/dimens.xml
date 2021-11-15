@@ -3,6 +3,7 @@
     <!-- Text sizes -->
     <dimen name="title_twenty_four">20sp</dimen>
     <dimen name="subtitle_sixteen">16sp</dimen>
+    <dimen name="diff_subtitle_fourteen">14sp</dimen>
     <dimen name="twelve">12sp</dimen>
 
     <!-- Screen resolution related dimensions -->

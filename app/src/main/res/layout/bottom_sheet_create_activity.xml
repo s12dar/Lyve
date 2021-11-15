@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="200dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:behavior_peekHeight="200dp"
-    app:behavior_hideable="true"
-    android:id="@+id/b_sh"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="true"
+        android:id="@+id/b_sh">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        android:src="@drawable/ic_exit_24dp"
+        android:backgroundTint="@color/white" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_vertical_fifteen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_horizontal_ten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".05" />
 
     <TextView
         android:id="@+id/tv_title_bsh"
@@ -14,40 +42,171 @@
         android:layout_height="wrap_content"
         android:text="@string/title_bsh"
         android:textSize="@dimen/title_twenty_four"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gl_vertical_fifteen"/>
 
     <TextView
         android:id="@+id/tv_subtitle_bsh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/subtitle_sixteen"
+        android:textSize="@dimen/diff_subtitle_fourteen"
         android:text="@string/subtitle_bsh"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_bsh" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_virtual_ac"
-        style="@style/Buttons.MainAndDisabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_virtual_ac"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_activity"
+        android:layout_width="@dimen/card_image_height"
+        android:layout_height="@dimen/card_image_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/in_row_padding"
+        android:src="@drawable/ic_upload_image"
+        android:layout_marginTop="16dp"
+        app:contentPadding="12dp"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:strokeColor="@color/goodGray"
+        app:strokeWidth="@dimen/card_stroke"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_physical_ac"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_physical_ac"
-        style="@style/Buttons.SecondaryNoDisabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:text="@string/btn_physical_ac"
-        app:layout_constraintStart_toEndOf="@+id/btn_virtual_ac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/ll_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_activity">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_activity_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/txt_activity_name"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_title_24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_activity_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/field_padding"
+                android:textCursorDrawable="@drawable/custom_cursor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_select_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="16dp"
+            android:hint="@string/txt_activity_date"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_calendar_24dp" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_select_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="false"
+            android:inputType="none"
+            android:padding="0dp"
+            android:textCursorDrawable="@drawable/custom_cursor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_location"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="16dp"
+            android:hint="@string/txt_activity_location"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_location_24dp" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="none"
+                android:padding="0dp"
+                android:textCursorDrawable="@drawable/custom_cursor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_activity_desc"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:hint="@string/txt_activity_desc"
+            android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/transparent"
+            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
+            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
+            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:hintAnimationEnabled="true"
+            app:hintTextColor="?colorAccent"
+            app:startIconDrawable="@drawable/ic_description_24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:lines="4"
+                android:padding="@dimen/field_padding"
+                android:textCursorDrawable="@drawable/custom_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_create_activity"
+        style="@style/Buttons.MainAndDisabled"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="32dp"
+        android:text="@string/btn_create_activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
