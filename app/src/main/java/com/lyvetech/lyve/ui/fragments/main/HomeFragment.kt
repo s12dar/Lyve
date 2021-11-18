@@ -124,7 +124,7 @@ class HomeFragment : Fragment() {
 
                     LyveApplication.mInstance.allActivities = data
 
-                    homeAdapter = HomeAdapter(LyveApplication.mInstance.allActivities)
+                    homeAdapter = HomeAdapter(LyveApplication.mInstance.allActivities, requireContext())
                     linearLayoutManager = LinearLayoutManager(context)
 
                     binding.rvActivity.layoutManager = linearLayoutManager
