@@ -1,13 +1,16 @@
 package com.lyvetech.lyve.ui.fragments.main
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.datamodels.Activity
 
 
-class HomeAdapter(private val activityList: List<Activity?>?) :
+class HomeAdapter(private val activityList: List<Activity?>?, private val context: Context) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -25,6 +28,12 @@ class HomeAdapter(private val activityList: List<Activity?>?) :
                 binding.tvLocation.text = this.acLocation
                 binding.tvDateAndTime.text = this.acTime
                 binding.tvParticipants.text = this.acParticipants.toString()
+
+                // Glide takes care of setting fetched image uri to holder
+                Glide.with(context)
+                    .asBitmap()
+                    .load(this.acImgRefs.toUri())
+                    .into(binding.ivAc);
             }
         }
     }
