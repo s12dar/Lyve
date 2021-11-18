@@ -1,18 +1,16 @@
 package com.lyvetech.lyve.datamanager
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.datamodels.Activity
-import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
 import com.lyvetech.lyve.datamodels.User
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
+import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
 import java.util.*
 
 class DataManager : DataManagerInterface {
@@ -78,6 +76,33 @@ class DataManager : DataManagerInterface {
                     } else {
                         listener.onData(null, task.exception)
                     }
+                }
+            }
+        }
+    }
+
+    override fun createActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>) {
+        val currentUser: FirebaseUser? = Firebase.auth.currentUser
+        if (currentUser != null) {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+        }
+
+        val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
+
+        val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+            COLLECTION_ACTIVITIES).document(activity.aid)
+        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+            COLLECTION_USER).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+
+        activityBatch.set(activityDocRef, activity.toMap())
+        activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
+
+        activityBatch.commit().addOnCompleteListener{ task ->
+            run {
+                if (task.isSuccessful) {
+                    listener.onData(true, null)
+                } else {
+                    listener.onData(false, task.exception)
                 }
             }
         }

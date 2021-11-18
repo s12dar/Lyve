@@ -23,7 +23,7 @@ class HomeAdapter(private val activityList: List<Activity?>?) :
             with(activityList!![position]) {
                 binding.tvTitleActivity.text = this!!.acTitle
                 binding.tvLocation.text = this.acLocation
-                binding.tvDateAndTime.text = this.acDateAndTime.toDate().date.toString()
+                binding.tvDateAndTime.text = this.acTime
                 binding.tvParticipants.text = this.acParticipants.toString()
             }
         }
