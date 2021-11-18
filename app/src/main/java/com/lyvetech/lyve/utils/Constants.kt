@@ -25,12 +25,12 @@ class Constants {
         const val ACTIVITY_TITLE = "acTitle"
         const val ACTIVITY_DESC = "acDesc"
         const val ACTIVITY_TYPE = "acType"
+        const val ACTIVITY_IMG_REFS = "acImgRefs"
         const val ACTIVITY_CREATED_AT = "acCreatedAt"
         const val ACTIVITY_TIME = "acTime"
         const val ACTIVITY_LOCATION = "acLocation"
         const val ACTIVITY_CREATED_BY_ID = "acCreatedByID"
         const val ACTIVITY_PARTICIPANTS = "acParticipants"
-        const val ACTIVITY_UID = "acUID"
 
         /**
          * FIREBASE DATA

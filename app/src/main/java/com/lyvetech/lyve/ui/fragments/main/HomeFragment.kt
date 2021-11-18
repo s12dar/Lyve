@@ -26,9 +26,12 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
+import com.google.common.io.Files.getFileExtension
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
@@ -65,6 +68,8 @@ class HomeFragment : Fragment() {
     private lateinit var mBtnCreateActivity: Button
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var mProgressBar: ProgressBar
+    private var urlForDocument: Uri? = null
+    private var urlLocal: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +99,7 @@ class HomeFragment : Fragment() {
                 if (uri != null) {
                     imageChosen = true
                     setImage(uri, mIvActivityAvatar)
+                    uploadAcImgToFirebaseStorage(uri)
                 }
             }
     }
@@ -256,6 +262,7 @@ class HomeFragment : Fragment() {
                 newActivity.acParticipants = 0;
                 newActivity.acType = "virtual"
                 newActivity.acCreatedAt = Timestamp(Date())
+                newActivity.acImgRefs = urlForDocument.toString()
 
                 DataManager.mInstance.createActivity(newActivity, firebaseUser, object : DataListener<Boolean> {
                     override fun onData(data: Boolean?, exception: java.lang.Exception?) {
@@ -307,5 +314,15 @@ class HomeFragment : Fragment() {
 
     private fun getBitmapSquareSize(bitmap: Bitmap): Int {
         return bitmap.width.coerceAtMost(bitmap.height)
+    }
+
+    private fun uploadAcImgToFirebaseStorage(imageUri: Uri) {
+        val fileRef: StorageReference = FirebaseStorage.getInstance()
+            .getReference(System.currentTimeMillis().toString() + getFileExtension(imageUri.toString()))
+        fileRef.putFile(imageUri).addOnCompleteListener {
+            fileRef.downloadUrl.addOnSuccessListener { uri ->
+                urlForDocument = uri
+            }
+        }
     }
 }
