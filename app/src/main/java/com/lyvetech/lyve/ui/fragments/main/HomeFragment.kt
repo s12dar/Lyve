@@ -71,7 +71,6 @@ class HomeFragment : Fragment() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var mProgressBar: ProgressBar
     private var urlForDocument: Uri? = null
-    private var urlLocal: Uri? = null
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -95,7 +94,7 @@ class HomeFragment : Fragment() {
             when {
                 editable === mEtActivityName.editableText -> {
                     val acName = mEtActivityName.text.toString().trim()
-                    if (!acName.isBlank()) {
+                    if (acName.isNotBlank()) {
                         // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
                         mTilActivityName.error = null
                     }
@@ -103,7 +102,7 @@ class HomeFragment : Fragment() {
 
                 editable === mEtActivityDesc.editableText -> {
                     val acName = mEtActivityDesc.text.toString().trim()
-                    if (!acName.isBlank()) {
+                    if (acName.isNotBlank()) {
                         // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
                         mTilActivityDesc.error = null
                     }
@@ -169,7 +168,8 @@ class HomeFragment : Fragment() {
 
                     LyveApplication.mInstance.allActivities = data
 
-                    homeAdapter = HomeAdapter(LyveApplication.mInstance.allActivities, requireContext())
+                    homeAdapter =
+                        HomeAdapter(LyveApplication.mInstance.allActivities, requireContext())
                     linearLayoutManager = LinearLayoutManager(context)
 
                     binding.rvActivity.layoutManager = linearLayoutManager
@@ -179,7 +179,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        DataManager.mInstance.getCurrentUser(object: DataListener<User> {
+        DataManager.mInstance.getCurrentUser(object : DataListener<User> {
             override fun onData(data: User?, exception: Exception?) {
                 if (data != null) {
                     LyveApplication.mInstance.currentUser = data
@@ -189,7 +189,7 @@ class HomeFragment : Fragment() {
                     val tvName = header.findViewById<TextView>(R.id.tv_name)
                     val tvBio = header.findViewById<TextView>(R.id.tv_bio)
                     val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
-                    val tvFollowing  = header.findViewById<TextView>(R.id.tv_following)
+                    val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
 
                     tvName.text = data.firstName + " " + data.lastName
                     tvBio.text = "Everything will be ok"
@@ -214,8 +214,7 @@ class HomeFragment : Fragment() {
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetDialog.show()
 
-            var eventDateValue: LocalDate = LocalDate.of(1970, 1, 1)
-            var countYearValue = true
+            var eventDateValue: LocalDate
 
             mEtSelectedDate.setOnClickListener {
                 if (dateDialog == null) {
@@ -261,6 +260,10 @@ class HomeFragment : Fragment() {
 
             mIvExit.setOnClickListener {
                 bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                mEtActivityName.setText("")
+                mEtActivityDesc.setText("")
+                mEtActivityLocation.setText("")
+                mEtSelectedDate.setText("")
             }
 
             mIvActivityAvatar.setOnClickListener {
@@ -294,31 +297,53 @@ class HomeFragment : Fragment() {
                 val newActivity = Activity()
                 val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-                newActivity.aid = FirebaseFirestore.getInstance().collection(COLLECTION_ACTIVITIES).document().id
+                newActivity.aid =
+                    FirebaseFirestore.getInstance().collection(COLLECTION_ACTIVITIES).document().id
                 newActivity.acTitle = mEtActivityName.text.toString().trim()
                 newActivity.acDesc = mEtActivityDesc.text.toString().trim()
                 newActivity.acLocation = mEtActivityLocation.text.toString().trim()
                 newActivity.acTime = mEtSelectedDate.text.toString().trim()
                 newActivity.acCreatedByID = firebaseUser!!.uid
-                newActivity.acParticipants = 0;
+                newActivity.acParticipants = 0
                 newActivity.acType = "virtual"
                 newActivity.acCreatedAt = Timestamp(Date())
                 newActivity.acImgRefs = urlForDocument.toString()
 
-                DataManager.mInstance.createActivity(newActivity, firebaseUser, object : DataListener<Boolean> {
-                    override fun onData(data: Boolean?, exception: java.lang.Exception?) {
-                        if (data != null && data) {
-                            LyveApplication.mInstance.activity = newActivity
-                        } else {
-                            Log.e(TAG, "data has problems")
+                DataManager.mInstance.createActivity(
+                    newActivity,
+                    firebaseUser,
+                    object : DataListener<Boolean> {
+                        override fun onData(data: Boolean?, exception: java.lang.Exception?) {
+                            if (data != null && data) {
+                                LyveApplication.mInstance.activity = newActivity
+                            } else {
+                                Log.e(TAG, "data has problems")
+                            }
                         }
-                    }
-                })
+                    })
 
                 mProgressBar.visibility = View.GONE
                 bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
+
+        bottomSheetDialog.behavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                //Here listen all of action bottom sheet
+                Log.i(TAG, "onStateChanged")
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    mEtActivityName.setText("")
+                    mEtActivityDesc.setText("")
+                    mEtActivityLocation.setText("")
+                    mEtSelectedDate.setText("")
+                }
+            }
+        })
 
         return binding.root
     }
@@ -360,7 +385,9 @@ class HomeFragment : Fragment() {
 
     private fun uploadAcImgToFirebaseStorage(imageUri: Uri) {
         val fileRef: StorageReference = FirebaseStorage.getInstance()
-            .getReference(System.currentTimeMillis().toString() + getFileExtension(imageUri.toString()))
+            .getReference(
+                System.currentTimeMillis().toString() + getFileExtension(imageUri.toString())
+            )
         fileRef.putFile(imageUri).addOnCompleteListener {
             fileRef.downloadUrl.addOnSuccessListener { uri ->
                 urlForDocument = uri

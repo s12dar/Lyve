@@ -21,8 +21,6 @@ class ProfileFragment : Fragment() {
 
         // THIS NEEDS TO BE HANDLED WHEN LOG IN ACTION IS DONE, BECAUSE FROM LOG IN TO PROFILE THERE IS NO SPLASH
 
-
-
         mUser = LyveApplication.mInstance.currentUser
     }
 

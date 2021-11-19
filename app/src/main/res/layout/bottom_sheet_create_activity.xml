@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_hideable="true"
-        android:id="@+id/b_sh">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/b_sh"
+    android:layout_width="match_parent"
+    android:layout_height="700dp"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:focusable="true"
-        app:shapeAppearanceOverlay="@style/roundedImageView"
         android:src="@drawable/ic_exit_24dp"
-        android:backgroundTint="@color/white" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_vertical_fifteen"
@@ -42,18 +41,18 @@
         android:layout_height="wrap_content"
         android:text="@string/title_bsh"
         android:textSize="@dimen/title_twenty_four"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gl_vertical_fifteen"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gl_vertical_fifteen" />
 
     <TextView
         android:id="@+id/tv_subtitle_bsh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/diff_subtitle_fourteen"
         android:text="@string/subtitle_bsh"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/diff_subtitle_fourteen"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_bsh" />
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -62,25 +61,25 @@
         android:layout_height="@dimen/card_image_height"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:padding="@dimen/in_row_padding"
         android:src="@drawable/ic_upload_image"
-        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh"
         app:shapeAppearanceOverlay="@style/roundedImageView"
         app:strokeColor="@color/goodGray"
-        app:strokeWidth="@dimen/card_stroke"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle_bsh"/>
+        app:strokeWidth="@dimen/card_stroke" />
 
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="24dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_activity">
@@ -90,15 +89,16 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/txt_activity_name"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:hint="@string/txt_activity_name"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeColor="@color/textColorSecondary"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
+            app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_title_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -106,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
+                android:maxLines="1"
                 android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
 
@@ -124,19 +125,21 @@
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeColor="@color/textColorSecondary"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
-            app:startIconDrawable="@drawable/ic_calendar_24dp" >
+            app:hintTextColor="@color/black_dinner"
+            app:startIconDrawable="@drawable/ic_calendar_24dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_select_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:inputType="none"
-            android:padding="0dp"
-            android:textCursorDrawable="@drawable/custom_cursor" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_select_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="none"
+                android:maxLines="1"
+                android:padding="0dp"
+                android:textCursorDrawable="@drawable/custom_cursor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,9 +156,10 @@
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeColor="@color/textColorSecondary"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
-            app:startIconDrawable="@drawable/ic_location_24dp" >
+            app:hintTextColor="@color/black_dinner"
+            app:startIconDrawable="@drawable/ic_location_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_activity_location"
@@ -164,6 +168,7 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:inputType="none"
+                android:maxLines="1"
                 android:padding="0dp"
                 android:textCursorDrawable="@drawable/custom_cursor" />
 
@@ -175,15 +180,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:hint="@string/txt_activity_desc"
             android:layout_marginTop="16dp"
+            android:hint="@string/txt_activity_desc"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
+            app:boxStrokeColor="@color/textColorSecondary"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
+            app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_description_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -192,6 +198,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:lines="4"
+                android:maxLines="4"
                 android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -205,19 +212,19 @@
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="32dp"
         android:text="@string/btn_create_activity"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/pb_create_activity"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:indeterminate="true"
-        android:visibility="gone" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
