@@ -316,6 +316,7 @@ class HomeFragment : Fragment() {
                 })
 
                 mProgressBar.visibility = View.GONE
+                bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
 
