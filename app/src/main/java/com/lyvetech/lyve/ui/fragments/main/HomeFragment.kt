@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -71,6 +73,45 @@ class HomeFragment : Fragment() {
     private var urlForDocument: Uri? = null
     private var urlLocal: Uri? = null
 
+    // Validate each field in the form with the same watcher
+    private val watcher = object : TextWatcher {
+        override fun beforeTextChanged(
+            charSequence: CharSequence,
+            i: Int,
+            i1: Int,
+            i2: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            charSequence: CharSequence,
+            i: Int,
+            i1: Int,
+            i2: Int
+        ) {
+        }
+
+        override fun afterTextChanged(editable: Editable) {
+            when {
+                editable === mEtActivityName.editableText -> {
+                    val acName = mEtActivityName.text.toString().trim()
+                    if (!acName.isBlank()) {
+                        // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
+                        mTilActivityName.error = null
+                    }
+                }
+
+                editable === mEtActivityDesc.editableText -> {
+                    val acName = mEtActivityDesc.text.toString().trim()
+                    if (!acName.isBlank()) {
+                        // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
+                        mTilActivityDesc.error = null
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate")
@@ -113,6 +154,10 @@ class HomeFragment : Fragment() {
         Log.i(TAG, "onCreateView")
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        // Watch the fields in real time
+        mEtActivityName.addTextChangedListener(watcher)
+        mEtActivityDesc.addTextChangedListener(watcher)
 
         // Declare elements for activities recyclerview
         lateinit var linearLayoutManager: LinearLayoutManager
@@ -223,10 +268,6 @@ class HomeFragment : Fragment() {
             }
 
             mBtnCreateActivity.setOnClickListener {
-                mTilActivityName.error = null
-                mTilSelectedDate.error = null
-                mTilActivityLocation.error = null
-                mTilActivityDesc.error = null
 
                 if (mEtActivityName.text.toString().trim().isEmpty()) {
                     mTilActivityName.error = getString(R.string.err_empty_field)
