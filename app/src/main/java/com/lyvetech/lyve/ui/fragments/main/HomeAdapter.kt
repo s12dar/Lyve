@@ -1,11 +1,13 @@
 package com.lyvetech.lyve.ui.fragments.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.datamodels.Activity
 
@@ -21,6 +23,7 @@ class HomeAdapter(private val activityList: List<Activity?>?, private val contex
 
     override fun getItemCount(): Int = activityList!!.size
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         with(holder) {
             with(activityList!![position]) {
@@ -30,10 +33,16 @@ class HomeAdapter(private val activityList: List<Activity?>?, private val contex
                 binding.tvParticipants.text = this.acParticipants.toString()
 
                 // Glide takes care of setting fetched image uri to holder
-                Glide.with(context)
-                    .asBitmap()
-                    .load(this.acImgRefs.toUri())
-                    .into(binding.ivAc);
+                if (activityList[position]!!.acImgRefs.isNotEmpty()) {
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(this.acImgRefs.toUri())
+                        .into(binding.ivAc)
+                } else {
+                    Glide.with(context)
+                        .load(context.getDrawable(R.drawable.lyve))
+                        .into(binding.ivAc)
+                }
             }
         }
     }

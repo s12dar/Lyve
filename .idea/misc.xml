@@ -12,11 +12,14 @@
         <entry key="app/src/main/res/drawable/dialog_alert_activity_added.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_add_24.xml" value="0.1965" />
         <entry key="app/src/main/res/drawable/ic_alert_black_24dp.xml" value="0.1845" />
+        <entry key="app/src/main/res/drawable/ic_calendar_16dp.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_chat_24dp.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable/ic_exit_24dp.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/ic_home_24dp.xml" value="0.1795" />
+        <entry key="app/src/main/res/drawable/ic_location_16dp.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_location_24dp.xml" value="0.1465" />
         <entry key="app/src/main/res/drawable/ic_notification_24dp.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_participants_16dp.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_search_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_sunflower.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/rounded_border.xml" value="0.2005" />
