@@ -266,6 +266,8 @@ class HomeFragment : Fragment() {
                 mEtActivityDesc.setText("")
                 mEtActivityLocation.setText("")
                 mEtSelectedDate.setText("")
+                mIvActivityAvatar.setImageResource(R.drawable.ic_upload_image)
+                localImgUri = null
             }
 
             mIvActivityAvatar.setOnClickListener {
@@ -294,7 +296,9 @@ class HomeFragment : Fragment() {
                     return@setOnClickListener
                 }
 
-                localImgUri?.let { it1 -> uploadAcImgToFirebaseStorage(it1) }
+                if (localImgUri != null) {
+                    uploadAcImgToFirebaseStorage(localImgUri!!)
+                }
 
                 mProgressBar.visibility = View.VISIBLE
 
@@ -313,7 +317,10 @@ class HomeFragment : Fragment() {
                 newActivity.acCreatedAt = Timestamp(Date())
 
                 Handler(Looper.getMainLooper()).postDelayed({
-                    newActivity.acImgRefs = urlForDocument.toString()
+                    if (urlForDocument != null) {
+                        newActivity.acImgRefs = urlForDocument.toString()
+                    }
+
                     DataManager.mInstance.createActivity(
                         newActivity,
                         firebaseUser,
@@ -328,7 +335,7 @@ class HomeFragment : Fragment() {
                         })
                     mProgressBar.visibility = View.GONE
                     bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                                                            }, 2500)
+                }, 2500)
             }
         }
 
@@ -346,6 +353,8 @@ class HomeFragment : Fragment() {
                     mEtActivityDesc.setText("")
                     mEtActivityLocation.setText("")
                     mEtSelectedDate.setText("")
+                    mIvActivityAvatar.setImageResource(R.drawable.ic_upload_image)
+                    localImgUri = null
                 }
             }
         })
