@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -71,6 +72,7 @@ class HomeFragment : Fragment() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var mProgressBar: ProgressBar
     private var urlForDocument: Uri? = null
+    private var localImgUri: Uri? = null
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -139,7 +141,7 @@ class HomeFragment : Fragment() {
                 if (uri != null) {
                     imageChosen = true
                     setImage(uri, mIvActivityAvatar)
-                    uploadAcImgToFirebaseStorage(uri)
+                    localImgUri = uri
                 }
             }
     }
@@ -292,6 +294,8 @@ class HomeFragment : Fragment() {
                     return@setOnClickListener
                 }
 
+                localImgUri?.let { it1 -> uploadAcImgToFirebaseStorage(it1) }
+
                 mProgressBar.visibility = View.VISIBLE
 
                 val newActivity = Activity()
@@ -307,23 +311,24 @@ class HomeFragment : Fragment() {
                 newActivity.acParticipants = 0
                 newActivity.acType = "virtual"
                 newActivity.acCreatedAt = Timestamp(Date())
-                newActivity.acImgRefs = urlForDocument.toString()
 
-                DataManager.mInstance.createActivity(
-                    newActivity,
-                    firebaseUser,
-                    object : DataListener<Boolean> {
-                        override fun onData(data: Boolean?, exception: java.lang.Exception?) {
-                            if (data != null && data) {
-                                LyveApplication.mInstance.activity = newActivity
-                            } else {
-                                Log.e(TAG, "data has problems")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    newActivity.acImgRefs = urlForDocument.toString()
+                    DataManager.mInstance.createActivity(
+                        newActivity,
+                        firebaseUser,
+                        object : DataListener<Boolean> {
+                            override fun onData(data: Boolean?, exception: java.lang.Exception?) {
+                                if (data != null && data) {
+                                    LyveApplication.mInstance.activity = newActivity
+                                } else {
+                                    Log.e(TAG, "data has problems")
+                                }
                             }
-                        }
-                    })
-
-                mProgressBar.visibility = View.GONE
-                bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        })
+                    mProgressBar.visibility = View.GONE
+                    bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                                                            }, 2500)
             }
         }
 
@@ -386,7 +391,7 @@ class HomeFragment : Fragment() {
     private fun uploadAcImgToFirebaseStorage(imageUri: Uri) {
         val fileRef: StorageReference = FirebaseStorage.getInstance()
             .getReference(
-                System.currentTimeMillis().toString() + getFileExtension(imageUri.toString())
+                System.currentTimeMillis().toString()
             )
         fileRef.putFile(imageUri).addOnCompleteListener {
             fileRef.downloadUrl.addOnSuccessListener { uri ->
