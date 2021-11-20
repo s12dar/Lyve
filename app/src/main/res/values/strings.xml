@@ -33,7 +33,7 @@
     <string name="btn_physical_ac">Physical</string>
     <string name="txt_activity_name">Enter your activity name</string>
     <string name="txt_activity_desc">Describe your activity</string>
-    <string name="txt_activity_location">Set your ativity location</string>
+    <string name="txt_activity_location">Enter your activity location</string>
     <string name="txt_activity_date">Select your activity date</string>
     <string name="btn_create_activity">Create Activity</string>
 

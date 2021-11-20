@@ -21,15 +21,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
-import com.google.common.io.Files.getFileExtension
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -102,6 +101,14 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+                editable === mEtActivityLocation.editableText -> {
+                    val acName = mEtActivityLocation.text.toString().trim()
+                    if (acName.isNotBlank()) {
+                        // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
+                        mTilActivityLocation.error = null
+                    }
+                }
+
                 editable === mEtActivityDesc.editableText -> {
                     val acName = mEtActivityDesc.text.toString().trim()
                     if (acName.isNotBlank()) {
@@ -158,6 +165,7 @@ class HomeFragment : Fragment() {
 
         // Watch the fields in real time
         mEtActivityName.addTextChangedListener(watcher)
+        mEtActivityLocation.addTextChangedListener(watcher)
         mEtActivityDesc.addTextChangedListener(watcher)
 
         // Declare elements for activities recyclerview
@@ -205,7 +213,7 @@ class HomeFragment : Fragment() {
 
         val endDate = Calendar.getInstance()
         val startDate = Calendar.getInstance()
-        startDate.set(1500, 1, 1)
+        endDate.set(2022, 12, 31)
         val formatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
         var dateDialog: MaterialDatePicker<Long>? = null
 
@@ -225,7 +233,7 @@ class HomeFragment : Fragment() {
                         CalendarConstraints.Builder()
                             .setStart(startDate.timeInMillis)
                             .setEnd(endDate.timeInMillis)
-                            .setValidator(DateValidatorPointBackward.now())
+                            .setValidator(DateValidatorPointForward.now())
                             .build()
 
                     // Build the dialog itself

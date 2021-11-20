@@ -97,6 +97,7 @@
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeColor="@color/textColorSecondary"
+            app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_title_24dp">
@@ -118,7 +119,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="16dp"
             android:hint="@string/txt_activity_date"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
@@ -126,6 +126,7 @@
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeColor="@color/textColorSecondary"
+            app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_calendar_24dp">
@@ -149,7 +150,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="16dp"
             android:hint="@string/txt_activity_location"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
@@ -157,6 +157,7 @@
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeColor="@color/textColorSecondary"
+            app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_location_24dp">
@@ -165,11 +166,9 @@
                 android:id="@+id/et_activity_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="none"
+                android:imeOptions="actionNext"
                 android:maxLines="1"
-                android:padding="0dp"
+                android:padding="@dimen/field_padding"
                 android:textCursorDrawable="@drawable/custom_cursor" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -180,7 +179,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="16dp"
             android:hint="@string/txt_activity_desc"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
@@ -188,6 +186,7 @@
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
             app:boxStrokeColor="@color/textColorSecondary"
+            app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintTextColor="@color/black_dinner"
             app:startIconDrawable="@drawable/ic_description_24dp">
