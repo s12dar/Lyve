@@ -37,7 +37,7 @@ import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.HomeAdapter
 import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
-import com.lyvetech.lyve.datamanager.DataListener
+import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
@@ -343,7 +343,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
                         })
                     mProgressBar.visibility = View.GONE
                     bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                }, 6000)
+                }, 7000)
             }
         }
 

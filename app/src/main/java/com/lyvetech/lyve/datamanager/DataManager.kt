@@ -9,6 +9,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
 import java.util.*

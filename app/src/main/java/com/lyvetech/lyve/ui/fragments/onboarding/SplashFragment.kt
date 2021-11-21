@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
-import com.lyvetech.lyve.datamanager.DataListener
+import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User

@@ -17,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
-import com.lyvetech.lyve.datamanager.DataListener
+import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager.Companion.mInstance
 import com.lyvetech.lyve.datamodels.User
 import java.lang.Exception
