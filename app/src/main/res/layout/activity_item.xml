@@ -8,7 +8,7 @@
     android:focusable="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_user_swipe"
+        android:id="@+id/cv_activity"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"

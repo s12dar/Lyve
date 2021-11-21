@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
@@ -35,12 +34,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.lyvetech.lyve.R
+import com.lyvetech.lyve.adapters.HomeAdapter
 import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
 import com.lyvetech.lyve.datamanager.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.listeners.OnPostClickListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import java.io.IOException
 import java.time.LocalDate
@@ -49,7 +50,7 @@ import java.time.format.FormatStyle
 import java.util.*
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnPostClickListener {
 
     private var TAG = HomeFragment::class.qualifiedName
     private lateinit var binding: FragmentHomeBinding
@@ -179,7 +180,7 @@ class HomeFragment : Fragment() {
                     LyveApplication.mInstance.allActivities = data
 
                     homeAdapter =
-                        HomeAdapter(LyveApplication.mInstance.allActivities, requireContext())
+                        HomeAdapter(LyveApplication.mInstance.allActivities, requireContext(), this@HomeFragment)
                     linearLayoutManager = LinearLayoutManager(context)
 
                     binding.rvActivity.layoutManager = linearLayoutManager
@@ -342,7 +343,7 @@ class HomeFragment : Fragment() {
                         })
                     mProgressBar.visibility = View.GONE
                     bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                }, 4000)
+                }, 6000)
             }
         }
 
@@ -414,5 +415,14 @@ class HomeFragment : Fragment() {
                 urlForDocument = uri
             }
         }
+    }
+
+    override fun onPostClicked(activity: Activity) {
+        Toast.makeText(context, "Activity name ${activity.acTitle} \n Locaion: ${activity.acLocation}",Toast.LENGTH_LONG).show()
+        Log.d(TAG, activity.acTitle)
+    }
+
+    override fun onPostLongClicked(activity: Activity) {
+        TODO("Not yet implemented")
     }
 }

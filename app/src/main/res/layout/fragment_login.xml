@@ -14,7 +14,7 @@
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:text="@string/title_welcome_back"
-        android:textSize="@dimen/title_twenty_four"
+        android:textSize="@dimen/title_twenty_two"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

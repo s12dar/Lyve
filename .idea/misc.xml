@@ -23,6 +23,7 @@
         <entry key="app/src/main/res/drawable/ic_search_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_sunflower.xml" value="0.1445" />
         <entry key="app/src/main/res/drawable/rounded_border.xml" value="0.2005" />
+        <entry key="app/src/main/res/layout/activity_information.xml" value="0.2759033203125" />
         <entry key="app/src/main/res/layout/activity_item.xml" value="0.36774139404296874" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/layout/bottom_sheet_create_activity.xml" value="0.17796610169491525" />
