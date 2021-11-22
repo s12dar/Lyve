@@ -12,8 +12,10 @@ import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.listeners.OnPostClickListener
 
-class HomeAdapter(private val activityList: List<Activity?>?, private val context: Context,
-                  private val onPostClickListener: OnPostClickListener) :
+class HomeAdapter(
+    private val activityList: List<Activity?>?, private val context: Context,
+    private val onPostClickListener: OnPostClickListener
+) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -63,5 +65,5 @@ class HomeAdapter(private val activityList: List<Activity?>?, private val contex
                 onPostClickListener.onPostClicked(activity)
             }
         }
-        }
     }
+}

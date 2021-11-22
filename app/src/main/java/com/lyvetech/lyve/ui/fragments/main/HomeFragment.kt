@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -180,7 +181,11 @@ class HomeFragment : Fragment(), OnPostClickListener {
                     LyveApplication.mInstance.allActivities = data
 
                     homeAdapter =
-                        HomeAdapter(LyveApplication.mInstance.allActivities, requireContext(), this@HomeFragment)
+                        HomeAdapter(
+                            LyveApplication.mInstance.allActivities,
+                            requireContext(),
+                            this@HomeFragment
+                        )
                     linearLayoutManager = LinearLayoutManager(context)
 
                     binding.rvActivity.layoutManager = linearLayoutManager
@@ -418,8 +423,10 @@ class HomeFragment : Fragment(), OnPostClickListener {
     }
 
     override fun onPostClicked(activity: Activity) {
-        Toast.makeText(context, "Activity name ${activity.acTitle} \n Locaion: ${activity.acLocation}",Toast.LENGTH_LONG).show()
-        Log.d(TAG, activity.acTitle)
+//        Toast.makeText(context, "Activity name ${activity.acTitle} \n Locaion: ${activity.acLocation}",Toast.LENGTH_LONG).show()
+        findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
+        LyveApplication.mInstance.activity = activity
+//        Log.d(TAG, activity.acTitle)
     }
 
     override fun onPostLongClicked(activity: Activity) {
