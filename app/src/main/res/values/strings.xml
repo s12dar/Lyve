@@ -37,7 +37,6 @@
     <string name="txt_activity_date">Select your activity date</string>
     <string name="btn_create_activity">Create Activity</string>
 
-
     <!-- NAV DRAWER -->
     <string name="menu_group_settings">Configure Lyve</string>
     <string name="menu_item_account">Account</string>
@@ -46,4 +45,13 @@
     <string name="menu_item_logout">Log out</string>
     <string name="menu_item_chat">Chat</string>
     <string name="menu_item_search">Search</string>
+
+    <!-- WELCOME PAGE -->
+    <string name="txt_title_welcome">Oh hey!</string>
+    <string name="txt_desc_welcome">Welcome abroad.</string>
+    <string name="txt_title_welcome2">Our goal is</string>
+    <string name="txt_desc_welcome2">to facilitate everything in social sense</string>
+    <string name="txt_title_welcome3">Here we go..</string>
+    <string name="txt_desc_welcome3">Let\'s make it happen</string>
+
 </resources>
