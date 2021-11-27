@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentLoginBinding
+import com.lyvetech.lyve.utils.OnboardingUtils
 
 class LoginFragment : Fragment() {
 
@@ -111,18 +112,14 @@ class LoginFragment : Fragment() {
         email: String,
         password: String
     ) {
-        binding.progressBar.visibility = View.VISIBLE
+        (context as OnboardingUtils?)!!.showProgressBar()
         maAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this.requireActivity()) { task ->
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    Log.d(TAG, "signInWithEmailAndPassword:success")
+                    (context as OnboardingUtils?)!!.hideProgressBar()
                 } else {
                     Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
-                    Toast.makeText(
-                        context, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
     }
