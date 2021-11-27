@@ -3,32 +3,25 @@ package com.lyvetech.lyve.ui.fragments.onboarding
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.R
+import com.lyvetech.lyve.application.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
-import com.lyvetech.lyve.listeners.DataListener
-import com.lyvetech.lyve.datamanager.DataManager.Companion.mInstance
 import com.lyvetech.lyve.datamodels.User
-import java.lang.Exception
-import java.util.*
 
 class RegisterFragment : Fragment() {
 
     private var TAG = RegisterFragment::class.qualifiedName
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var mAuth: FirebaseAuth
-
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -106,9 +99,7 @@ class RegisterFragment : Fragment() {
             val email = binding.etRegisterEmail.text.toString().trim()
             val password = binding.etRegisterPassword.text.toString().trim()
             val confirmPassword = binding.etRegisterConfirmPassword.text.toString().trim()
-            val firstName = binding.etRegisterPassword.text.toString().trim()
-            val lastName = binding.etRegisterPassword.text.toString().trim()
-            val phoneNumber = binding.etRegisterPassword.text.toString().trim()
+            val userName = binding.etRegisterPassword.text.toString().trim()
 
             if (email.isEmpty()) {
                 binding.tilRegisterEmail.error =
@@ -125,15 +116,32 @@ class RegisterFragment : Fragment() {
                     getString(R.string.err_empty_field)
                 return@setOnClickListener
             }
+            if (!isEmailValid(email)) {
+                binding.tilRegisterEmail.error =
+                    getString(R.string.err_invalid_email)
+                return@setOnClickListener
+            }
+            if (password.length < 6) {
+                binding.tilRegisterPassword.error =
+                    getString(R.string.err_invalid_pass)
+                return@setOnClickListener
+            }
 
             if (password == confirmPassword) {
-                createAccount(
-                    email,
-                    password,
-                    firstName,
-                    lastName,
-                    phoneNumber
-                )
+                val user = User()
+
+                val firebaseUser = FirebaseAuth.getInstance().currentUser
+                if (firebaseUser != null) {
+                    user.uid = FirebaseAuth.getInstance().currentUser!!.uid
+                }
+
+                user.name = userName
+                user.email = email
+                user.pass = password
+
+                LyveApplication.mInstance.currentUser = user
+
+                findNavController().navigate(R.id.action_registerFragment_to_onboardingFragment)
             } else {
                 binding.tilRegisterConfirmPassword.error =
                     getString(R.string.err_password_match)
@@ -144,66 +152,12 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-
         return binding.root
 
     }
 
-    private fun createAccount(
-        email: String,
-        password: String,
-        firstName: String,
-        lastName: String,
-        phoneNumber: String,
-    ) {
-        binding.progressBar.visibility = View.VISIBLE
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this.requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "createUserWithEmail:success")
-
-                    var user = User()
-                    if (LyveApplication.mInstance.currentUser == null) {
-
-
-                        val firebaseUser = FirebaseAuth.getInstance().currentUser
-                        if (firebaseUser != null) {
-                            user.userId = FirebaseAuth.getInstance().currentUser!!.uid
-                        }
-
-                        user.firstName = firstName
-                        user.lastName = lastName
-                        user.email = email
-                        user.phoneNumber = phoneNumber
-                        user.createdAt = Timestamp(Date())
-                        user.isVerified = false
-                        user.bio = ""
-                        user.nrOfFollowers = 0
-                        user.nrOfFollowings = 0
-
-                        LyveApplication.mInstance.currentUser = user
-                    } else {
-                        user = LyveApplication.mInstance.currentUser!!
-                    }
-
-                    mInstance.createUser(user!!, object : DataListener<Boolean> {
-                        override fun onData(data: Boolean?, exception: Exception?) {
-                            if (data != null && data) {
-                                LyveApplication.mInstance.currentUser = user
-                            } else {
-                                Log.e(TAG, "data has problems")
-                            }
-                        }
-                    })
-
-                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                } else {
-                    Log.e(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        context, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+    private fun isEmailValid(email: CharSequence): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email)
+            .matches()
     }
 }

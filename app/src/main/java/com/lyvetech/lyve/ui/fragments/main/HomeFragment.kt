@@ -206,7 +206,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
                     val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
                     val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
 
-                    tvName.text = data.firstName + " " + data.lastName
+                    tvName.text = data.name
                     tvBio.text = "Everything will be ok"
                     tvFollowers.text = data.nrOfFollowers.toString() + " FOLLOWERS"
                     tvFollowing.text = data.nrOfFollowings.toString() + " FOLLOWINGS"

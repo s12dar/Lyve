@@ -46,5 +46,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tool:text="We are so happy to see you" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

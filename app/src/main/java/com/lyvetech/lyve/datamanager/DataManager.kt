@@ -29,7 +29,7 @@ class DataManager : DataManagerInterface {
         }
 
         val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
-        val userDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.userId)
+        val userDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
 
         userBatch.set(userDocRef, user.toMap())
         userBatch.commit().addOnCompleteListener{ task ->

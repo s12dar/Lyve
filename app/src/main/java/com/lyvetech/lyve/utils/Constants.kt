@@ -7,11 +7,11 @@ class Constants {
         /**
          * USER DATA
          */
-        const val FIRST_NAME = "firstName"
-        const val LAST_NAME = "lastName"
-        const val PHONE_NUMBER = "phoneNumber"
+        const val NAME = "name"
         const val EMAIL = "email"
         const val UID = "uid"
+        const val AVATAR = "avatar"
+        const val PASS = "pass"
         const val CREATED_AT = "createdAt"
         const val BIO = "bio"
         const val IS_VERIFIED = "isVerified"

@@ -60,20 +60,18 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
         <action
-            android:id="@+id/action_registerFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
-            app:popUpTo="@+id/nav_graph"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_registerFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.lyvetech.lyve.ui.fragments.main.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_homeInfoFragment"
             app:destination="@id/homeInfoFragment"
@@ -106,4 +104,18 @@
         android:id="@+id/homeInfoFragment"
         android:name="com.lyvetech.lyve.ui.fragments.main.HomeInfoFragment"
         android:label="HomeInfoFragment" />
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.OnboardingFragment"
+        android:label="OnboardingFragment">
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

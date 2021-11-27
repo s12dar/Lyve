@@ -15,7 +15,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentLoginBinding
-import com.lyvetech.lyve.datamodels.User
 
 class LoginFragment : Fragment() {
 
@@ -118,7 +117,6 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     Log.d(TAG, "signInWithEmailAndPassword:success")
-                    val user: User
                 } else {
                     Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
                     Toast.makeText(
