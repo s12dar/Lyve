@@ -2,15 +2,15 @@ package com.lyvetech.lyve.datamodels
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
+import com.lyvetech.lyve.utils.Constants.Companion.AVATAR
 import com.lyvetech.lyve.utils.Constants.Companion.BIO
 import com.lyvetech.lyve.utils.Constants.Companion.CREATED_AT
 import com.lyvetech.lyve.utils.Constants.Companion.EMAIL
-import com.lyvetech.lyve.utils.Constants.Companion.FIRST_NAME
 import com.lyvetech.lyve.utils.Constants.Companion.IS_VERIFIED
-import com.lyvetech.lyve.utils.Constants.Companion.LAST_NAME
+import com.lyvetech.lyve.utils.Constants.Companion.NAME
 import com.lyvetech.lyve.utils.Constants.Companion.NR_OF_FOLLOWERS
 import com.lyvetech.lyve.utils.Constants.Companion.NR_OF_FOLLOWINGS
-import com.lyvetech.lyve.utils.Constants.Companion.PHONE_NUMBER
+import com.lyvetech.lyve.utils.Constants.Companion.PASS
 import com.lyvetech.lyve.utils.Constants.Companion.UID
 import java.util.*
 import kotlin.collections.HashMap
@@ -18,15 +18,15 @@ import kotlin.collections.HashMap
 class User {
 
     @get:PropertyName(UID)
-    var userId = ""
-    @get:PropertyName(FIRST_NAME)
-    var firstName = ""
-    @get:PropertyName(LAST_NAME)
-    var lastName = ""
+    var uid = ""
+    @get:PropertyName(NAME)
+    var name = ""
     @get:PropertyName(EMAIL)
     var email= ""
-    @get:PropertyName(PHONE_NUMBER)
-    var phoneNumber = ""
+    @get:PropertyName(AVATAR)
+    var avatar= ""
+    @get:PropertyName(PASS)
+    var pass= ""
     @get:PropertyName(CREATED_AT)
     var createdAt = Timestamp(Date())
     @get:PropertyName(IS_VERIFIED)
@@ -41,11 +41,10 @@ class User {
 
     fun toMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
-        map[UID] = userId
-        map[FIRST_NAME] = firstName
-        map[LAST_NAME] = lastName
+        map[UID] = uid
+        map[NAME] = name
         map[EMAIL] = email
-        map[PHONE_NUMBER] = phoneNumber
+        map[AVATAR] = avatar
         map[CREATED_AT] = createdAt
         map[BIO] = bio
         map[IS_VERIFIED] = isVerified
