@@ -27,6 +27,9 @@
     <!-- HOME PAGE -->
     <string name="desc_ppic">Profile picture</string>
 
+    <!-- HOME INFO -->
+    <string name="btn_attend">Attend</string>
+
     <!-- BOTTOM SHEET -->
     <string name="title_bsh">Alright, let\'s create one</string>
     <string name="subtitle_bsh">But which one?</string>

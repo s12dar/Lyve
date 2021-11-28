@@ -29,10 +29,11 @@ class DataManager : DataManagerInterface {
         }
 
         val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
-        val userDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
+        val userDocRef: DocumentReference =
+            FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
 
         userBatch.set(userDocRef, user.toMap())
-        userBatch.commit().addOnCompleteListener{ task ->
+        userBatch.commit().addOnCompleteListener { task ->
             run {
                 if (task.isSuccessful) {
                     listener.onData(true, null)
@@ -49,7 +50,9 @@ class DataManager : DataManagerInterface {
         if (firebaseUser == null) {
             listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
         } else {
-            val userDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(firebaseUser.uid)
+            val userDocRef: DocumentReference =
+                FirebaseFirestore.getInstance().collection(COLLECTION_USER)
+                    .document(firebaseUser.uid)
 
             FirebaseFirestore.getInstance().runTransaction { transaction ->
                 val userDoc: DocumentSnapshot = transaction.get(userDocRef)
@@ -69,7 +72,7 @@ class DataManager : DataManagerInterface {
                 } else {
                     null
                 }
-            }.addOnCompleteListener {task ->
+            }.addOnCompleteListener { task ->
                 run {
                     if (task.isSuccessful && task.result != null) {
                         val currentUser: User = task.result!!
@@ -82,7 +85,11 @@ class DataManager : DataManagerInterface {
         }
     }
 
-    override fun createActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>) {
+    override fun createActivity(
+        activity: Activity,
+        user: FirebaseUser,
+        listener: DataListener<Boolean>
+    ) {
         val currentUser: FirebaseUser? = Firebase.auth.currentUser
         if (currentUser != null) {
             listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
@@ -91,20 +98,47 @@ class DataManager : DataManagerInterface {
         val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
 
         val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-            COLLECTION_ACTIVITIES).document(activity.aid)
+            COLLECTION_ACTIVITIES
+        ).document(activity.aid)
         val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-            COLLECTION_USER).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+            COLLECTION_USER
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
         activityBatch.set(activityDocRef, activity.toMap())
         activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
 
-        activityBatch.commit().addOnCompleteListener{ task ->
+        activityBatch.commit().addOnCompleteListener { task ->
             run {
                 if (task.isSuccessful) {
                     listener.onData(true, null)
                 } else {
                     listener.onData(false, task.exception)
                 }
+            }
+        }
+    }
+
+    override fun updateActivity(
+        activity: Activity,
+        user: FirebaseUser,
+        listener: DataListener<Boolean>
+    ) {
+        val activityBatch = FirebaseFirestore.getInstance().batch()
+
+        val activityDocRef = FirebaseFirestore.getInstance().collection(
+            COLLECTION_ACTIVITIES
+        ).document(activity.aid)
+        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+            COLLECTION_USER
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+
+        activityBatch.update(activityDocRef, activity.toMap())
+        activityBatch.update(subActivityDocRef, activity.toUserActivityMap())
+        activityBatch.commit().addOnCompleteListener { task: Task<Void?> ->
+            if (task.isSuccessful) {
+                listener.onData(true, null)
+            } else {
+                listener.onData(false, task.exception)
             }
         }
     }
