@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.application.LyveApplication
@@ -59,22 +60,48 @@ class HomeInfoFragment : Fragment() {
         binding.btnAttend.setOnClickListener {
             val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-            eventActivity!!.acParticipants.add(firebaseUser!!.uid)
-            DataManager.mInstance.updateActivity(
-                eventActivity!!,
-                firebaseUser,
-                object : DataListener<Boolean> {
-                    override fun onData(data: Boolean?, exception: java.lang.Exception?) {
-                        if (data != null && data) {
-                            LyveApplication.mInstance.activity = eventActivity
-                        } else {
-                            Log.e(TAG, "data has problems")
+            if (!eventActivity!!.acParticipants.contains(firebaseUser!!.uid)) {
+                eventActivity!!.acParticipants.add(firebaseUser.uid)
+                DataManager.mInstance.updateActivity(
+                    eventActivity!!,
+                    firebaseUser,
+                    object : DataListener<Boolean> {
+                        override fun onData(data: Boolean?, exception: java.lang.Exception?) {
+                            if (data != null && data) {
+                                LyveApplication.mInstance.activity = eventActivity
+                            } else {
+                                Log.e(TAG, "data has problems" + exception.toString())
+                            }
                         }
-                    }
-                })
-            LyveApplication.mInstance.activity = eventActivity
+                    })
+                LyveApplication.mInstance.activity = eventActivity
+                showAlertMessage(true)
+            } else {
+                showAlertMessage(false)
+                Log.i(TAG, "HEY SERDAR, YOU'RE ALREADY THERE")
+            }
         }
 
         return binding.root
+    }
+
+    private fun showAlertMessage(isOK: Boolean) {
+        if (isOK) {
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                .setTitle(resources.getString(R.string.txt_alert_title_yay))
+                .setMessage(resources.getString(R.string.txt_alert_desc_yay))
+                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ ->
+
+                }
+                .show()
+        } else {
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                .setTitle(resources.getString(R.string.txt_alert_title_oops))
+                .setMessage(resources.getString(R.string.txt_alert_desc_oops))
+                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ ->
+
+                }
+                .show()
+        }
     }
 }

@@ -128,12 +128,12 @@ class DataManager : DataManagerInterface {
         val activityDocRef = FirebaseFirestore.getInstance().collection(
             COLLECTION_ACTIVITIES
         ).document(activity.aid)
-        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-            COLLECTION_USER
-        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+//        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+//            COLLECTION_USER
+//        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
         activityBatch.update(activityDocRef, activity.toMap())
-        activityBatch.update(subActivityDocRef, activity.toUserActivityMap())
+//        activityBatch.update(subActivityDocRef, activity.toUserActivityMap())
         activityBatch.commit().addOnCompleteListener { task: Task<Void?> ->
             if (task.isSuccessful) {
                 listener.onData(true, null)
