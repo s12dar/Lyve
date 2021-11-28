@@ -42,7 +42,7 @@ class HomeInfoFragment : Fragment() {
             binding.tvDesc.text = eventActivity!!.acDesc
             binding.tvDateAndTime.text = eventActivity!!.acTime
             binding.tvLocation.text = eventActivity!!.acLocation
-            binding.tvParticipants.text = eventActivity!!.nrOfParticipants.toString()
+            binding.tvParticipants.text = eventActivity!!.acParticipants.size.toString()
 
             if (eventActivity!!.acImgRefs.isNotEmpty()) {
                 Glide.with(requireContext())
@@ -59,10 +59,10 @@ class HomeInfoFragment : Fragment() {
         binding.btnAttend.setOnClickListener {
             val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-            eventActivity!!.nrOfParticipants++
+            eventActivity!!.acParticipants.add(firebaseUser!!.uid)
             DataManager.mInstance.updateActivity(
                 eventActivity!!,
-                firebaseUser!!,
+                firebaseUser,
                 object : DataListener<Boolean> {
                     override fun onData(data: Boolean?, exception: java.lang.Exception?) {
                         if (data != null && data) {
@@ -72,6 +72,7 @@ class HomeInfoFragment : Fragment() {
                         }
                     }
                 })
+            LyveApplication.mInstance.activity = eventActivity
         }
 
         return binding.root

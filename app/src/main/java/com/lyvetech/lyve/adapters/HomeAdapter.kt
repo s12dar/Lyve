@@ -47,7 +47,7 @@ class HomeAdapter(
             activityTitle.text = activity.acTitle
             activityLocation.text = activity.acLocation
             activityDate.text = activity.acTime
-            activityParticipants.text = activity.nrOfParticipants.toString()
+            activityParticipants.text = activity.acParticipants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
             if (activity.acImgRefs.isNotEmpty()) {

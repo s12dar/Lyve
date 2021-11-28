@@ -19,22 +19,31 @@ class User {
 
     @get:PropertyName(UID)
     var uid = ""
+
     @get:PropertyName(NAME)
     var name = ""
+
     @get:PropertyName(EMAIL)
-    var email= ""
+    var email = ""
+
     @get:PropertyName(AVATAR)
-    var avatar= ""
+    var avatar = ""
+
     @get:PropertyName(PASS)
-    var pass= ""
-    @get:PropertyName(CREATED_AT)
-    var createdAt = Timestamp(Date())
-    @get:PropertyName(IS_VERIFIED)
-    var isVerified: Boolean = true
+    var pass = ""
+
     @get:PropertyName(BIO)
     var bio = ""
+
+    @get:PropertyName(CREATED_AT)
+    var createdAt = Timestamp(Date())
+
+    @get:PropertyName(IS_VERIFIED)
+    var isVerified: Boolean = true
+
     @get: PropertyName(NR_OF_FOLLOWERS)
     var nrOfFollowers: Int = 0
+
     @get: PropertyName(NR_OF_FOLLOWINGS)
     var nrOfFollowings: Int = 0
 
