@@ -19,24 +19,33 @@ class Activity {
 
     @get:PropertyName(ACTIVITY_ID)
     var aid = ""
+
     @get:PropertyName(ACTIVITY_TITLE)
     var acTitle = ""
+
     @get:PropertyName(ACTIVITY_DESC)
     var acDesc = ""
+
     @get:PropertyName(ACTIVITY_TYPE)
     var acType = ""
+
     @get:PropertyName(ACTIVITY_IMG_REFS)
     var acImgRefs = ""
+
     @get:PropertyName(ACTIVITY_CREATED_AT)
     var acCreatedAt = Timestamp(Date())
+
     @get:PropertyName(ACTIVITY_TIME)
     var acTime = ""
+
     @get:PropertyName(ACTIVITY_LOCATION)
     var acLocation = ""
+
     @get:PropertyName(ACTIVITY_CREATED_BY_ID)
     var acCreatedByID = ""
+
     @get:PropertyName(ACTIVITY_PARTICIPANTS)
-    var acParticipants: Int = 0
+    var nrOfParticipants: Int = 0
 
     fun toMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
@@ -47,7 +56,7 @@ class Activity {
         map[ACTIVITY_TIME] = acTime
         map[ACTIVITY_LOCATION] = acLocation
         map[ACTIVITY_CREATED_BY_ID] = acCreatedByID
-        map[ACTIVITY_PARTICIPANTS] = acParticipants
+        map[ACTIVITY_PARTICIPANTS] = nrOfParticipants
         map[ACTIVITY_IMG_REFS] = acImgRefs
         map[ACTIVITY_ID] = aid
 
@@ -60,7 +69,7 @@ class Activity {
         map[ACTIVITY_TITLE] = acTitle
         map[ACTIVITY_TYPE] = acType
         map[ACTIVITY_LOCATION] = acLocation
-        map[ACTIVITY_PARTICIPANTS] = acParticipants
+        map[ACTIVITY_PARTICIPANTS] = nrOfParticipants
 
         return map
     }

@@ -325,7 +325,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
                 newActivity.acLocation = mEtActivityLocation.text.toString().trim()
                 newActivity.acTime = mEtSelectedDate.text.toString().trim()
                 newActivity.acCreatedByID = firebaseUser!!.uid
-                newActivity.acParticipants = 0
+                newActivity.nrOfParticipants = 0
                 newActivity.acType = "virtual"
                 newActivity.acCreatedAt = Timestamp(Date())
 

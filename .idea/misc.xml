@@ -14,6 +14,8 @@
         <entry key="app/src/main/res/drawable/ic_alert_black_24dp.xml" value="0.1845" />
         <entry key="app/src/main/res/drawable/ic_calendar_16dp.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_chat_24dp.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable/ic_description_20dp.xml" value="0.1285" />
+        <entry key="app/src/main/res/drawable/ic_description_24dp.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/ic_exit_24dp.xml" value="0.158" />
         <entry key="app/src/main/res/drawable/ic_home_24dp.xml" value="0.1795" />
         <entry key="app/src/main/res/drawable/ic_location_16dp.xml" value="0.134" />
@@ -22,6 +24,8 @@
         <entry key="app/src/main/res/drawable/ic_participants_16dp.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_search_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_sunflower.xml" value="0.1445" />
+        <entry key="app/src/main/res/drawable/ic_title_20dp.xml" value="0.1285" />
+        <entry key="app/src/main/res/drawable/ic_title_24dp.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/rounded_border.xml" value="0.2005" />
         <entry key="app/src/main/res/layout/activity_information.xml" value="0.2759033203125" />
         <entry key="app/src/main/res/layout/activity_item.xml" value="0.36774139404296874" />

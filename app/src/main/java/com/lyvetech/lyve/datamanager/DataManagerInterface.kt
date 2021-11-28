@@ -10,4 +10,5 @@ interface DataManagerInterface {
     fun getCurrentUser(listener: DataListener<User>)
     fun getActivities(listener: DataListener<List<Activity?>>)
     fun createActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>)
+    fun updateActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>)
 }
