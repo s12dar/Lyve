@@ -123,8 +123,8 @@ class OnboardingFragment : Fragment() {
                         }
                     })
 
-                    (context as OnboardingUtils?)!!.hideProgressBar()
                     findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
+                    (context as OnboardingUtils?)!!.hideProgressBar()
                 } else {
                     Log.e(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(

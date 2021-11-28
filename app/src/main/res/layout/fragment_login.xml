@@ -7,29 +7,34 @@
     android:layout_margin="24dp"
     tools:context=".ui.fragments.onboarding.LoginFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_5_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
     <TextView
-        android:id="@+id/tv_title_welcome_back"
+        android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:text="@string/title_welcome_back"
         android:textSize="@dimen/title_twenty_two"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline_5_horizontal" />
 
     <TextView
-        android:id="@+id/tv_desc_welcome_back"
+        android:id="@+id/tv_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="center"
-        android:text="@string/desc_join_us"
-        android:textSize="@dimen/subtitle_sixteen"
+        android:layout_marginTop="8dp"
+        android:text="@string/desc_welcome_back"
+        android:textSize="@dimen/diff_subtitle_fourteen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_welcome_back" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_20"
@@ -58,13 +63,10 @@
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
-            app:boxStrokeErrorColor="@color/redAccent"
             app:errorContentDescription="@string/hint_email"
             app:errorEnabled="true"
-            app:errorIconTint="@color/redAccent"
-            app:errorTextColor="@color/redAccent"
-            app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent">
+            app:hintTextColor="@color/black_dinner"
+            app:hintAnimationEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_login_email"
@@ -88,13 +90,10 @@
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
             app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
             app:boxCornerRadiusTopStart="@dimen/text_field_corner"
-            app:boxStrokeErrorColor="@color/redAccent"
             app:errorContentDescription="@string/hint_password"
             app:errorEnabled="true"
-            app:errorIconTint="@color/redAccent"
-            app:errorTextColor="@color/redAccent"
+            app:hintTextColor="@color/black_dinner"
             app:hintAnimationEnabled="true"
-            app:hintTextColor="?colorAccent"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -146,17 +145,4 @@
         app:layout_constraintStart_toEndOf="@+id/tv_already_have_account"
         app:layout_constraintTop_toBottomOf="@id/btn_sign_in" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_join_us"
-        tools:targetApi="lollipop" />
 </androidx.constraintlayout.widget.ConstraintLayout>
