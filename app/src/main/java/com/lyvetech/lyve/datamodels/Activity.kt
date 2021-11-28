@@ -69,7 +69,6 @@ class Activity {
         map[ACTIVITY_TITLE] = acTitle
         map[ACTIVITY_TYPE] = acType
         map[ACTIVITY_LOCATION] = acLocation
-        map[ACTIVITY_PARTICIPANTS] = acParticipants
 
         return map
     }

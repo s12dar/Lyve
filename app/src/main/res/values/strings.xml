@@ -29,6 +29,11 @@
 
     <!-- HOME INFO -->
     <string name="btn_attend">Attend</string>
+    <string name="btn_alert_positive">OK</string>
+    <string name="txt_alert_title_oops">Oops..</string>
+    <string name="txt_alert_desc_oops">You\'re already attending to this activity</string>
+    <string name="txt_alert_title_yay">Yay..</string>
+    <string name="txt_alert_desc_yay">You\'re attending to this activity</string>
 
     <!-- BOTTOM SHEET -->
     <string name="title_bsh">Alright, let\'s create one</string>
