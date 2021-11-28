@@ -45,7 +45,7 @@ class Activity {
     var acCreatedByID = ""
 
     @get:PropertyName(ACTIVITY_PARTICIPANTS)
-    var nrOfParticipants: Int = 0
+    var acParticipants = mutableListOf<String>()
 
     fun toMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
@@ -56,7 +56,7 @@ class Activity {
         map[ACTIVITY_TIME] = acTime
         map[ACTIVITY_LOCATION] = acLocation
         map[ACTIVITY_CREATED_BY_ID] = acCreatedByID
-        map[ACTIVITY_PARTICIPANTS] = nrOfParticipants
+        map[ACTIVITY_PARTICIPANTS] = acParticipants
         map[ACTIVITY_IMG_REFS] = acImgRefs
         map[ACTIVITY_ID] = aid
 
@@ -69,7 +69,7 @@ class Activity {
         map[ACTIVITY_TITLE] = acTitle
         map[ACTIVITY_TYPE] = acType
         map[ACTIVITY_LOCATION] = acLocation
-        map[ACTIVITY_PARTICIPANTS] = nrOfParticipants
+        map[ACTIVITY_PARTICIPANTS] = acParticipants
 
         return map
     }

@@ -42,6 +42,7 @@ import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.datamodels.WelcomeItem
 import com.lyvetech.lyve.listeners.OnPostClickListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import java.io.IOException
@@ -325,7 +326,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
                 newActivity.acLocation = mEtActivityLocation.text.toString().trim()
                 newActivity.acTime = mEtSelectedDate.text.toString().trim()
                 newActivity.acCreatedByID = firebaseUser!!.uid
-                newActivity.nrOfParticipants = 0
+                newActivity.acParticipants = mutableListOf()
                 newActivity.acType = "virtual"
                 newActivity.acCreatedAt = Timestamp(Date())
 
@@ -423,10 +424,8 @@ class HomeFragment : Fragment(), OnPostClickListener {
     }
 
     override fun onPostClicked(activity: Activity) {
-//        Toast.makeText(context, "Activity name ${activity.acTitle} \n Locaion: ${activity.acLocation}",Toast.LENGTH_LONG).show()
         findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
         LyveApplication.mInstance.activity = activity
-//        Log.d(TAG, activity.acTitle)
     }
 
     override fun onPostLongClicked(activity: Activity) {
