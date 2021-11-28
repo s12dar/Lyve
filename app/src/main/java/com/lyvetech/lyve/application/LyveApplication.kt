@@ -12,7 +12,7 @@ class LyveApplication : Application() {
 
     var currentUser: User? = null
     var activity: Activity? = null
-    var allActivities: List<Activity?>? = null
+    var allActivities: MutableList<Activity?>? = null
 
     override fun onCreate() {
         super.onCreate()

@@ -42,7 +42,6 @@ import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.datamodels.Activity
 import com.lyvetech.lyve.datamodels.User
-import com.lyvetech.lyve.datamodels.WelcomeItem
 import com.lyvetech.lyve.listeners.OnPostClickListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import java.io.IOException
@@ -165,6 +164,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
         Log.i(TAG, "onCreateView")
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        mUser = LyveApplication.mInstance.currentUser
 
         // Watch the fields in real time
         mEtActivityName.addTextChangedListener(watcher)
@@ -175,8 +175,8 @@ class HomeFragment : Fragment(), OnPostClickListener {
         lateinit var linearLayoutManager: LinearLayoutManager
         lateinit var homeAdapter: HomeAdapter
 
-        DataManager.mInstance.getActivities(object : DataListener<List<Activity?>> {
-            override fun onData(data: List<Activity?>?, exception: Exception?) {
+        DataManager.mInstance.getActivities(object : DataListener<MutableList<Activity?>> {
+            override fun onData(data: MutableList<Activity?>?, exception: Exception?) {
                 if (data != null) {
 
                     LyveApplication.mInstance.allActivities = data
