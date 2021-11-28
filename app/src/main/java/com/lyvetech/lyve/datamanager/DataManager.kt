@@ -143,7 +143,7 @@ class DataManager : DataManagerInterface {
         }
     }
 
-    override fun getActivities(listener: DataListener<List<Activity?>>) {
+    override fun getActivities(listener: DataListener<MutableList<Activity?>>) {
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))

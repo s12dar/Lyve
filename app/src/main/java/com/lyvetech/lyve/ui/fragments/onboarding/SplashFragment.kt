@@ -47,12 +47,12 @@ class SplashFragment : Fragment() {
                 if (data != null) {
                     LyveApplication.mInstance.currentUser = data
                 }
-                DataManager.mInstance.getActivities(object : DataListener<List<Activity?>> {
-                    override fun onData(data: List<Activity?>?, exception: Exception?) {
+                DataManager.mInstance.getActivities(object : DataListener<MutableList<Activity?>> {
+                    override fun onData(data: MutableList<Activity?>?, exception: Exception?) {
                         if (data != null) {
                             LyveApplication.mInstance.allActivities = data
                         } else {
-                            LyveApplication.mInstance.allActivities = LinkedList()
+                            LyveApplication.mInstance.allActivities = mutableListOf()
                         }
                     }
                 })
