@@ -1,6 +1,4 @@
-package com.lyvetech.lyve.datamodels
-
-import kotlin.properties.Delegates
+package com.lyvetech.lyve.models
 
 class WelcomeItem {
     private var mImage: Int = 0

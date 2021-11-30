@@ -1,9 +1,11 @@
-package com.lyvetech.lyve.application
+package com.lyvetech.lyve
 
 import android.app.Application
-import com.lyvetech.lyve.datamodels.Activity
-import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.User
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class LyveApplication : Application() {
 
     companion object {

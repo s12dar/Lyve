@@ -36,21 +36,22 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.HomeAdapter
-import com.lyvetech.lyve.application.LyveApplication
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
 import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.datamanager.DataManager
-import com.lyvetech.lyve.datamodels.Activity
-import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.listeners.OnPostClickListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment(), OnPostClickListener {
 
     private var TAG = HomeFragment::class.qualifiedName
@@ -59,6 +60,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var imageChosen = false
 
+    // Vars for views in bottom sheet layout
     private lateinit var mIvExit: ImageView
     private lateinit var mIvActivityAvatar: ImageView
     private lateinit var mEtSelectedDate: EditText
@@ -175,6 +177,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
         lateinit var linearLayoutManager: LinearLayoutManager
         lateinit var homeAdapter: HomeAdapter
 
+        // Fetch all activities from db to show in recycler view
         DataManager.mInstance.getActivities(object : DataListener<MutableList<Activity?>> {
             override fun onData(data: MutableList<Activity?>?, exception: Exception?) {
                 if (data != null) {
@@ -195,6 +198,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
             }
         })
 
+        //Fetch current user details from db
         DataManager.mInstance.getCurrentUser(object : DataListener<User> {
             override fun onData(data: User?, exception: Exception?) {
                 if (data != null) {

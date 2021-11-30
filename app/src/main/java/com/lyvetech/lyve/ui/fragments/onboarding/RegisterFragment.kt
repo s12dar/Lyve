@@ -13,9 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.application.LyveApplication
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
-import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.models.User
 
 class RegisterFragment : Fragment() {
 
