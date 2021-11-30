@@ -1,4 +1,4 @@
-package com.example.localizationserdar.onboarding
+package com.lyvetech.lyve.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

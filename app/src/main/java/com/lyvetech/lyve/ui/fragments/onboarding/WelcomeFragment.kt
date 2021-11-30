@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.example.localizationserdar.onboarding.WelcomeAdapter
+import com.lyvetech.lyve.adapters.WelcomeAdapter
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentWelcomeBinding
 import com.lyvetech.lyve.datamodels.WelcomeItem
