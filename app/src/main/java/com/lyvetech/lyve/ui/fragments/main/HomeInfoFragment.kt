@@ -12,20 +12,30 @@ import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.application.LyveApplication
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.datamanager.DataManager
-import com.lyvetech.lyve.datamodels.Activity
+import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.listeners.DataListener
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 
+@AndroidEntryPoint
 class HomeInfoFragment : Fragment() {
 
     private var TAG = HomeInfoFragment::class.qualifiedName
     private lateinit var binding: FragmentHomeInfoBinding
     private var eventActivity: Activity? = null
 
+    @Inject
+    @Named("String")
+    lateinit var testString: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d(TAG, testString);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

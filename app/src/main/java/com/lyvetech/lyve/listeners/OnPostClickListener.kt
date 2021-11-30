@@ -1,6 +1,6 @@
 package com.lyvetech.lyve.listeners
 
-import com.lyvetech.lyve.datamodels.Activity
+import com.lyvetech.lyve.models.Activity
 
 interface OnPostClickListener {
     fun onPostClicked(activity: Activity)

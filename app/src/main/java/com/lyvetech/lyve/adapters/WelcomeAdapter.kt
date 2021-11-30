@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lyvetech.lyve.databinding.WelcomeItemBinding
-import com.lyvetech.lyve.datamodels.WelcomeItem
+import com.lyvetech.lyve.models.WelcomeItem
 
 class WelcomeAdapter(
     private val context: Context,

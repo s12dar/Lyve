@@ -1,8 +1,6 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,18 +10,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.application.LyveApplication
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentOnboardingBinding
 import com.lyvetech.lyve.datamanager.DataManager
-import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.utils.OnboardingUtils
-import java.util.*
 
 class OnboardingFragment : Fragment() {
 

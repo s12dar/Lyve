@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.lyvetech.lyve.adapters.WelcomeAdapter
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentWelcomeBinding
-import com.lyvetech.lyve.datamodels.WelcomeItem
+import com.lyvetech.lyve.models.WelcomeItem
 
 class WelcomeFragment : Fragment() {
 

@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import com.lyvetech.lyve.databinding.ActivityMainBinding
 import com.lyvetech.lyve.utils.OnboardingUtils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnboardingUtils {
 
     private lateinit var binding: ActivityMainBinding

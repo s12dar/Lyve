@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
-import com.lyvetech.lyve.datamodels.Activity
+import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.listeners.OnPostClickListener
 
 class HomeAdapter(

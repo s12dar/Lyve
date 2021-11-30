@@ -2,8 +2,8 @@ package com.lyvetech.lyve.datamanager
 
 import com.google.firebase.auth.FirebaseUser
 import com.lyvetech.lyve.listeners.DataListener
-import com.lyvetech.lyve.datamodels.Activity
-import com.lyvetech.lyve.datamodels.User
+import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.User
 
 interface DataManagerInterface {
     fun createUser(user: User, listener: DataListener<Boolean>)

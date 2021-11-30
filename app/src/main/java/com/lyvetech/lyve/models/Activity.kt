@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.datamodels
+package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
