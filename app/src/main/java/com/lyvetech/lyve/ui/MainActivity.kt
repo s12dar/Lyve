@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.ui.activities
+package com.lyvetech.lyve.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
