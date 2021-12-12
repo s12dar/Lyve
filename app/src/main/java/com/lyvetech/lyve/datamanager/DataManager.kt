@@ -23,48 +23,47 @@ class DataManager : DataManagerInterface {
     }
 
     override fun createUser(user: User, listener: DataListener<Boolean>) {
-        val currentUser: FirebaseUser? = Firebase.auth.currentUser
-        if (currentUser != null) {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
-        }
+        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
-        val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
-        val userDocRef: DocumentReference =
-            FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
+        firebaseUser?.let {
+            val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
+            val userDocRef: DocumentReference =
+                FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
 
-        userBatch.set(userDocRef, user.toMap())
-        userBatch.commit().addOnCompleteListener { task ->
-            run {
-                if (task.isSuccessful) {
-                    listener.onData(true, null)
-                } else {
-                    listener.onData(false, task.exception)
+            userBatch.set(userDocRef, user.toMap())
+            userBatch.commit().addOnCompleteListener { task ->
+                run {
+                    if (task.isSuccessful) {
+                        listener.onData(true, null)
+                    } else {
+                        listener.onData(false, task.exception)
+                    }
                 }
             }
+        } ?: run {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
         }
     }
 
     override fun getCurrentUser(listener: DataListener<User>) {
         val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
-        if (firebaseUser == null) {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
-        } else {
+        firebaseUser?.let {
             val userDocRef: DocumentReference =
                 FirebaseFirestore.getInstance().collection(COLLECTION_USER)
-                    .document(firebaseUser.uid)
+                    .document(it.uid)
 
             FirebaseFirestore.getInstance().runTransaction { transaction ->
                 val userDoc: DocumentSnapshot = transaction.get(userDocRef)
 
                 val currentUser: User? = userDoc.toObject(User::class.java)
                 if (currentUser != null) {
-                    if (currentUser.email != firebaseUser.email) {
-                        currentUser.email = firebaseUser.email.toString()
+                    if (currentUser.email != it.email) {
+                        currentUser.email = it.email.toString()
                     }
 
                     if (currentUser.email.isEmpty()) {
-                        currentUser.email = firebaseUser.email.toString()
+                        currentUser.email = it.email.toString()
                     }
 
                     transaction.set(userDocRef, currentUser.toMap(), SetOptions.merge())
@@ -82,6 +81,9 @@ class DataManager : DataManagerInterface {
                     }
                 }
             }
+        } ?: run {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+
         }
     }
 
@@ -90,31 +92,31 @@ class DataManager : DataManagerInterface {
         user: FirebaseUser,
         listener: DataListener<Boolean>
     ) {
-        val currentUser: FirebaseUser? = Firebase.auth.currentUser
-        if (currentUser != null) {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
-        }
+        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
-        val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
+        firebaseUser?.let {
+            val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
+            val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+                COLLECTION_ACTIVITIES
+            ).document(activity.aid)
+            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+                COLLECTION_USER
+            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
-        val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-            COLLECTION_ACTIVITIES
-        ).document(activity.aid)
-        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-            COLLECTION_USER
-        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+            activityBatch.set(activityDocRef, activity.toMap())
+            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
 
-        activityBatch.set(activityDocRef, activity.toMap())
-        activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
-
-        activityBatch.commit().addOnCompleteListener { task ->
-            run {
-                if (task.isSuccessful) {
-                    listener.onData(true, null)
-                } else {
-                    listener.onData(false, task.exception)
+            activityBatch.commit().addOnCompleteListener { task ->
+                run {
+                    if (task.isSuccessful) {
+                        listener.onData(true, null)
+                    } else {
+                        listener.onData(false, task.exception)
+                    }
                 }
             }
+        } ?: run {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
         }
     }
 
@@ -123,31 +125,31 @@ class DataManager : DataManagerInterface {
         user: FirebaseUser,
         listener: DataListener<Boolean>
     ) {
-        val activityBatch = FirebaseFirestore.getInstance().batch()
+        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
-        val activityDocRef = FirebaseFirestore.getInstance().collection(
-            COLLECTION_ACTIVITIES
-        ).document(activity.aid)
-//        val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-//            COLLECTION_USER
-//        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+        firebaseUser?.let {
+            val activityBatch = FirebaseFirestore.getInstance().batch()
+            val activityDocRef = FirebaseFirestore.getInstance().collection(
+                COLLECTION_ACTIVITIES
+            ).document(activity.aid)
 
-        activityBatch.update(activityDocRef, activity.toMap())
-//        activityBatch.update(subActivityDocRef, activity.toUserActivityMap())
-        activityBatch.commit().addOnCompleteListener { task: Task<Void?> ->
-            if (task.isSuccessful) {
-                listener.onData(true, null)
-            } else {
-                listener.onData(false, task.exception)
+            activityBatch.update(activityDocRef, activity.toMap())
+            activityBatch.commit().addOnCompleteListener { task: Task<Void?> ->
+                if (task.isSuccessful) {
+                    listener.onData(true, null)
+                } else {
+                    listener.onData(false, task.exception)
+                }
             }
+        } ?: run {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
         }
     }
 
     override fun getActivities(listener: DataListener<MutableList<Activity?>>) {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
-        } else {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -168,6 +170,8 @@ class DataManager : DataManagerInterface {
                         listener.onData(null, task.exception)
                     }
                 }
+        } ?: run {
+            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
         }
     }
 }
