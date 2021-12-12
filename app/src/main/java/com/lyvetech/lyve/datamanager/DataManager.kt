@@ -1,5 +1,8 @@
 package com.lyvetech.lyve.datamanager
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -9,12 +12,13 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.listeners.DataListener
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
-import java.util.*
+import javax.inject.Inject
 
-class DataManager : DataManagerInterface {
+class DataManager @Inject constructor() : DataManagerInterface {
+
+    private val TAG = DataManager::class.qualifiedName
 
     companion object {
         const val AUTHENTICATION = "Authentication"
@@ -22,7 +26,7 @@ class DataManager : DataManagerInterface {
         var mInstance: DataManager = DataManager()
     }
 
-    override fun createUser(user: User, listener: DataListener<Boolean>) {
+    override suspend fun createUser(user: User) {
         val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
         firebaseUser?.let {
@@ -34,19 +38,20 @@ class DataManager : DataManagerInterface {
             userBatch.commit().addOnCompleteListener { task ->
                 run {
                     if (task.isSuccessful) {
-                        listener.onData(true, null)
+                        Log.d(TAG, "User created successfully")
                     } else {
-                        listener.onData(false, task.exception)
+                        Log.e(TAG, "User couldn't be created ${task.exception}")
                     }
                 }
             }
         } ?: run {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
-    override fun getCurrentUser(listener: DataListener<User>) {
+    override fun getCurrentUser(): LiveData<User> {
         val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        val liveDataUser = MutableLiveData<User>()
 
         firebaseUser?.let {
             val userDocRef: DocumentReference =
@@ -57,40 +62,39 @@ class DataManager : DataManagerInterface {
                 val userDoc: DocumentSnapshot = transaction.get(userDocRef)
 
                 val currentUser: User? = userDoc.toObject(User::class.java)
-                if (currentUser != null) {
-                    if (currentUser.email != it.email) {
-                        currentUser.email = it.email.toString()
+                currentUser?.let { user ->
+
+                    if (user.email != it.email) {
+                        user.email = it.email.toString()
+                    }
+                    if (user.email.isEmpty()) {
+                        user.email = it.email.toString()
                     }
 
-                    if (currentUser.email.isEmpty()) {
-                        currentUser.email = it.email.toString()
-                    }
-
-                    transaction.set(userDocRef, currentUser.toMap(), SetOptions.merge())
-                    currentUser
-                } else {
+                    transaction.set(userDocRef, user.toMap(), SetOptions.merge())
+                    liveDataUser.postValue(user)
+                } ?: run {
                     null
                 }
             }.addOnCompleteListener { task ->
                 run {
-                    if (task.isSuccessful && task.result != null) {
-                        val currentUser: User = task.result!!
-                        listener.onData(currentUser, null)
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "User data retrieved successfully")
                     } else {
-                        listener.onData(null, task.exception)
+                        Log.e(TAG, "User data couldn't be retrieved: ${task.exception}")
                     }
                 }
             }
         } ?: run {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
-
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
+
+        return liveDataUser
     }
 
-    override fun createActivity(
+    override suspend fun createActivity(
         activity: Activity,
-        user: FirebaseUser,
-        listener: DataListener<Boolean>
+        user: User
     ) {
         val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
@@ -109,21 +113,20 @@ class DataManager : DataManagerInterface {
             activityBatch.commit().addOnCompleteListener { task ->
                 run {
                     if (task.isSuccessful) {
-                        listener.onData(true, null)
+                        Log.d(TAG, "Activity created successfully")
                     } else {
-                        listener.onData(false, task.exception)
+                        Log.e(TAG, "Activity couldn't be created: ${task.exception}")
                     }
                 }
             }
         } ?: run {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
-    override fun updateActivity(
+    override suspend fun updateActivity(
         activity: Activity,
-        user: FirebaseUser,
-        listener: DataListener<Boolean>
+        user: User,
     ) {
         val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
 
@@ -134,20 +137,23 @@ class DataManager : DataManagerInterface {
             ).document(activity.aid)
 
             activityBatch.update(activityDocRef, activity.toMap())
-            activityBatch.commit().addOnCompleteListener { task: Task<Void?> ->
-                if (task.isSuccessful) {
-                    listener.onData(true, null)
-                } else {
-                    listener.onData(false, task.exception)
+            activityBatch.commit().addOnCompleteListener { task ->
+                run {
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Activity updated successfully")
+                    } else {
+                        Log.e(TAG, "Activity couldn't be updated: ${task.exception}")
+                    }
                 }
             }
         } ?: run {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
-    override fun getActivities(listener: DataListener<MutableList<Activity?>>) {
+    override fun getActivities(): LiveData<List<Activity?>?> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val liveDataActivities = MutableLiveData<List<Activity?>?>()
 
         firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()
@@ -156,22 +162,26 @@ class DataManager : DataManagerInterface {
                 .addOnCompleteListener { task: Task<QuerySnapshot?> ->
                     if (task.isSuccessful) {
                         val querySnapshot = task.result
-                        val activities: MutableList<Activity?> =
-                            LinkedList<Activity?>()
                         if (querySnapshot == null || querySnapshot.isEmpty) {
-                            listener.onData(null, null)
+                            Log.e(TAG, "Activities are null, retrying...")
                             return@addOnCompleteListener
                         }
+
+                        val activitiesList = mutableListOf<Activity>()
                         for (document in querySnapshot) {
-                            activities.add(document.toObject(Activity::class.java))
+                            activitiesList.add(document.toObject(Activity::class.java))
                         }
-                        listener.onData(activities, null)
+                        liveDataActivities.value = activitiesList
+
+                        Log.d(TAG, "Activities retrieved successfully")
                     } else {
-                        listener.onData(null, task.exception)
+                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
                     }
                 }
         } ?: run {
-            listener.onData(null, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER))
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
+
+        return liveDataActivities
     }
 }

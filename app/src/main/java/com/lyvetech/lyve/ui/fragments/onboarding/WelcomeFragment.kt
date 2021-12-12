@@ -31,6 +31,11 @@ class WelcomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentWelcomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setUpWelcomeAdapter()
 
         val welcomeViewPager = binding.vpWelcome
@@ -53,7 +58,6 @@ class WelcomeFragment : Fragment() {
         binding.btnSignUp.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
         }
-        return binding.root
     }
 
     private fun setUpWelcomeAdapter() {

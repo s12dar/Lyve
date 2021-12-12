@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,17 +17,18 @@ import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentOnboardingBinding
-import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.listeners.DataListener
-import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.ui.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingFragment : Fragment() {
 
+    private val viewModel: MainViewModel by viewModels()
     private val TAG = OnboardingFragment::class.qualifiedName
     private lateinit var binding: FragmentOnboardingBinding
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var mUser: User
+    private var mUser: User? = null
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -64,7 +66,7 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mAuth = Firebase.auth
-        mUser = LyveApplication.mInstance.currentUser!!
+        mUser = LyveApplication.mInstance.currentUser
         super.onCreate(savedInstanceState)
     }
 
@@ -74,6 +76,11 @@ class OnboardingFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentOnboardingBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.etInput.addTextChangedListener(watcher)
 
@@ -85,17 +92,18 @@ class OnboardingFragment : Fragment() {
                     getString(R.string.err_invalid_email)
                 return@setOnClickListener
             } else {
-                mUser.name = name
+                mUser?.name = name
             }
-            createAccount(mUser)
+            mUser?.let {
+                createAccount()
+            }
         }
-
-        return binding.root
     }
 
-    private fun createAccount(user: User) {
-        (context as OnboardingUtils?)!!.showProgressBar()
+    private fun createAccount() {
+//        (context as OnboardingUtils?)!!.showProgressBar()
 
+        val user = mUser!!
         mAuth.createUserWithEmailAndPassword(user.email, user.pass)
             .addOnCompleteListener(this.requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -108,19 +116,10 @@ class OnboardingFragment : Fragment() {
                     }
 
                     LyveApplication.mInstance.currentUser = user
-
-                    DataManager.mInstance.createUser(user, object : DataListener<Boolean> {
-                        override fun onData(data: Boolean?, exception: Exception?) {
-                            if (data != null && data) {
-                                LyveApplication.mInstance.currentUser = user
-                            } else {
-                                Log.e(TAG, "data has problems")
-                            }
-                        }
-                    })
+                    viewModel.createUser(user)
 
                     findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
-                    (context as OnboardingUtils?)!!.hideProgressBar()
+//                    (context as OnboardingUtils?)!!.hideProgressBar()
                 } else {
                     Log.e(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(

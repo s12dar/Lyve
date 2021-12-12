@@ -1,14 +1,13 @@
 package com.lyvetech.lyve.datamanager
 
-import com.google.firebase.auth.FirebaseUser
-import com.lyvetech.lyve.listeners.DataListener
+import androidx.lifecycle.LiveData
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 
 interface DataManagerInterface {
-    fun createUser(user: User, listener: DataListener<Boolean>)
-    fun getCurrentUser(listener: DataListener<User>)
-    fun getActivities(listener: DataListener<MutableList<Activity?>>)
-    fun createActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>)
-    fun updateActivity(activity: Activity, user: FirebaseUser, listener: DataListener<Boolean>)
+    suspend fun createUser(user: User)
+    suspend fun createActivity(activity: Activity, user: User)
+    suspend fun updateActivity(activity: Activity, user: User)
+    fun getCurrentUser(): LiveData<User>
+    fun getActivities(): LiveData<List<Activity?>?>
 }

@@ -89,71 +89,78 @@ class RegisterFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.etRegisterEmail.addTextChangedListener(watcher)
         binding.etRegisterPassword.addTextChangedListener(watcher)
         binding.etRegisterConfirmPassword.addTextChangedListener(watcher)
 
         binding.btnCreateAccount.setOnClickListener {
-
-            val email = binding.etRegisterEmail.text.toString().trim()
-            val password = binding.etRegisterPassword.text.toString().trim()
-            val confirmPassword = binding.etRegisterConfirmPassword.text.toString().trim()
-            val userName = binding.etRegisterPassword.text.toString().trim()
-
-            if (email.isEmpty()) {
-                binding.tilRegisterEmail.error =
-                    getString(R.string.err_empty_field)
-                return@setOnClickListener
-            }
-            if (password.isEmpty()) {
-                binding.tilRegisterPassword.error =
-                    getString(R.string.err_empty_field)
-                return@setOnClickListener
-            }
-            if (confirmPassword.isEmpty()) {
-                binding.tilRegisterConfirmPassword.error =
-                    getString(R.string.err_empty_field)
-                return@setOnClickListener
-            }
-            if (!isEmailValid(email)) {
-                binding.tilRegisterEmail.error =
-                    getString(R.string.err_invalid_email)
-                return@setOnClickListener
-            }
-            if (password.length < 6) {
-                binding.tilRegisterPassword.error =
-                    getString(R.string.err_invalid_pass)
-                return@setOnClickListener
-            }
-
-            if (password == confirmPassword) {
-                val user = User()
-
-                val firebaseUser = FirebaseAuth.getInstance().currentUser
-                if (firebaseUser != null) {
-                    user.uid = FirebaseAuth.getInstance().currentUser!!.uid
-                }
-
-                user.name = userName
-                user.email = email
-                user.pass = password
-
-                LyveApplication.mInstance.currentUser = user
-
-                findNavController().navigate(R.id.action_registerFragment_to_onboardingFragment)
-            } else {
-                binding.tilRegisterConfirmPassword.error =
-                    getString(R.string.err_password_match)
-            }
+            manageAccountCreation()
         }
 
         binding.tvSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
+    }
 
-        return binding.root
+    private fun manageAccountCreation() {
 
+        val email = binding.etRegisterEmail.text.toString().trim()
+        val password = binding.etRegisterPassword.text.toString().trim()
+        val confirmPassword = binding.etRegisterConfirmPassword.text.toString().trim()
+        val userName = binding.etRegisterPassword.text.toString().trim()
+
+        if (email.isEmpty()) {
+            binding.tilRegisterEmail.error =
+                getString(R.string.err_empty_field)
+            return
+        }
+        if (password.isEmpty()) {
+            binding.tilRegisterPassword.error =
+                getString(R.string.err_empty_field)
+            return
+        }
+        if (confirmPassword.isEmpty()) {
+            binding.tilRegisterConfirmPassword.error =
+                getString(R.string.err_empty_field)
+            return
+        }
+        if (!isEmailValid(email)) {
+            binding.tilRegisterEmail.error =
+                getString(R.string.err_invalid_email)
+            return
+        }
+        if (password.length < 6) {
+            binding.tilRegisterPassword.error =
+                getString(R.string.err_invalid_pass)
+            return
+        }
+
+        if (password == confirmPassword) {
+            val user = User()
+
+            val firebaseUser = FirebaseAuth.getInstance().currentUser
+            if (firebaseUser != null) {
+                user.uid = FirebaseAuth.getInstance().currentUser!!.uid
+            }
+
+            user.name = userName
+            user.email = email
+            user.pass = password
+
+            LyveApplication.mInstance.currentUser = user
+
+            findNavController().navigate(R.id.action_registerFragment_to_onboardingFragment)
+        } else {
+            binding.tilRegisterConfirmPassword.error =
+                getString(R.string.err_password_match)
+        }
     }
 
     private fun isEmailValid(email: CharSequence): Boolean {

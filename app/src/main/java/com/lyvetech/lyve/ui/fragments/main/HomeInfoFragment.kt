@@ -2,21 +2,20 @@ package com.lyvetech.lyve.ui.fragments.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
-import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.listeners.DataListener
+import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -24,9 +23,11 @@ import javax.inject.Named
 @AndroidEntryPoint
 class HomeInfoFragment : Fragment() {
 
-    private var TAG = HomeInfoFragment::class.qualifiedName
+    private val TAG = HomeInfoFragment::class.qualifiedName
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: FragmentHomeInfoBinding
-    private var eventActivity: Activity? = null
+    private var mEventActivity = Activity()
+    private var mUser: User = User()
 
     @Inject
     @Named("String")
@@ -35,30 +36,43 @@ class HomeInfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d(TAG, testString);
+        LyveApplication.mInstance.currentUser?.let {
+            mUser = it
+        }
+        LyveApplication.mInstance.activity?.let {
+            mEventActivity = it
+        }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeInfoBinding.inflate(inflater, container, false)
-        eventActivity = LyveApplication.mInstance.activity
+        return binding.root
+    }
 
-        // Glide takes care of setting fetched image uri to holder
-        if (eventActivity != null) {
-            binding.tvTitle.text = eventActivity!!.acTitle
-            binding.tvDesc.text = eventActivity!!.acDesc
-            binding.tvDateAndTime.text = eventActivity!!.acTime
-            binding.tvLocation.text = eventActivity!!.acLocation
-            binding.tvParticipants.text = eventActivity!!.acParticipants.size.toString()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            if (eventActivity!!.acImgRefs.isNotEmpty()) {
+        manageHomeInfoUI()
+        binding.btnAttend.setOnClickListener { manageEventAttending() }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun manageHomeInfoUI() {
+        mEventActivity.let {
+            binding.tvTitle.text = it.acTitle
+            binding.tvDesc.text = it.acDesc
+            binding.tvDateAndTime.text = it.acTime
+            binding.tvLocation.text = it.acLocation
+            binding.tvParticipants.text = it.acParticipants.size.toString()
+
+            if (it.acImgRefs.isNotEmpty()) {
                 Glide.with(requireContext())
                     .asBitmap()
-                    .load(eventActivity!!.acImgRefs.toUri())
+                    .load(it.acImgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(requireActivity())
@@ -66,33 +80,20 @@ class HomeInfoFragment : Fragment() {
                     .into(binding.ivAc)
             }
         }
+    }
 
-        binding.btnAttend.setOnClickListener {
-            val firebaseUser = FirebaseAuth.getInstance().currentUser
-
-            if (!eventActivity!!.acParticipants.contains(firebaseUser!!.uid)) {
-                eventActivity!!.acParticipants.add(firebaseUser.uid)
-                DataManager.mInstance.updateActivity(
-                    eventActivity!!,
-                    firebaseUser,
-                    object : DataListener<Boolean> {
-                        override fun onData(data: Boolean?, exception: java.lang.Exception?) {
-                            if (data != null && data) {
-                                LyveApplication.mInstance.activity = eventActivity
-                            } else {
-                                Log.e(TAG, "data has problems" + exception.toString())
-                            }
-                        }
-                    })
-                LyveApplication.mInstance.activity = eventActivity
+    private fun manageEventAttending() {
+        mEventActivity.let {
+            if (!it.acParticipants.contains(mUser.uid)) {
                 showAlertMessage(true)
+
+                it.acParticipants.add(mUser.uid)
+                viewModel.updateActivity(it, mUser)
+                LyveApplication.mInstance.activity = it
             } else {
                 showAlertMessage(false)
-                Log.i(TAG, "HEY SERDAR, YOU'RE ALREADY THERE")
             }
         }
-
-        return binding.root
     }
 
     private fun showAlertMessage(isOK: Boolean) {
@@ -100,17 +101,13 @@ class HomeInfoFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle(resources.getString(R.string.txt_alert_title_yay))
                 .setMessage(resources.getString(R.string.txt_alert_desc_yay))
-                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ ->
-
-                }
+                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
                 .show()
         } else {
             MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle(resources.getString(R.string.txt_alert_title_oops))
                 .setMessage(resources.getString(R.string.txt_alert_desc_oops))
-                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ ->
-
-                }
+                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
                 .show()
         }
     }
