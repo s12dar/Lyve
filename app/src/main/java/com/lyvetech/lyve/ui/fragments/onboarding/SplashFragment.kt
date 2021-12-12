@@ -1,26 +1,31 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
-import com.lyvetech.lyve.listeners.DataListener
-import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.models.User
-import java.lang.Exception
+import com.lyvetech.lyve.ui.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
 
+    private var TAG = SplashFragment::class.qualifiedName
     private lateinit var binding: FragmentSplashBinding
     private lateinit var mAuth: FirebaseAuth
+    private val viewModel: MainViewModel by viewModels()
     private var mUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,23 +46,16 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        DataManager.mInstance.getCurrentUser(object : DataListener<User> {
-            override fun onData(data: User?, exception: Exception?) {
-                if (data != null) {
-                    LyveApplication.mInstance.currentUser = data
-                }
-                DataManager.mInstance.getActivities(object : DataListener<MutableList<Activity?>> {
-                    override fun onData(data: MutableList<Activity?>?, exception: Exception?) {
-                        if (data != null) {
-                            LyveApplication.mInstance.allActivities = data
-                        } else {
-                            LyveApplication.mInstance.allActivities = mutableListOf()
-                        }
-                    }
-                })
+        viewModel.currentUser.observe(viewLifecycleOwner) {
+            Log.d(TAG, "hi SERDARCHIK")
+            LyveApplication.mInstance.currentUser = it
+
+            viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
+                LyveApplication.mInstance.allActivities = activities as MutableList<Activity?>?
             }
-        })
-        goToNextScreen()
+        }
+
+        Handler(Looper.getMainLooper()).postDelayed({ goToNextScreen() }, 5000)
     }
 
     private fun goToNextScreen() {

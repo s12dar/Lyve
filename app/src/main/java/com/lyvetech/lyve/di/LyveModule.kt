@@ -1,5 +1,6 @@
 package com.lyvetech.lyve.di
 
+import com.lyvetech.lyve.datamanager.DataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +21,8 @@ object LyveModule {
     @Provides
     @Named("String1")
     fun provideTestString1() = "This is a string i'll inject 1"
+
+    @Singleton
+    @Provides
+    fun provideDataManager() = DataManager
 }

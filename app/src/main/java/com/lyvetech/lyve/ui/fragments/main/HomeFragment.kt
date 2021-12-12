@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -38,11 +39,10 @@ import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.HomeAdapter
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
-import com.lyvetech.lyve.listeners.DataListener
-import com.lyvetech.lyve.datamanager.DataManager
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.listeners.OnPostClickListener
+import com.lyvetech.lyve.ui.viewmodels.MainViewModel
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
@@ -55,8 +55,13 @@ import java.util.*
 class HomeFragment : Fragment(), OnPostClickListener {
 
     private var TAG = HomeFragment::class.qualifiedName
+
+    private val viewModel: MainViewModel by viewModels()
+
     private lateinit var binding: FragmentHomeBinding
-    private var mUser: User? = null
+
+    private var mUser = User()
+
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var imageChosen = false
 
@@ -126,8 +131,11 @@ class HomeFragment : Fragment(), OnPostClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "onCreate")
+        Log.i(TAG, "onCreate, Serdar I am new")
 
+        LyveApplication.mInstance.currentUser?.let {
+            mUser = it
+        }
         // Bottom sheet layout components
         bottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_create_activity)
@@ -157,8 +165,6 @@ class HomeFragment : Fragment(), OnPostClickListener {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -166,202 +172,188 @@ class HomeFragment : Fragment(), OnPostClickListener {
         Log.i(TAG, "onCreateView")
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        mUser = LyveApplication.mInstance.currentUser
+        return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Watch the fields in real time
         mEtActivityName.addTextChangedListener(watcher)
         mEtActivityLocation.addTextChangedListener(watcher)
         mEtActivityDesc.addTextChangedListener(watcher)
 
-        // Declare elements for activities recyclerview
-        lateinit var linearLayoutManager: LinearLayoutManager
-        lateinit var homeAdapter: HomeAdapter
-
-        // Fetch all activities from db to show in recycler view
-        DataManager.mInstance.getActivities(object : DataListener<MutableList<Activity?>> {
-            override fun onData(data: MutableList<Activity?>?, exception: Exception?) {
-                if (data != null) {
-
-                    LyveApplication.mInstance.allActivities = data
-
-                    homeAdapter =
-                        HomeAdapter(
-                            LyveApplication.mInstance.allActivities,
-                            requireContext(),
-                            this@HomeFragment
-                        )
-                    linearLayoutManager = LinearLayoutManager(context)
-
-                    binding.rvActivity.layoutManager = linearLayoutManager
-                    binding.rvActivity.adapter = homeAdapter
-                }
-            }
-        })
-
-        //Fetch current user details from db
-        DataManager.mInstance.getCurrentUser(object : DataListener<User> {
-            override fun onData(data: User?, exception: Exception?) {
-                if (data != null) {
-                    LyveApplication.mInstance.currentUser = data
-                    mUser = LyveApplication.mInstance.currentUser
-
-                    val header = binding.navView.getHeaderView(0)
-                    val tvName = header.findViewById<TextView>(R.id.tv_name)
-                    val tvBio = header.findViewById<TextView>(R.id.tv_bio)
-                    val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
-                    val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
-
-                    tvName.text = data.name
-                    tvBio.text = "Everything will be ok"
-                    tvFollowers.text = data.nrOfFollowers.toString() + " FOLLOWERS"
-                    tvFollowing.text = data.nrOfFollowings.toString() + " FOLLOWINGS"
-                } else {
-                    Log.i(TAG, "We can't get the data")
-                }
-            }
-        })
-
-        val endDate = Calendar.getInstance()
-        val startDate = Calendar.getInstance()
-        endDate.set(2022, 12, 31)
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-        var dateDialog: MaterialDatePicker<Long>? = null
-
-        // To automatically show the last selected date, parse it to another Calendar object
-        val lastDate = Calendar.getInstance()
+        manageHomeUI()
+        manageRecyclerView()
 
         binding.fabAdd.setOnClickListener {
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheetDialog.show()
 
-            var eventDateValue: LocalDate
-
-            mEtSelectedDate.setOnClickListener {
-                if (dateDialog == null) {
-                    // Build constraints
-                    val constraints =
-                        CalendarConstraints.Builder()
-                            .setStart(startDate.timeInMillis)
-                            .setEnd(endDate.timeInMillis)
-                            .setValidator(DateValidatorPointForward.now())
-                            .build()
-
-                    // Build the dialog itself
-                    dateDialog =
-                        MaterialDatePicker.Builder.datePicker()
-                            .setTitleText(R.string.txt_activity_date)
-                            .setSelection(lastDate.timeInMillis)
-                            .setCalendarConstraints(constraints)
-                            .build()
-
-                    // The user pressed ok
-                    dateDialog!!.addOnPositiveButtonClickListener {
-                        val selection = it
-                        if (selection != null) {
-                            val date = Calendar.getInstance()
-                            // Use a standard timezone to avoid wrong date on different time zones
-                            date.timeZone = TimeZone.getTimeZone("UTC")
-                            date.timeInMillis = selection
-                            val year = date.get(Calendar.YEAR)
-                            val month = date.get(Calendar.MONTH) + 1
-                            val day = date.get(Calendar.DAY_OF_MONTH)
-                            eventDateValue = LocalDate.of(year, month, day)
-                            mEtSelectedDate.setText(eventDateValue.format(formatter))
-                            // The last selected date is saved if the dialog is reopened
-                            lastDate.set(year, month - 1, day)
-                        }
-
-                    }
-                    // Show the picker and wait to reset the variable
-                    fragmentManager?.let { it1 -> dateDialog!!.show(it1, "main_act_picker") }
-                    Handler(Looper.getMainLooper()).postDelayed({ dateDialog = null }, 750)
-                }
-            }
-
-            mIvExit.setOnClickListener {
-                bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                mEtActivityName.setText("")
-                mEtActivityDesc.setText("")
-                mEtActivityLocation.setText("")
-                mEtSelectedDate.setText("")
-                mIvActivityAvatar.setImageResource(R.drawable.ic_upload_image)
-                localImgUri = null
-            }
-
-            mIvActivityAvatar.setOnClickListener {
-                resultLauncher.launch("image/*")
-            }
-
-            mBtnCreateActivity.setOnClickListener {
-
-                if (mEtActivityName.text.toString().trim().isEmpty()) {
-                    mTilActivityName.error = getString(R.string.err_empty_field)
-                    return@setOnClickListener
-                }
-
-                if (mEtSelectedDate.text.toString().trim().isEmpty()) {
-                    mTilSelectedDate.error = getString(R.string.err_empty_field)
-                    return@setOnClickListener
-                }
-
-                if (mEtActivityLocation.text.toString().trim().isEmpty()) {
-                    mTilActivityLocation.error = getString(R.string.err_empty_field)
-                    return@setOnClickListener
-                }
-
-                if (mEtActivityDesc.text.toString().trim().isEmpty()) {
-                    mTilActivityDesc.error = getString(R.string.err_empty_field)
-                    return@setOnClickListener
-                }
-
-                if (localImgUri != null) {
-                    uploadAcImgToFirebaseStorage(localImgUri!!)
-                }
-
-                mProgressBar.visibility = View.VISIBLE
-
-                val newActivity = Activity()
-                val firebaseUser = FirebaseAuth.getInstance().currentUser
-
-                newActivity.aid =
-                    FirebaseFirestore.getInstance().collection(COLLECTION_ACTIVITIES).document().id
-                newActivity.acTitle = mEtActivityName.text.toString().trim()
-                newActivity.acDesc = mEtActivityDesc.text.toString().trim()
-                newActivity.acLocation = mEtActivityLocation.text.toString().trim()
-                newActivity.acTime = mEtSelectedDate.text.toString().trim()
-                newActivity.acCreatedByID = firebaseUser!!.uid
-                newActivity.acParticipants = mutableListOf()
-                newActivity.acType = "virtual"
-                newActivity.acCreatedAt = Timestamp(Date())
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (urlForDocument != null) {
-                        newActivity.acImgRefs = urlForDocument.toString()
-                    }
-
-                    DataManager.mInstance.createActivity(
-                        newActivity,
-                        firebaseUser,
-                        object : DataListener<Boolean> {
-                            override fun onData(data: Boolean?, exception: java.lang.Exception?) {
-                                if (data != null && data) {
-                                    LyveApplication.mInstance.activity = newActivity
-                                } else {
-                                    Log.e(TAG, "data has problems")
-                                }
-                            }
-                        })
-                    mProgressBar.visibility = View.GONE
-                    bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
-                }, 7000)
-            }
+            mEtSelectedDate.setOnClickListener { manageDateSelection() }
+            mIvExit.setOnClickListener { hideBottomSheet() }
+            mIvActivityAvatar.setOnClickListener { resultLauncher.launch("image/*") }
+            mBtnCreateActivity.setOnClickListener { manageActivityCreation() }
         }
 
-        bottomSheetDialog.behavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+        manageBottomSheetBehaviour()
+    }
+
+    private fun manageActivityCreation() {
+
+        if (mEtActivityName.text.toString().trim().isEmpty()) {
+            mTilActivityName.error = getString(R.string.err_empty_field)
+            return
+        }
+
+        if (mEtSelectedDate.text.toString().trim().isEmpty()) {
+            mTilSelectedDate.error = getString(R.string.err_empty_field)
+            return
+        }
+
+        if (mEtActivityLocation.text.toString().trim().isEmpty()) {
+            mTilActivityLocation.error = getString(R.string.err_empty_field)
+            return
+        }
+
+        if (mEtActivityDesc.text.toString().trim().isEmpty()) {
+            mTilActivityDesc.error = getString(R.string.err_empty_field)
+            return
+        }
+
+        if (localImgUri != null) {
+            uploadAcImgToFirebaseStorage(localImgUri!!)
+        }
+
+        mProgressBar.visibility = View.VISIBLE
+
+        val newActivity = Activity()
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        newActivity.aid =
+            FirebaseFirestore.getInstance().collection(COLLECTION_ACTIVITIES).document().id
+        newActivity.acTitle = mEtActivityName.text.toString().trim()
+        newActivity.acDesc = mEtActivityDesc.text.toString().trim()
+        newActivity.acLocation = mEtActivityLocation.text.toString().trim()
+        newActivity.acTime = mEtSelectedDate.text.toString().trim()
+        newActivity.acCreatedByID = firebaseUser!!.uid
+        newActivity.acParticipants = mutableListOf()
+        newActivity.acType = "virtual"
+        newActivity.acCreatedAt = Timestamp(Date())
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (urlForDocument != null) {
+                newActivity.acImgRefs = urlForDocument.toString()
+            }
+
+            viewModel.createActivity(newActivity, mUser)
+
+            mProgressBar.visibility = View.GONE
+            bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }, 7000)
+    }
+
+    // Manage date selection process
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun manageDateSelection() {
+        var dateDialog: MaterialDatePicker<Long>? = null
+        val endDate = Calendar.getInstance()
+        endDate.set(2022, 12, 31)
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+        val startDate = Calendar.getInstance()
+
+        // To automatically show the last selected date, parse it to another Calendar object
+        val lastDate = Calendar.getInstance()
+
+        var eventDateValue: LocalDate
+
+        if (dateDialog == null) {
+            // Build constraints
+            val constraints =
+                CalendarConstraints.Builder()
+                    .setStart(startDate.timeInMillis)
+                    .setEnd(endDate.timeInMillis)
+                    .setValidator(DateValidatorPointForward.now())
+                    .build()
+
+            // Build the dialog itself
+            dateDialog =
+                MaterialDatePicker.Builder.datePicker()
+                    .setTitleText(R.string.txt_activity_date)
+                    .setSelection(lastDate.timeInMillis)
+                    .setCalendarConstraints(constraints)
+                    .build()
+
+            // The user pressed ok
+            dateDialog.addOnPositiveButtonClickListener {
+                val selection = it
+                if (selection != null) {
+                    val date = Calendar.getInstance()
+                    // Use a standard timezone to avoid wrong date on different time zones
+                    date.timeZone = TimeZone.getTimeZone("UTC")
+                    date.timeInMillis = selection
+                    val year = date.get(Calendar.YEAR)
+                    val month = date.get(Calendar.MONTH) + 1
+                    val day = date.get(Calendar.DAY_OF_MONTH)
+                    eventDateValue = LocalDate.of(year, month, day)
+                    mEtSelectedDate.setText(eventDateValue.format(formatter))
+                    // The last selected date is saved if the dialog is reopened
+                    lastDate.set(year, month - 1, day)
+                }
 
             }
+            // Show the picker and wait to reset the variable
+            fragmentManager?.let { it1 -> dateDialog!!.show(it1, "main_act_picker") }
+            Handler(Looper.getMainLooper()).postDelayed({ dateDialog = null }, 750)
+        }
+    }
+
+    private fun hideBottomSheet() {
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_HIDDEN
+        mEtActivityName.setText("")
+        mEtActivityDesc.setText("")
+        mEtActivityLocation.setText("")
+        mEtSelectedDate.setText("")
+        mIvActivityAvatar.setImageResource(R.drawable.ic_upload_image)
+        localImgUri = null
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun manageHomeUI() {
+        val header = binding.navView.getHeaderView(0)
+        val tvName = header.findViewById<TextView>(R.id.tv_name)
+        val tvBio = header.findViewById<TextView>(R.id.tv_bio)
+        val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
+        val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
+
+        mUser.let {
+            tvName.text = it.name
+            tvBio.text = "Everything will be ok"
+            tvFollowers.text = "${it.nrOfFollowers} FOLLOWERS"
+            tvFollowing.text = "${it.nrOfFollowings} FOLLOWINGS"
+        }
+    }
+
+    private fun manageRecyclerView() {
+        // Declare elements for activities recyclerview
+        LyveApplication.mInstance.allActivities?.let {
+            val homeAdapter = HomeAdapter(
+                LyveApplication.mInstance.allActivities,
+                requireContext(),
+                this@HomeFragment
+            )
+            val linearLayoutManager = LinearLayoutManager(context)
+
+            binding.rvActivity.layoutManager = linearLayoutManager
+            binding.rvActivity.adapter = homeAdapter
+        }
+    }
+
+    private fun manageBottomSheetBehaviour() {
+        bottomSheetDialog.behavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 //Here listen all of action bottom sheet
@@ -376,8 +368,6 @@ class HomeFragment : Fragment(), OnPostClickListener {
                 }
             }
         })
-
-        return binding.root
     }
 
     // Set the chosen image in the circular image
