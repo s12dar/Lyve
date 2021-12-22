@@ -10,9 +10,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel() {
-
     val currentUser = dataManager.getCurrentUser()
+    val allActivities = dataManager.getActivities()
+
+    fun createActivity(activity: Activity, user: User) = viewModelScope.launch {
+        dataManager.createActivity(activity, user)
+    }
 }

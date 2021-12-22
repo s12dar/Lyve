@@ -50,13 +50,15 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnPostClickListener {
 
     private var TAG = HomeFragment::class.qualifiedName
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -131,11 +133,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "onCreate, Serdar I am new")
 
-        LyveApplication.mInstance.currentUser?.let {
-            mUser = it
-        }
         // Bottom sheet layout components
         bottomSheetDialog = context?.let { BottomSheetDialog(it) }!!
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_create_activity)
@@ -172,6 +170,12 @@ class HomeFragment : Fragment(), OnPostClickListener {
         Log.i(TAG, "onCreateView")
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        viewModel.currentUser.observe(viewLifecycleOwner) {
+            mUser = it
+            LyveApplication.mInstance.currentUser = it
+        }
+
         return binding.root
     }
 
@@ -185,7 +189,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
         mEtActivityDesc.addTextChangedListener(watcher)
 
         manageHomeUI()
-        manageRecyclerView()
+        subscribeUI()
 
         binding.fabAdd.setOnClickListener {
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -335,18 +339,20 @@ class HomeFragment : Fragment(), OnPostClickListener {
         }
     }
 
-    private fun manageRecyclerView() {
+    private fun subscribeUI() {
         // Declare elements for activities recyclerview
-        LyveApplication.mInstance.allActivities?.let {
-            val homeAdapter = HomeAdapter(
-                LyveApplication.mInstance.allActivities,
-                requireContext(),
-                this@HomeFragment
-            )
-            val linearLayoutManager = LinearLayoutManager(context)
+        viewModel.allActivities.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                val homeAdapter = HomeAdapter(
+                    result,
+                    requireContext(),
+                    this@HomeFragment
+                )
+                val linearLayoutManager = LinearLayoutManager(context)
 
-            binding.rvActivity.layoutManager = linearLayoutManager
-            binding.rvActivity.adapter = homeAdapter
+                binding.rvActivity.layoutManager = linearLayoutManager
+                binding.rvActivity.adapter = homeAdapter
+            }
         }
     }
 
@@ -418,8 +424,8 @@ class HomeFragment : Fragment(), OnPostClickListener {
     }
 
     override fun onPostClicked(activity: Activity) {
-        findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
         LyveApplication.mInstance.activity = activity
+        findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
     }
 
     override fun onPostLongClicked(activity: Activity) {

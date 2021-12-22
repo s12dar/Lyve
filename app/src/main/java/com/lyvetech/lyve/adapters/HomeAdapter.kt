@@ -13,7 +13,7 @@ import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.listeners.OnPostClickListener
 
 class HomeAdapter(
-    private val activityList: MutableList<Activity?>?, private val context: Context,
+    private val activityList: List<Activity?>?, private val context: Context,
     private val onPostClickListener: OnPostClickListener
 ) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {

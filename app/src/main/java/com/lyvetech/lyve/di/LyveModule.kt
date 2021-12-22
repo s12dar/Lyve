@@ -1,9 +1,15 @@
 package com.lyvetech.lyve.di
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+import android.os.Bundle
 import com.lyvetech.lyve.datamanager.DataManager
+import com.lyvetech.lyve.utils.Constants.Companion.SHARED_PREFERENCES_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
@@ -14,15 +20,12 @@ object LyveModule {
 
     @Singleton
     @Provides
-    @Named("String")
-    fun provideTestString() = "This is a string i'll inject"
+    fun provideSharedPreferences(
+        @ApplicationContext app: Context
+    ): SharedPreferences = app.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
 
     @Singleton
     @Provides
-    @Named("String1")
-    fun provideTestString1() = "This is a string i'll inject 1"
-
-    @Singleton
-    @Provides
-    fun provideDataManager() = DataManager
+    fun provideBundle(
+    ): Bundle = Bundle()
 }

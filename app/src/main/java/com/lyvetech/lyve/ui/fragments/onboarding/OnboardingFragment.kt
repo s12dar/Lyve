@@ -1,5 +1,6 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,20 +16,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentOnboardingBinding
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.MainViewModel
+import com.lyvetech.lyve.ui.viewmodels.OnboardingViewModel
+import com.lyvetech.lyve.utils.Constants.Companion.KEY_EMAIL
+import com.lyvetech.lyve.utils.Constants.Companion.KEY_PASSWORD
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnboardingFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: OnboardingViewModel by viewModels()
     private val TAG = OnboardingFragment::class.qualifiedName
     private lateinit var binding: FragmentOnboardingBinding
     private lateinit var mAuth: FirebaseAuth
-    private var mUser: User? = null
+    private var mUser = User()
+
+    @Inject
+    lateinit var sharedPref: SharedPreferences
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -66,7 +72,7 @@ class OnboardingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mAuth = Firebase.auth
-        mUser = LyveApplication.mInstance.currentUser
+        assignUserDetails()
         super.onCreate(savedInstanceState)
     }
 
@@ -92,18 +98,16 @@ class OnboardingFragment : Fragment() {
                     getString(R.string.err_invalid_email)
                 return@setOnClickListener
             } else {
-                mUser?.name = name
+                mUser.name = name
             }
-            mUser?.let {
-                createAccount()
-            }
+            createAccount()
         }
     }
 
     private fun createAccount() {
 //        (context as OnboardingUtils?)!!.showProgressBar()
 
-        val user = mUser!!
+        val user = mUser
         mAuth.createUserWithEmailAndPassword(user.email, user.pass)
             .addOnCompleteListener(this.requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -114,8 +118,6 @@ class OnboardingFragment : Fragment() {
                     if (firebaseUser != null) {
                         user.uid = FirebaseAuth.getInstance().currentUser!!.uid
                     }
-
-                    LyveApplication.mInstance.currentUser = user
                     viewModel.createUser(user)
 
                     findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
@@ -128,5 +130,10 @@ class OnboardingFragment : Fragment() {
                     ).show()
                 }
             }
+    }
+
+    private fun assignUserDetails() {
+        mUser.email = sharedPref.getString(KEY_EMAIL, "").toString()
+        mUser.pass = sharedPref.getString(KEY_PASSWORD, "").toString()
     }
 }
