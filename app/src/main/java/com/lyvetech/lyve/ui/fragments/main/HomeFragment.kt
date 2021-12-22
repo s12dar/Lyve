@@ -199,6 +199,11 @@ class HomeFragment : Fragment(), OnPostClickListener {
             mBtnCreateActivity.setOnClickListener { manageActivityCreation() }
         }
 
+        binding.drawerLayout.setOnRefreshListener {
+            subscribeUI()
+            binding.drawerLayout.isRefreshing = false
+        }
+
         manageBottomSheetBehaviour()
     }
 
