@@ -15,7 +15,7 @@ import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.MainViewModel
+import com.lyvetech.lyve.ui.viewmodels.HomeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -24,14 +24,10 @@ import javax.inject.Named
 class HomeInfoFragment : Fragment() {
 
     private val TAG = HomeInfoFragment::class.qualifiedName
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: HomeInfoViewModel by viewModels()
     private lateinit var binding: FragmentHomeInfoBinding
-    private var mEventActivity = Activity()
+    private var mActivity = Activity()
     private var mUser: User = User()
-
-    @Inject
-    @Named("String")
-    lateinit var testString: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +36,7 @@ class HomeInfoFragment : Fragment() {
             mUser = it
         }
         LyveApplication.mInstance.activity?.let {
-            mEventActivity = it
+            mActivity = it
         }
     }
 
@@ -56,13 +52,13 @@ class HomeInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        manageHomeInfoUI()
+        subscribeUI()
         binding.btnAttend.setOnClickListener { manageEventAttending() }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private fun manageHomeInfoUI() {
-        mEventActivity.let {
+    private fun subscribeUI() {
+        mActivity.let {
             binding.tvTitle.text = it.acTitle
             binding.tvDesc.text = it.acDesc
             binding.tvDateAndTime.text = it.acTime
@@ -82,17 +78,15 @@ class HomeInfoFragment : Fragment() {
         }
     }
 
-    private fun manageEventAttending() {
-        mEventActivity.let {
-            if (!it.acParticipants.contains(mUser.uid)) {
-                showAlertMessage(true)
+    private fun isUserAlreadyAttending() = mActivity.acParticipants.contains(mUser.uid)
 
-                it.acParticipants.add(mUser.uid)
-                viewModel.updateActivity(it, mUser)
-                LyveApplication.mInstance.activity = it
-            } else {
-                showAlertMessage(false)
-            }
+    private fun manageEventAttending() {
+        if (!isUserAlreadyAttending()) {
+            mActivity.acParticipants.add(mUser.uid)
+            viewModel.updateActivity(mActivity, mUser)
+            showAlertMessage(true)
+        } else {
+            showAlertMessage(false)
         }
     }
 

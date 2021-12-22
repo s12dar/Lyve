@@ -1,5 +1,6 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,15 +14,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentRegisterBinding
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.utils.Constants.Companion.KEY_EMAIL
+import com.lyvetech.lyve.utils.Constants.Companion.KEY_PASSWORD
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var TAG = RegisterFragment::class.qualifiedName
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var mAuth: FirebaseAuth
+
+    @Inject
+    lateinit var sharedPref: SharedPreferences
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -154,7 +162,10 @@ class RegisterFragment : Fragment() {
             user.email = email
             user.pass = password
 
-            LyveApplication.mInstance.currentUser = user
+            sharedPref.edit()
+                .putString(KEY_PASSWORD, user.pass)
+                .putString(KEY_EMAIL, user.email)
+                .apply()
 
             findNavController().navigate(R.id.action_registerFragment_to_onboardingFragment)
         } else {

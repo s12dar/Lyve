@@ -1,23 +1,25 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
 import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.ui.MainActivity
 import com.lyvetech.lyve.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
@@ -25,7 +27,6 @@ class SplashFragment : Fragment() {
     private var TAG = SplashFragment::class.qualifiedName
     private lateinit var binding: FragmentSplashBinding
     private lateinit var mAuth: FirebaseAuth
-    private val viewModel: MainViewModel by viewModels()
     private var mUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,14 +47,14 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.currentUser.observe(viewLifecycleOwner) {
-            Log.d(TAG, "hi SERDARCHIK")
-            LyveApplication.mInstance.currentUser = it
-
-            viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
-                LyveApplication.mInstance.allActivities = activities as MutableList<Activity?>?
-            }
-        }
+//        viewModel.currentUser.observe(viewLifecycleOwner) {
+//            Log.d(TAG, "hi SERDARCHIK")
+//            LyveApplication.mInstance.currentUser = it
+//
+//            viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
+//                LyveApplication.mInstance.allActivities = activities as MutableList<Activity?>?
+//            }
+//        }
 
         Handler(Looper.getMainLooper()).postDelayed({ goToNextScreen() }, 5000)
     }
