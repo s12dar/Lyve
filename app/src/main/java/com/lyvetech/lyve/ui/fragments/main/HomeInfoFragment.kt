@@ -17,8 +17,6 @@ import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.HomeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import javax.inject.Named
 
 @AndroidEntryPoint
 class HomeInfoFragment : Fragment() {

@@ -42,7 +42,7 @@ import com.lyvetech.lyve.databinding.FragmentHomeBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.listeners.OnPostClickListener
-import com.lyvetech.lyve.ui.viewmodels.MainViewModel
+import com.lyvetech.lyve.ui.viewmodels.HomeViewModel
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
@@ -50,8 +50,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
-import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnPostClickListener {

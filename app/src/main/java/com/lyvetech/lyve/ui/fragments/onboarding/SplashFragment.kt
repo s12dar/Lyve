@@ -1,23 +1,17 @@
 package com.lyvetech.lyve.ui.fragments.onboarding
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
-import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.ui.MainActivity
-import com.lyvetech.lyve.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
