@@ -169,7 +169,11 @@ class DataManager @Inject constructor() : DataManagerInterface {
 
                         val activitiesList = mutableListOf<Activity>()
                         for (document in querySnapshot) {
-                            activitiesList.add(document.toObject(Activity::class.java))
+                            if ((document.toObject(Activity::class.java).acCreatedByID !=
+                                        firebaseUser.uid)
+                            ) {
+                                activitiesList.add(document.toObject(Activity::class.java))
+                            }
                         }
                         liveDataActivities.value = activitiesList
 
