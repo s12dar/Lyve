@@ -10,4 +10,7 @@ interface DataManagerInterface {
     suspend fun updateActivity(activity: Activity, user: User)
     fun getCurrentUser(): LiveData<User>
     fun getActivities(): LiveData<List<Activity?>?>
+    fun getUsers(): LiveData<List<User?>?>
+    fun getSearchedUsers(searchQuery: String): LiveData<List<User?>?>
+    fun getSearchedActivities(searchQuery: String): LiveData<List<Activity?>?>
 }

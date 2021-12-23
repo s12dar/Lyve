@@ -63,4 +63,10 @@
     <string name="txt_title_welcome3">Here we go..</string>
     <string name="txt_desc_welcome3">Let\'s make it happen</string>
 
+    <!-- MENU -->
+    <string name="menu_app_bar_search">Search</string>
+
+    <!-- SEARCH FRAGMENT -->
+    <string name="txt_lyve_members">Lyve members</string>
+    <string name="txt_lyve_events">Lyve events</string>
 </resources>
