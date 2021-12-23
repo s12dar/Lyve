@@ -55,6 +55,7 @@ class SearchFragment : Fragment(), OnPostClickListener {
     }
 
     private fun manageSearch(viewType: Int) {
+        handlingSearchProcedure(viewType, binding.svSearch.query.toString())
         binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -62,44 +63,48 @@ class SearchFragment : Fragment(), OnPostClickListener {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    when (viewType) {
-                        VIEW_TYPE_ONE -> {
-                            viewModel.searchActivities(newText).observe(viewLifecycleOwner) {
-                                val searchAdapter = SearchAdapter(
-                                    mutableListOf(User()),
-                                    it,
-                                    1,
-                                    requireContext(),
-                                    this@SearchFragment
-                                )
-                                val linearLayoutManager = LinearLayoutManager(context)
-
-                                binding.rvSearch.layoutManager = linearLayoutManager
-                                binding.rvSearch.adapter = searchAdapter
-                            }
-                        }
-
-                        VIEW_TYPE_TWO -> {
-                            viewModel.searchUsers(newText).observe(viewLifecycleOwner) {
-                                val searchAdapter = SearchAdapter(
-                                    it,
-                                    mutableListOf(Activity()),
-                                    2,
-                                    requireContext(),
-                                    this@SearchFragment
-                                )
-                                val linearLayoutManager = LinearLayoutManager(context)
-
-                                binding.rvSearch.layoutManager = linearLayoutManager
-                                binding.rvSearch.adapter = searchAdapter
-                            }
-                        }
-                    }
+                    handlingSearchProcedure(viewType, newText)
                 }
                 return true
             }
 
         })
+    }
+
+    private fun handlingSearchProcedure(viewType: Int, searchQuery: String) {
+        when (viewType) {
+            VIEW_TYPE_ONE -> {
+                viewModel.searchActivities(searchQuery).observe(viewLifecycleOwner) {
+                    val searchAdapter = SearchAdapter(
+                        mutableListOf(User()),
+                        it,
+                        VIEW_TYPE_TWO,
+                        requireContext(),
+                        this@SearchFragment
+                    )
+                    val linearLayoutManager = LinearLayoutManager(context)
+
+                    binding.rvSearch.layoutManager = linearLayoutManager
+                    binding.rvSearch.adapter = searchAdapter
+                }
+            }
+
+            VIEW_TYPE_TWO -> {
+                viewModel.searchUsers(searchQuery).observe(viewLifecycleOwner) {
+                    val searchAdapter = SearchAdapter(
+                        it,
+                        mutableListOf(Activity()),
+                        VIEW_TYPE_TWO,
+                        requireContext(),
+                        this@SearchFragment
+                    )
+                    val linearLayoutManager = LinearLayoutManager(context)
+
+                    binding.rvSearch.layoutManager = linearLayoutManager
+                    binding.rvSearch.adapter = searchAdapter
+                }
+            }
+        }
     }
 
     override fun onPostClicked(item: Any) {

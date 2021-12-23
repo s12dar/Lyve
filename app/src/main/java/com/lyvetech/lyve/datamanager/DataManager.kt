@@ -240,16 +240,10 @@ class DataManager @Inject constructor() : DataManagerInterface {
                         }
                         val activitiesList = mutableListOf<Activity>()
                         for (document in querySnapshot) {
-                            if (searchQuery.isNotEmpty() && (document.toObject(Activity::class.java)
-                                    .acTitle).contains(searchQuery)
+                            if (searchQuery.isNotEmpty() && document.toObject(Activity::class.java)
+                                    .acTitle.lowercase().contains(searchQuery.lowercase())
                             ) {
-                                Log.d(
-                                    TAG,
-                                    "Hi Serdar ${document.toObject(Activity::class.java).acTitle}"
-                                )
                                 activitiesList.add(document.toObject(Activity::class.java))
-                            } else {
-                                Log.d(TAG, "Hi Serdar, not this")
                             }
                         }
                         liveDataActivities.value = activitiesList
@@ -285,7 +279,7 @@ class DataManager @Inject constructor() : DataManagerInterface {
                         val usersList = mutableListOf<User>()
                         for (document in querySnapshot) {
                             if (searchQuery.isNotEmpty() && (document.toObject(User::class.java))
-                                    .name.contains(searchQuery)
+                                    .name.lowercase().contains(searchQuery.lowercase())
                             ) {
                                 usersList.add(document.toObject(User::class.java))
                             }
