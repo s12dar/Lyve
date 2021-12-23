@@ -151,6 +151,40 @@ class DataManager @Inject constructor() : DataManagerInterface {
         }
     }
 
+    override fun getUsers(): LiveData<List<User?>?> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val liveDataUsers = MutableLiveData<List<User?>?>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_USER)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Users are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+
+                        val usersList = mutableListOf<User>()
+                        for (document in querySnapshot) {
+                            usersList.add(document.toObject(User::class.java))
+                        }
+                        liveDataUsers.value = usersList
+
+                        Log.d(TAG, "Users retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return liveDataUsers
+    }
+
     override fun getActivities(): LiveData<List<Activity?>?> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataActivities = MutableLiveData<List<Activity?>?>()
@@ -187,5 +221,86 @@ class DataManager @Inject constructor() : DataManagerInterface {
         }
 
         return liveDataActivities
+    }
+
+    override fun getSearchedActivities(searchQuery: String): LiveData<List<Activity?>?> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val liveDataActivities = MutableLiveData<List<Activity?>?>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_ACTIVITIES)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Activities are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+                        val activitiesList = mutableListOf<Activity>()
+                        for (document in querySnapshot) {
+                            if (searchQuery.isNotEmpty() && (document.toObject(Activity::class.java)
+                                    .acTitle).contains(searchQuery)
+                            ) {
+                                Log.d(
+                                    TAG,
+                                    "Hi Serdar ${document.toObject(Activity::class.java).acTitle}"
+                                )
+                                activitiesList.add(document.toObject(Activity::class.java))
+                            } else {
+                                Log.d(TAG, "Hi Serdar, not this")
+                            }
+                        }
+                        liveDataActivities.value = activitiesList
+
+                        Log.d(TAG, "Activities retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return liveDataActivities
+    }
+
+    override fun getSearchedUsers(searchQuery: String): LiveData<List<User?>?> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val liveDataUsers = MutableLiveData<List<User?>?>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_USER)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Users are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+
+                        val usersList = mutableListOf<User>()
+                        for (document in querySnapshot) {
+                            if (searchQuery.isNotEmpty() && (document.toObject(User::class.java))
+                                    .name.contains(searchQuery)
+                            ) {
+                                usersList.add(document.toObject(User::class.java))
+                            }
+                        }
+                        liveDataUsers.value = usersList
+
+                        Log.d(TAG, "Users retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return liveDataUsers
     }
 }

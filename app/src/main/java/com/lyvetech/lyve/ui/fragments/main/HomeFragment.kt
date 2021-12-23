@@ -14,6 +14,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -204,6 +205,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
             binding.drawerLayout.isRefreshing = false
         }
 
+        manageToolBar()
         manageBottomSheetBehaviour()
     }
 
@@ -335,7 +337,7 @@ class HomeFragment : Fragment(), OnPostClickListener {
         val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
 
         mUser.let {
-            tvName.text = it.name
+            tvName.text = mUser.name
             tvBio.text = "Everything will be ok"
             tvFollowers.text = "${it.nrOfFollowers} FOLLOWERS"
             tvFollowing.text = "${it.nrOfFollowings} FOLLOWINGS"
@@ -410,6 +412,18 @@ class HomeFragment : Fragment(), OnPostClickListener {
         imageView.setImageBitmap(resizedBitmap)
     }
 
+    private fun manageToolBar() {
+        binding.topAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_search -> {
+                    findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun getBitmapSquareSize(bitmap: Bitmap): Int {
         return bitmap.width.coerceAtMost(bitmap.height)
     }
@@ -426,7 +440,8 @@ class HomeFragment : Fragment(), OnPostClickListener {
         }
     }
 
-    override fun onPostClicked(activity: Activity) {
+    override fun onPostClicked(activity: Any) {
+        activity as Activity
         LyveApplication.mInstance.activity = activity
         findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
     }
