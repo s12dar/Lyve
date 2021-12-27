@@ -1,27 +1,31 @@
 package com.lyvetech.lyve.ui.fragments.search
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lyvetech.lyve.adapters.SearchAdapter
 import com.lyvetech.lyve.databinding.FragmentSearchBinding
-import com.lyvetech.lyve.listeners.OnPostClickListener
+import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), OnPostClickListener {
+class SearchFragment : Fragment(), OnClickListener {
 
+    private val TAG = SearchFragment::class.qualifiedName
     private lateinit var binding: FragmentSearchBinding
 
     private val viewModel: SearchViewModel by viewModels()
+
+    private var mUser = User()
 
     companion object {
         const val VIEW_TYPE_ONE = 1
@@ -38,6 +42,10 @@ class SearchFragment : Fragment(), OnPostClickListener {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+
+        viewModel.currentUser.observe(viewLifecycleOwner) {
+            mUser = it
+        }
         return binding.root
     }
 
@@ -76,6 +84,7 @@ class SearchFragment : Fragment(), OnPostClickListener {
             VIEW_TYPE_ONE -> {
                 viewModel.searchActivities(searchQuery).observe(viewLifecycleOwner) {
                     val searchAdapter = SearchAdapter(
+                        mUser,
                         mutableListOf(User()),
                         it,
                         VIEW_TYPE_ONE,
@@ -92,6 +101,7 @@ class SearchFragment : Fragment(), OnPostClickListener {
             VIEW_TYPE_TWO -> {
                 viewModel.searchUsers(searchQuery).observe(viewLifecycleOwner) {
                     val searchAdapter = SearchAdapter(
+                        mUser,
                         it,
                         mutableListOf(Activity()),
                         VIEW_TYPE_TWO,
@@ -107,11 +117,22 @@ class SearchFragment : Fragment(), OnPostClickListener {
         }
     }
 
-    override fun onPostClicked(item: Any) {
-        TODO("Not yet implemented")
-    }
+    override fun onPostClicked(activity: Activity) {}
 
-    override fun onPostLongClicked(activity: Activity) {
-        TODO("Not yet implemented")
+    override fun onPostLongClicked(activity: Activity) {}
+
+    override fun onUserClicked(user: User) {}
+
+    override fun onUserFollowBtnClicked(user: User, isChecked: Boolean) {
+        if (isChecked) {
+            mUser.followings.add(user.uid)
+            user.followers.add(mUser.uid)
+        } else {
+            mUser.followings.remove(user.uid)
+            user.followers.remove(mUser.uid)
+        }
+
+        viewModel.updateUser(mUser)
+        viewModel.updateUser(user)
     }
 }

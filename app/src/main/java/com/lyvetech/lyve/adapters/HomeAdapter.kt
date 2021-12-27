@@ -10,11 +10,11 @@ import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.listeners.OnPostClickListener
+import com.lyvetech.lyve.listeners.OnClickListener
 
 class HomeAdapter(
     private val activityList: List<Activity>, private val context: Context,
-    private val onPostClickListener: OnPostClickListener
+    private val onPostClickListener: OnClickListener
 ) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
@@ -41,7 +41,7 @@ class HomeAdapter(
         private val activityParticipants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(activity: Activity, onPostClickListener: OnPostClickListener) {
+        fun bind(activity: Activity, onPostClickListener: OnClickListener) {
             activityTitle.text = activity.acTitle
             activityLocation.text = activity.acLocation
             activityDate.text = activity.acTime

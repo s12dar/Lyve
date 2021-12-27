@@ -69,4 +69,6 @@
     <!-- SEARCH FRAGMENT -->
     <string name="txt_lyve_members">Lyve members</string>
     <string name="txt_lyve_events">Lyve events</string>
+    <string name="btn_following">Following</string>
+    <string name="btn_follow">Follow</string>
 </resources>

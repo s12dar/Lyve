@@ -124,6 +124,30 @@ class DataManager @Inject constructor() : DataManagerInterface {
         }
     }
 
+    override suspend fun updateUser(user: User) {
+        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
+
+        firebaseUser?.let {
+            val userBatch = FirebaseFirestore.getInstance().batch()
+            val userDocRef = FirebaseFirestore.getInstance().collection(
+                COLLECTION_USER
+            ).document(user.uid)
+
+            userBatch.update(userDocRef, user.toMap())
+            userBatch.commit().addOnCompleteListener { task ->
+                run {
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "User updated successfully")
+                    } else {
+                        Log.e(TAG, "User couldn't be updated: ${task.exception}")
+                    }
+                }
+            }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+    }
+
     override suspend fun updateActivity(
         activity: Activity,
         user: User,

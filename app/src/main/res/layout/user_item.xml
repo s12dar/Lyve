@@ -22,17 +22,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textSize="@dimen/fourteen"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ppic"
         app:layout_constraintStart_toEndOf="@+id/iv_ppic"
         app:layout_constraintTop_toTopOf="@+id/iv_ppic"
         tools:text="Serdar Parahatgeldiyev" />
 
-    <TextView
-        android:id="@+id/tv_bio"
-        android:layout_width="0dp"
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_btn_follow"
+        style="@style/Widget.MyApp.Chip.Choice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_ppic"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"
-        tools:text="\@\home" />
-
+        android:layout_marginEnd="16dp"
+        android:text="@string/btn_follow"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ppic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_ppic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

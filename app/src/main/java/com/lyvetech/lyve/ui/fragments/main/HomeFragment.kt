@@ -41,7 +41,7 @@ import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.listeners.OnPostClickListener
+import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.ui.viewmodels.HomeViewModel
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ import java.time.format.FormatStyle
 import java.util.*
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), OnPostClickListener {
+class HomeFragment : Fragment(), OnClickListener {
 
     private var TAG = HomeFragment::class.qualifiedName
 
@@ -338,8 +338,8 @@ class HomeFragment : Fragment(), OnPostClickListener {
         mUser.let {
             tvName.text = mUser.name
             tvBio.text = "Everything will be ok"
-            tvFollowers.text = "${it.nrOfFollowers} FOLLOWERS"
-            tvFollowing.text = "${it.nrOfFollowings} FOLLOWINGS"
+            tvFollowers.text = "${it.followers.size} FOLLOWERS"
+            tvFollowing.text = "${it.followings.size} FOLLOWINGS"
         }
     }
 
@@ -439,13 +439,14 @@ class HomeFragment : Fragment(), OnPostClickListener {
         }
     }
 
-    override fun onPostClicked(activity: Any) {
-        activity as Activity
+    override fun onPostClicked(activity: Activity) {
         LyveApplication.mInstance.activity = activity
         findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
     }
 
-    override fun onPostLongClicked(activity: Activity) {
-        TODO("Not yet implemented")
-    }
+    override fun onPostLongClicked(activity: Activity) {}
+
+    override fun onUserClicked(user: User) {}
+
+    override fun onUserFollowBtnClicked(user: User, isChecked: Boolean) {}
 }
