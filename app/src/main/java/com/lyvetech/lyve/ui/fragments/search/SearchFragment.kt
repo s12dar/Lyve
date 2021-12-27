@@ -78,7 +78,7 @@ class SearchFragment : Fragment(), OnPostClickListener {
                     val searchAdapter = SearchAdapter(
                         mutableListOf(User()),
                         it,
-                        VIEW_TYPE_TWO,
+                        VIEW_TYPE_ONE,
                         requireContext(),
                         this@SearchFragment
                     )
