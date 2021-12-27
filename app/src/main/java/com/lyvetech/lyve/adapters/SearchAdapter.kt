@@ -11,13 +11,13 @@ import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.databinding.UserItemBinding
 import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.listeners.OnPostClickListener
+import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.User
 
 class SearchAdapter(
-    private val usersList: List<User?>?, private val activityList: List<Activity?>?,
-    private val globalViewType: Int, private val context: Context,
-    private val onPostClickListener: OnPostClickListener
+    private val currentUser: User, private val usersList: List<User>,
+    private val activityList: List<Activity>, private val globalViewType: Int,
+    private val context: Context, private val onClickListener: OnClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -40,34 +40,24 @@ class SearchAdapter(
 
     override fun getItemCount(): Int {
         if (globalViewType == VIEW_TYPE_ONE) {
-            activityList?.let {
+            activityList.let {
                 return it.size
             }
         }
 
-        usersList?.let {
+        usersList.let {
             return it.size
         }
-
-        return 0
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (globalViewType == VIEW_TYPE_ONE) {
-            activityList?.let {
-                val activity = it[position]
-                activity?.let {
-                    (holder as SearchEventsViewHolder).bind(activity, onPostClickListener)
-                }
-            }
+            val activity = activityList[position]
+            (holder as SearchEventsViewHolder).bind(activity, onClickListener)
         } else {
-            usersList?.let {
-                val user = it[position]
-                user?.let {
-                    (holder as SearchMembersViewHolder).bind(user, onPostClickListener)
-                }
-            }
+            val user = usersList[position]
+            (holder as SearchMembersViewHolder).bind(user, onClickListener)
         }
     }
 
@@ -80,7 +70,7 @@ class SearchAdapter(
         private val activityParticipants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(activity: Activity, onPostClickListener: OnPostClickListener) {
+        fun bind(activity: Activity, onPostClickListener: OnClickListener) {
             activityTitle.text = activity.acTitle
             activityLocation.text = activity.acLocation
             activityDate.text = activity.acTime
@@ -108,15 +98,28 @@ class SearchAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         private val userName = binding.tvName
-        private val userBio = binding.tvBio
         private val userPic = binding.ivPpic
 
-        @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(user: User, onPostClickListener: OnPostClickListener) {
+        @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
+        fun bind(user: User, onUserClickListener: OnClickListener) {
+            if (currentUser.followings.contains(user.uid)) {
+                binding.chipBtnFollow.isChecked = true
+                binding.chipBtnFollow.text = context.resources.getString(R.string.btn_following)
+            }
+
             userName.text = user.name
-            userBio.text = user.bio
             binding.root.setOnClickListener {
-                onPostClickListener.onPostClicked(user)
+                onUserClickListener.onUserClicked(user)
+            }
+
+            binding.chipBtnFollow.setOnClickListener {
+                val isChecked = binding.chipBtnFollow.isChecked
+                if (isChecked) {
+                    binding.chipBtnFollow.text = context.resources.getString(R.string.btn_following)
+                } else {
+                    binding.chipBtnFollow.text = context.resources.getString(R.string.btn_follow)
+                }
+                onUserClickListener.onUserFollowBtnClicked(user, isChecked)
             }
         }
     }

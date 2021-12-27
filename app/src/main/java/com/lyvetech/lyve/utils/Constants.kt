@@ -15,8 +15,8 @@ class Constants {
         const val CREATED_AT = "createdAt"
         const val BIO = "bio"
         const val IS_VERIFIED = "isVerified"
-        const val NR_OF_FOLLOWERS = "nrOfFollowers"
-        const val NR_OF_FOLLOWINGS = "nrOfFollowings"
+        const val FOLLOWERS = "followers"
+        const val FOLLOWINGS = "followings"
 
         /**
          * ACTIVITY DATA
