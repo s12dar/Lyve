@@ -15,7 +15,7 @@ import com.lyvetech.lyve.listeners.OnPostClickListener
 import com.lyvetech.lyve.models.User
 
 class SearchAdapter(
-    private val usersList: List<User?>?, private val activityList: List<Activity?>?,
+    private val usersList: List<User>, private val activityList: List<Activity>,
     private val globalViewType: Int, private val context: Context,
     private val onPostClickListener: OnPostClickListener
 ) :
@@ -40,34 +40,24 @@ class SearchAdapter(
 
     override fun getItemCount(): Int {
         if (globalViewType == VIEW_TYPE_ONE) {
-            activityList?.let {
+            activityList.let {
                 return it.size
             }
         }
 
-        usersList?.let {
+        usersList.let {
             return it.size
         }
-
-        return 0
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (globalViewType == VIEW_TYPE_ONE) {
-            activityList?.let {
-                val activity = it[position]
-                activity?.let {
-                    (holder as SearchEventsViewHolder).bind(activity, onPostClickListener)
-                }
-            }
+            val activity = activityList[position]
+            (holder as SearchEventsViewHolder).bind(activity, onPostClickListener)
         } else {
-            usersList?.let {
-                val user = it[position]
-                user?.let {
-                    (holder as SearchMembersViewHolder).bind(user, onPostClickListener)
-                }
-            }
+            val user = usersList[position]
+            (holder as SearchMembersViewHolder).bind(user, onPostClickListener)
         }
     }
 

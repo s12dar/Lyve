@@ -151,9 +151,9 @@ class DataManager @Inject constructor() : DataManagerInterface {
         }
     }
 
-    override fun getUsers(): LiveData<List<User?>?> {
+    override fun getUsers(): LiveData<List<User>> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val liveDataUsers = MutableLiveData<List<User?>?>()
+        val liveDataUsers = MutableLiveData<List<User>>()
 
         firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()
@@ -185,9 +185,9 @@ class DataManager @Inject constructor() : DataManagerInterface {
         return liveDataUsers
     }
 
-    override fun getActivities(): LiveData<List<Activity?>?> {
+    override fun getActivities(): LiveData<List<Activity>> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val liveDataActivities = MutableLiveData<List<Activity?>?>()
+        val liveDataActivities = MutableLiveData<List<Activity>>()
 
         firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()
@@ -223,9 +223,9 @@ class DataManager @Inject constructor() : DataManagerInterface {
         return liveDataActivities
     }
 
-    override fun getSearchedActivities(searchQuery: String): LiveData<List<Activity?>?> {
+    override fun getSearchedActivities(searchQuery: String): LiveData<List<Activity>> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val liveDataActivities = MutableLiveData<List<Activity?>?>()
+        val liveDataActivities = MutableLiveData<List<Activity>>()
 
         firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()
@@ -260,9 +260,9 @@ class DataManager @Inject constructor() : DataManagerInterface {
         return liveDataActivities
     }
 
-    override fun getSearchedUsers(searchQuery: String): LiveData<List<User?>?> {
+    override fun getSearchedUsers(searchQuery: String): LiveData<List<User>> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val liveDataUsers = MutableLiveData<List<User?>?>()
+        val liveDataUsers = MutableLiveData<List<User>>()
 
         firebaseUser?.let {
             val db = FirebaseFirestore.getInstance()

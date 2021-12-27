@@ -13,7 +13,7 @@ import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.listeners.OnPostClickListener
 
 class HomeAdapter(
-    private val activityList: List<Activity?>?, private val context: Context,
+    private val activityList: List<Activity>, private val context: Context,
     private val onPostClickListener: OnPostClickListener
 ) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
@@ -24,14 +24,12 @@ class HomeAdapter(
         return HomeViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = activityList!!.size
+    override fun getItemCount(): Int = activityList.size
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val activity = activityList!![position]
-        if (activity != null) {
-            holder.bind(activity, onPostClickListener)
-        }
+        val activity = activityList[position]
+        holder.bind(activity, onPostClickListener)
     }
 
     inner class HomeViewHolder(private val binding: ActivityItemBinding) :

@@ -12,11 +12,11 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel() {
-    fun searchActivities(searchQuery: String): LiveData<List<Activity?>?> {
+    fun searchActivities(searchQuery: String): LiveData<List<Activity>> {
         return dataManager.getSearchedActivities(searchQuery)
     }
 
-    fun searchUsers(searchQuery: String): LiveData<List<User?>?> {
+    fun searchUsers(searchQuery: String): LiveData<List<User>> {
         return dataManager.getSearchedUsers(searchQuery)
     }
 }
