@@ -16,6 +16,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val currentUser = dataManager.getCurrentUser()
     val allActivities = dataManager.getActivities()
+    val allUsers = dataManager.getUsers()
 
     fun createActivity(activity: Activity, user: User) = viewModelScope.launch {
         dataManager.createActivity(activity, user)

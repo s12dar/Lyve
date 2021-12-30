@@ -2,16 +2,16 @@ package com.lyvetech.lyve.ui.fragments.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.lyvetech.lyve.R
 import com.lyvetech.lyve.LyveApplication
+import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
@@ -26,6 +26,7 @@ class HomeInfoFragment : Fragment() {
     private lateinit var binding: FragmentHomeInfoBinding
     private var mActivity = Activity()
     private var mUser: User = User()
+    private var mUsers = mutableListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,9 @@ class HomeInfoFragment : Fragment() {
         }
         LyveApplication.mInstance.activity?.let {
             mActivity = it
+        }
+        LyveApplication.mInstance.allUsers.let {
+            mUsers = it
         }
     }
 
@@ -49,7 +53,6 @@ class HomeInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         subscribeUI()
         binding.btnAttend.setOnClickListener { manageEventAttending() }
     }
@@ -58,10 +61,46 @@ class HomeInfoFragment : Fragment() {
     private fun subscribeUI() {
         mActivity.let {
             binding.tvTitle.text = it.acTitle
-            binding.tvDesc.text = it.acDesc
-            binding.tvDateAndTime.text = it.acTime
-            binding.tvLocation.text = it.acLocation
-            binding.tvParticipants.text = it.acParticipants.size.toString()
+            binding.tvDate.text = it.acTime
+            binding.tvAboutContent.text = it.acDesc
+            for (user in mUsers) {
+                if (user.uid == it.acCreatedByID) {
+                    binding.tvHostName.text = user.name
+                }
+            }
+
+            val attendees = mutableListOf<User>()
+            for (user in mUsers) {
+                if (user.uid in it.acParticipants) {
+                    attendees.add(user)
+                }
+            }
+            when (attendees.size) {
+                1 -> {
+                    binding.ivAttendee1.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.text = attendees[0].name
+                }
+                2 -> {
+                    binding.ivAttendee1.visibility = View.VISIBLE
+                    binding.ivAttendee2.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.visibility = View.VISIBLE
+                    binding.tvAttendeeName2.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.text = attendees[0].name
+                    binding.tvAttendeeName2.text = attendees[1].name
+                }
+                3 -> {
+                    binding.ivAttendee1.visibility = View.VISIBLE
+                    binding.ivAttendee2.visibility = View.VISIBLE
+                    binding.ivAttendee3.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.visibility = View.VISIBLE
+                    binding.tvAttendeeName2.visibility = View.VISIBLE
+                    binding.tvAttendeeName3.visibility = View.VISIBLE
+                    binding.tvAttendeeName1.text = attendees[0].name
+                    binding.tvAttendeeName2.text = attendees[1].name
+                    binding.tvAttendeeName3.text = attendees[2].name
+                }
+            }
 
             if (it.acImgRefs.isNotEmpty()) {
                 Glide.with(requireContext())

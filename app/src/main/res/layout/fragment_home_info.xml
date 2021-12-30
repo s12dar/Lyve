@@ -1,135 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/iv_ac"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/lyve"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_ac"
-        tools:text="Pizza eating" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/color_secondary"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_back_24dp"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:elevation="24dp" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_icon_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_description_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        <ImageView
+            android:id="@+id/iv_ac"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lyve"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_icon_desc"
-        app:layout_constraintStart_toEndOf="@id/iv_icon_desc"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon_desc"
-        tools:text="Pizza eating" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="@dimen/subtitle_sixteen"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_ac"
+            tools:text="Pizza eating" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_icon_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_location_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_desc" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_calendar_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <TextView
-        android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_icon_location"
-        app:layout_constraintStart_toEndOf="@id/iv_icon_location"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon_location"
-        tools:text="Pizza eating" />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon_calendar"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_calendar"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_calendar"
+            tools:text="Tuesday, August 21, 2021" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_icon_calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_calendar_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_location" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00 AM - 11:00 AM GMT+08:00\nTimes are displayed in your local time zone."
+            android:textColor="@color/goodGray"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
-    <TextView
-        android:id="@+id/tv_date_and_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:drawablePadding="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_icon_calendar"
-        app:layout_constraintStart_toEndOf="@+id/iv_icon_calendar"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon_calendar"
-        tools:text="Pizza eating" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon_online_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_online_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_time" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_icon_participants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_participants_20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_calendar" />
+        <TextView
+            android:id="@+id/tv_online_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/txt_online_activity"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon_online_activity"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_online_activity"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_online_activity" />
 
-    <TextView
-        android:id="@+id/tv_participants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:drawablePadding="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_icon_participants"
-        app:layout_constraintStart_toEndOf="@+id/iv_icon_participants"
-        app:layout_constraintTop_toTopOf="@+id/iv_icon_participants"
-        tools:text="Pizza eating" />
+        <TextView
+            android:id="@+id/tv_activity_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_activity_link"
+            android:textColor="@color/goodGray"
+            app:layout_constraintStart_toStartOf="@+id/tv_online_activity"
+            app:layout_constraintTop_toBottomOf="@id/tv_online_activity" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_attend"
-        style="@style/Buttons.MainAndDisabled"
-        android:layout_width="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:layout_height="0dp"
-        android:text="@string/btn_attend"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <View
+            android:id="@+id/view_line_1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/goodGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_activity_link" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_about_activity"
+            android:textSize="@dimen/subtitle_sixteen"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_line_1" />
+
+        <TextView
+            android:id="@+id/tv_about_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Hello friends! This weekend I will be eating pizza at home, if anyone of you are interested, feel free to join"
+            android:textColor="@color/goodGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_about" />
+
+        <View
+            android:id="@+id/view_line_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/goodGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_about_content" />
+
+        <TextView
+            android:id="@+id/tv_host_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_host_activity"
+            android:textSize="@dimen/subtitle_sixteen"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_line_2" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_host_ppic"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sunflower"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_host_activity" />
+
+        <TextView
+            android:id="@+id/tv_host_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_host_ppic"
+            app:layout_constraintStart_toStartOf="@+id/iv_host_ppic"
+            app:layout_constraintTop_toBottomOf="@id/iv_host_ppic"
+            tools:text="Serdar" />
+
+        <View
+            android:id="@+id/view_line_3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/goodGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_host_name" />
+
+        <TextView
+            android:id="@+id/tv_attendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/txt_attendees_activity"
+            android:textSize="@dimen/subtitle_sixteen"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_line_3" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_attendee_1"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sunflower"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
+
+        <TextView
+            android:id="@+id/tv_attendee_name_1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_1"
+            app:layout_constraintStart_toStartOf="@+id/iv_attendee_1"
+            app:layout_constraintTop_toBottomOf="@id/iv_attendee_1"
+            tools:text="Serdar" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_attendee_2"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sunflower"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/iv_attendee_1"
+            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
+
+        <TextView
+            android:id="@+id/tv_attendee_name_2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_2"
+            app:layout_constraintStart_toStartOf="@+id/iv_attendee_2"
+            app:layout_constraintTop_toBottomOf="@id/iv_attendee_2"
+            tools:text="Serdar" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_attendee_3"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sunflower"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/iv_attendee_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
+
+        <TextView
+            android:id="@+id/tv_attendee_name_3"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_3"
+            app:layout_constraintStart_toStartOf="@+id/iv_attendee_3"
+            app:layout_constraintTop_toBottomOf="@id/iv_attendee_3"
+            tools:text="Serdar" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_attendee_4"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sunflower"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/iv_attendee_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
+
+        <TextView
+            android:id="@+id/tv_attendee_name_4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_4"
+            app:layout_constraintStart_toStartOf="@+id/iv_attendee_4"
+            app:layout_constraintTop_toBottomOf="@id/iv_attendee_4"
+            tools:text="Serdar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_attend"
+            style="@style/Buttons.MainAndDisabled"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/btn_attend"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_attendee_name_1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
