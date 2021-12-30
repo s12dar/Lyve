@@ -26,6 +26,8 @@
 
     <!-- HOME PAGE -->
     <string name="desc_ppic">Profile picture</string>
+    <string name="txt_following">Following</string>
+    <string name="txt_all">All events</string>
 
     <!-- HOME INFO -->
     <string name="btn_attend">Attend</string>
@@ -69,6 +71,7 @@
     <!-- SEARCH FRAGMENT -->
     <string name="txt_lyve_members">Lyve members</string>
     <string name="txt_lyve_events">Lyve events</string>
+    <string name="txt_not_found">Oops.. Nothing found!</string>
     <string name="btn_following">Following</string>
     <string name="btn_follow">Follow</string>
 </resources>

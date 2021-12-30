@@ -14,4 +14,7 @@ interface DataManagerInterface {
     fun getUsers(): LiveData<List<User>>
     fun getSearchedUsers(searchQuery: String): LiveData<List<User>>
     fun getSearchedActivities(searchQuery: String): LiveData<List<Activity>>
+    fun getFollowers(user: User): LiveData<List<User>>
+    fun getFollowings(user: User): LiveData<List<User>>
+    fun getFollowingActivities(user: User): LiveData<List<Activity>>
 }

@@ -4,24 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lyvetech.lyve.datamanager.DataManager
-import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class FollowViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel() {
     val currentUser = dataManager.getCurrentUser()
-    val allActivities = dataManager.getActivities()
 
-    fun createActivity(activity: Activity, user: User) = viewModelScope.launch {
-        dataManager.createActivity(activity, user)
+    fun getFollowings(user: User): LiveData<List<User>> {
+        return dataManager.getFollowings(user)
     }
 
-    fun getFollowingActivities(user: User): LiveData<List<Activity>> {
-        return dataManager.getFollowingActivities(user)
+    fun getFollowers(user: User): LiveData<List<User>> {
+        return dataManager.getFollowers(user)
+    }
+
+    fun updateUser(user: User) = viewModelScope.launch {
+        dataManager.updateUser(user)
     }
 }
