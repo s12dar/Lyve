@@ -284,6 +284,116 @@ class DataManager @Inject constructor() : DataManagerInterface {
         return liveDataActivities
     }
 
+    override fun getFollowers(user: User): LiveData<List<User>> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val followers = MutableLiveData<List<User>>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_USER)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Users are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+
+                        val usersList = mutableListOf<User>()
+                        for (document in querySnapshot) {
+                            if (document.toObject(User::class.java).uid in user.followers) {
+                                usersList.add(document.toObject(User::class.java))
+                            }
+                        }
+                        followers.value = usersList
+
+                        Log.d(TAG, "Users retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return followers
+    }
+
+    override fun getFollowings(user: User): LiveData<List<User>> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val followings = MutableLiveData<List<User>>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_USER)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Users are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+
+                        val usersList = mutableListOf<User>()
+                        for (document in querySnapshot) {
+                            if (document.toObject(User::class.java).uid in user.followings) {
+                                usersList.add(document.toObject(User::class.java))
+                            }
+                        }
+                        followings.value = usersList
+
+                        Log.d(TAG, "Followings retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Followings couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return followings
+    }
+
+    override fun getFollowingActivities(user: User): LiveData<List<Activity>> {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val liveDataActivities = MutableLiveData<List<Activity>>()
+
+        firebaseUser?.let {
+            val db = FirebaseFirestore.getInstance()
+            db.collection(COLLECTION_ACTIVITIES)
+                .get()
+                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        val querySnapshot = task.result
+                        if (querySnapshot == null || querySnapshot.isEmpty) {
+                            Log.e(TAG, "Activities are null, retrying...")
+                            return@addOnCompleteListener
+                        }
+
+                        val activitiesList = mutableListOf<Activity>()
+                        for (document in querySnapshot) {
+                            if ((document.toObject(Activity::class.java).acCreatedByID in
+                                        user.followings)
+                            ) {
+                                activitiesList.add(document.toObject(Activity::class.java))
+                            }
+                        }
+                        liveDataActivities.value = activitiesList
+
+                        Log.d(TAG, "Activities retrieved successfully")
+                    } else {
+                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
+                    }
+                }
+        } ?: run {
+            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
+        }
+
+        return liveDataActivities
+    }
+
     override fun getSearchedUsers(searchQuery: String): LiveData<List<User>> {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataUsers = MutableLiveData<List<User>>()

@@ -65,6 +65,11 @@ class HomeFragment : Fragment(), OnClickListener {
     private lateinit var resultLauncher: ActivityResultLauncher<String>
     private var imageChosen = false
 
+    companion object {
+        const val VIEW_TYPE_ONE = 1
+        const val VIEW_TYPE_TWO = 2
+    }
+
     // Vars for views in bottom sheet layout
     private lateinit var mIvExit: ImageView
     private lateinit var mIvActivityAvatar: ImageView
@@ -187,7 +192,7 @@ class HomeFragment : Fragment(), OnClickListener {
         mEtActivityDesc.addTextChangedListener(watcher)
 
         manageHomeUI()
-        subscribeUI()
+        subscribeUI(VIEW_TYPE_ONE)
 
         binding.fabAdd.setOnClickListener {
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -200,8 +205,20 @@ class HomeFragment : Fragment(), OnClickListener {
         }
 
         binding.drawerLayout.setOnRefreshListener {
-            subscribeUI()
+            if (binding.chipFollowing.isChecked) {
+                subscribeUI(VIEW_TYPE_ONE)
+            } else {
+                subscribeUI(VIEW_TYPE_TWO)
+            }
             binding.drawerLayout.isRefreshing = false
+        }
+
+        binding.chipGroup.setOnCheckedChangeListener { _, _ ->
+            if (binding.chipFollowing.isChecked) {
+                subscribeUI(VIEW_TYPE_ONE)
+            } else {
+                subscribeUI(VIEW_TYPE_TWO)
+            }
         }
 
         manageToolBar()
@@ -343,19 +360,41 @@ class HomeFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun subscribeUI() {
-        // Declare elements for activities recyclerview
-        viewModel.allActivities.observe(viewLifecycleOwner) { result ->
-            result?.let {
-                val homeAdapter = HomeAdapter(
-                    result,
-                    requireContext(),
-                    this@HomeFragment
-                )
-                val linearLayoutManager = LinearLayoutManager(context)
+    private fun subscribeUI(viewType: Int) {
+        when (viewType) {
+            VIEW_TYPE_ONE -> {
+                viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
+                    activities?.let {
+                        val homeAdapter = HomeAdapter(
+                            activities,
+                            requireContext(),
+                            this@HomeFragment
+                        )
+                        val linearLayoutManager = LinearLayoutManager(context)
 
-                binding.rvActivity.layoutManager = linearLayoutManager
-                binding.rvActivity.adapter = homeAdapter
+                        binding.rvActivity.layoutManager = linearLayoutManager
+                        binding.rvActivity.adapter = homeAdapter
+                    }
+                }
+            }
+
+            VIEW_TYPE_TWO -> {
+                viewModel.currentUser.observe(viewLifecycleOwner) { user ->
+                    viewModel.getFollowingActivities(user)
+                        .observe(viewLifecycleOwner) { activities ->
+                            activities?.let {
+                                val homeAdapter = HomeAdapter(
+                                    activities,
+                                    requireContext(),
+                                    this@HomeFragment
+                                )
+                                val linearLayoutManager = LinearLayoutManager(context)
+
+                                binding.rvActivity.layoutManager = linearLayoutManager
+                                binding.rvActivity.adapter = homeAdapter
+                            }
+                        }
+                }
             }
         }
     }
