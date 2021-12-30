@@ -36,6 +36,11 @@
     <string name="txt_alert_desc_oops">You\'re already attending to this activity</string>
     <string name="txt_alert_title_yay">Yay..</string>
     <string name="txt_alert_desc_yay">You\'re attending to this activity</string>
+    <string name="txt_online_activity">Online activity</string>
+    <string name="txt_activity_link">Link visible for attendees</string>
+    <string name="txt_about_activity">About the activity</string>
+    <string name="txt_host_activity">Host of activity</string>
+    <string name="txt_attendees_activity">Attendees</string>
 
     <!-- BOTTOM SHEET -->
     <string name="title_bsh">Alright, let\'s create one</string>

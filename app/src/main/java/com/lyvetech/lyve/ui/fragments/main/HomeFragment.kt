@@ -178,6 +178,9 @@ class HomeFragment : Fragment(), OnClickListener {
             mUser = it
             LyveApplication.mInstance.currentUser = it
         }
+        viewModel.allUsers.observe(viewLifecycleOwner) {
+            LyveApplication.mInstance.allUsers = it as MutableList<User>
+        }
 
         return binding.root
     }
