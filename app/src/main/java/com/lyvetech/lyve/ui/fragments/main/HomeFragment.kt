@@ -180,10 +180,6 @@ class HomeFragment : Fragment(), OnClickListener {
         // Deal with app bar from main activity
         (activity as OnboardingUtils?)?.hideTopAppBar()
 
-        viewModel.currentUser.observe(viewLifecycleOwner) {
-            mUser = it
-            LyveApplication.mInstance.currentUser = it
-        }
         viewModel.allUsers.observe(viewLifecycleOwner) {
             LyveApplication.mInstance.allUsers = it as MutableList<User>
         }
@@ -361,8 +357,8 @@ class HomeFragment : Fragment(), OnClickListener {
         val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
         val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
 
-        mUser.let {
-            tvName.text = mUser.name
+        viewModel.currentUser.observe(viewLifecycleOwner) {
+            tvName.text = it.name
             tvBio.text = "Everything will be ok"
             tvFollowers.text = "${it.followers.size} FOLLOWERS"
             tvFollowing.text = "${it.followings.size} FOLLOWINGS"
