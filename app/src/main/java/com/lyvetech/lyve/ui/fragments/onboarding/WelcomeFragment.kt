@@ -66,17 +66,17 @@ class WelcomeFragment : Fragment() {
         val firstPage = WelcomeItem()
         firstPage.setTitle(resources.getString(R.string.txt_title_welcome))
         firstPage.setDescription(resources.getString(R.string.txt_desc_welcome))
-        firstPage.setImage(R.drawable.lyve)
+        firstPage.setImage(R.drawable.img_onboarding)
 
         val secondPage = WelcomeItem()
         secondPage.setTitle(resources.getString(R.string.txt_title_welcome2))
         secondPage.setDescription(resources.getString(R.string.txt_desc_welcome2))
-        secondPage.setImage(R.drawable.lyve)
+        secondPage.setImage(R.drawable.img_driving)
 
         val thirdPage = WelcomeItem()
         thirdPage.setTitle(resources.getString(R.string.txt_title_welcome3))
         thirdPage.setDescription(resources.getString(R.string.txt_desc_welcome3))
-        thirdPage.setImage(R.drawable.lyve)
+        thirdPage.setImage(R.drawable.img_biking)
 
         welcomeItemList.add(firstPage)
         welcomeItemList.add(secondPage)
