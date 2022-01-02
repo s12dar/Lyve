@@ -9,6 +9,7 @@
     tools:context=".ui.fragments.main.HomeFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/dl_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">

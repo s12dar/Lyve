@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.MaterialToolbar
+import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.SearchAdapter
 import com.lyvetech.lyve.databinding.FragmentSearchBinding
 import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.SearchViewModel
+import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,6 +46,9 @@ class SearchFragment : Fragment(), OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
+        // Set Top App bar
+        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Search")
+
         viewModel.currentUser.observe(viewLifecycleOwner) {
             mUser = it
         }
@@ -58,6 +65,10 @@ class SearchFragment : Fragment(), OnClickListener {
             } else {
                 manageSearch(VIEW_TYPE_TWO)
             }
+        }
+
+        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
