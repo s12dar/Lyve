@@ -20,6 +20,7 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -35,21 +36,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.HomeAdapter
-import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.databinding.FragmentHomeBinding
+import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.ui.viewmodels.HomeViewModel
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
+import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnClickListener {
@@ -174,10 +177,9 @@ class HomeFragment : Fragment(), OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        viewModel.currentUser.observe(viewLifecycleOwner) {
-            mUser = it
-            LyveApplication.mInstance.currentUser = it
-        }
+        // Deal with app bar from main activity
+        (activity as OnboardingUtils?)?.hideTopAppBar()
+
         viewModel.allUsers.observe(viewLifecycleOwner) {
             LyveApplication.mInstance.allUsers = it as MutableList<User>
         }
@@ -355,8 +357,8 @@ class HomeFragment : Fragment(), OnClickListener {
         val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
         val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
 
-        mUser.let {
-            tvName.text = mUser.name
+        viewModel.currentUser.observe(viewLifecycleOwner) {
+            tvName.text = it.name
             tvBio.text = "Everything will be ok"
             tvFollowers.text = "${it.followers.size} FOLLOWERS"
             tvFollowing.text = "${it.followings.size} FOLLOWINGS"
@@ -462,6 +464,10 @@ class HomeFragment : Fragment(), OnClickListener {
                 }
                 else -> false
             }
+        }
+
+        binding.topAppBar.setNavigationOnClickListener {
+            binding.dlHome.openDrawer(GravityCompat.START)
         }
     }
 

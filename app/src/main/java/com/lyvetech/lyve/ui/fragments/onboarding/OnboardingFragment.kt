@@ -21,6 +21,7 @@ import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.OnboardingViewModel
 import com.lyvetech.lyve.utils.Constants.Companion.KEY_EMAIL
 import com.lyvetech.lyve.utils.Constants.Companion.KEY_PASSWORD
+import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -105,7 +106,7 @@ class OnboardingFragment : Fragment() {
     }
 
     private fun createAccount() {
-//        (context as OnboardingUtils?)!!.showProgressBar()
+        (activity as OnboardingUtils).showProgressBar()
 
         val user = mUser
         mAuth.createUserWithEmailAndPassword(user.email, user.pass)
@@ -121,7 +122,7 @@ class OnboardingFragment : Fragment() {
                     viewModel.createUser(user)
 
                     findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
-//                    (context as OnboardingUtils?)!!.hideProgressBar()
+                    (activity as OnboardingUtils).hideProgressBar()
                 } else {
                     Log.e(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(

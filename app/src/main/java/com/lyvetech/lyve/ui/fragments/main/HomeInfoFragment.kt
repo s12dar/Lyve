@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
@@ -16,6 +18,7 @@ import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.HomeInfoViewModel
+import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,6 +51,10 @@ class HomeInfoFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeInfoBinding.inflate(inflater, container, false)
+
+        // Set Top App bar
+        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Event")
+
         return binding.root
     }
 
@@ -55,6 +62,10 @@ class HomeInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeUI()
         binding.btnAttend.setOnClickListener { manageEventAttending() }
+
+        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")

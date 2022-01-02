@@ -1,8 +1,8 @@
 package com.lyvetech.lyve.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.lyvetech.lyve.databinding.ActivityMainBinding
 import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,5 +24,14 @@ class MainActivity : AppCompatActivity(), OnboardingUtils {
 
     override fun hideProgressBar() {
         binding.pb.visibility = View.GONE
+    }
+
+    override fun showAndSetTopAppBar(toolbarTitle: String) {
+        binding.topAppBar.visibility = View.VISIBLE
+        binding.topAppBar.title = toolbarTitle
+    }
+
+    override fun hideTopAppBar() {
+        binding.topAppBar.visibility = View.GONE
     }
 }
