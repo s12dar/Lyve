@@ -87,6 +87,10 @@ class HomeInfoFragment : Fragment() {
                 }
             }
             when (attendees.size) {
+                0 -> {
+                    binding.tvAttendees.visibility = View.GONE
+                    binding.viewLine3.visibility = View.GONE
+                }
                 1 -> {
                     binding.ivAttendee1.visibility = View.VISIBLE
                     binding.tvAttendeeName1.visibility = View.VISIBLE

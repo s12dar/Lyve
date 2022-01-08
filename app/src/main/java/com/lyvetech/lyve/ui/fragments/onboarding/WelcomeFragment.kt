@@ -8,10 +8,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.lyvetech.lyve.adapters.WelcomeAdapter
 import com.lyvetech.lyve.R
+import com.lyvetech.lyve.adapters.WelcomeAdapter
 import com.lyvetech.lyve.databinding.FragmentWelcomeBinding
 import com.lyvetech.lyve.models.WelcomeItem
 
@@ -51,12 +51,12 @@ class WelcomeFragment : Fragment() {
             }
         })
 
-        binding.btnSignIn.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
+        binding.btnSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
         }
 
-        binding.btnSignUp.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+        binding.btnSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
         }
     }
 
@@ -66,17 +66,17 @@ class WelcomeFragment : Fragment() {
         val firstPage = WelcomeItem()
         firstPage.setTitle(resources.getString(R.string.txt_title_welcome))
         firstPage.setDescription(resources.getString(R.string.txt_desc_welcome))
-        firstPage.setImage(R.drawable.img_onboarding)
+        firstPage.setImage(R.drawable.lyve)
 
         val secondPage = WelcomeItem()
         secondPage.setTitle(resources.getString(R.string.txt_title_welcome2))
         secondPage.setDescription(resources.getString(R.string.txt_desc_welcome2))
-        secondPage.setImage(R.drawable.img_driving)
+        secondPage.setImage(R.drawable.lyve)
 
         val thirdPage = WelcomeItem()
         thirdPage.setTitle(resources.getString(R.string.txt_title_welcome3))
         thirdPage.setDescription(resources.getString(R.string.txt_desc_welcome3))
-        thirdPage.setImage(R.drawable.img_biking)
+        thirdPage.setImage(R.drawable.lyve)
 
         welcomeItemList.add(firstPage)
         welcomeItemList.add(secondPage)

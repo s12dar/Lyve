@@ -196,6 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:visibility="visible"
             android:text="@string/txt_attendees_activity"
             android:textSize="@dimen/subtitle_sixteen"
             android:textStyle="bold"
