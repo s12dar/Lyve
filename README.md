@@ -15,6 +15,7 @@ Lyve is event discovery application, using modern Android development techniques
 <img src="/arts/onboarding-register.png" width="260"> &emsp;<img src="/arts/user-feed.png" width="260"> &emsp;<img src="/arts/create-activity.png" width="260">
 
 ## Data modelling structure ☁️
+```sh
 Firestore-root
    |
    --- Users (collection)
@@ -59,6 +60,7 @@ Firestore-root
                --- eParticipants: [IDs of event participants]
                |
                --- eImgRefs: "Event image URL"
+```
 
 ## Contribution 🙌
 All contributions are welcome! Feel free to jump to the issues and pick one for yourself! Please write a comment inside of the issue before you start working.
