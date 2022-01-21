@@ -7,7 +7,7 @@
     <string name="btn_continue">Continue</string>
     <string name="title_welcome_back">Welcome back</string>
     <string name="title_join_us">Join us</string>
-    <string name="desc_join_us">Ready to learn?</string>
+    <string name="desc_join_us">Let\'s make it happen</string>
     <string name="desc_welcome_back">What\'s up? Haven\'t heard from you!</string>
     <string name="txt_have_an_account">Already have an account?</string>
     <string name="txt_no_account_yet">Don\'t have an account yet?</string>
@@ -44,7 +44,7 @@
 
     <!-- BOTTOM SHEET -->
     <string name="title_bsh">Alright, let\'s create one</string>
-    <string name="subtitle_bsh">But which one?</string>
+    <string name="subtitle_bsh">But first..</string>
     <string name="btn_virtual_ac">Virtual</string>
     <string name="btn_physical_ac">Physical</string>
     <string name="txt_activity_name">Enter your activity name</string>
