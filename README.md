@@ -12,7 +12,7 @@ Lyve is event discovery application, using modern Android development techniques
 * [Material Design](https://material.io/design)
 
 ## Screenshots 📷
-<img src="/arts/onboarding-register.png" width="260"> &emsp;<img src="/arts/user-feed.png" width="260"> &emsp;<img src="/arts/create-activity.png" width="260">
+<img src="/arts/onboarding-register.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/user-feed.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/create-activity.png" width="260" color="#DBE1FC">
 
 ## Data modelling structure ☁️
 ```sh
