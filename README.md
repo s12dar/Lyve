@@ -1,5 +1,5 @@
 ## Lyve
-Lyve is event discovery application, using modern Android development techniques. The aim of the application is to connect people people through a shared passion for different social activities where individuals can create their own profiles, add people as friends, create social activities, see/search activities around them and send a request to join.
+Lyve is event discovery application, using modern Android development techniques. The aim of the application is to connect people through a shared passion for different social activities where individuals can create their own profiles, add people as friends, create social activities, see/search activities around them and send a request to join.
 
 ## Tech stack 🏗
 * [Kotlin](https://kotlinlang.org/)
