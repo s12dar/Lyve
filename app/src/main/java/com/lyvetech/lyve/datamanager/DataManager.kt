@@ -103,12 +103,12 @@ class DataManager @Inject constructor() : DataManagerInterface {
             val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
                 COLLECTION_ACTIVITIES
             ).document(activity.aid)
-            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-                COLLECTION_USER
-            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+//            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+//                COLLECTION_USER
+//            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
             activityBatch.set(activityDocRef, activity.toMap())
-            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
+//            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
 
             activityBatch.commit().addOnCompleteListener { task ->
                 run {
