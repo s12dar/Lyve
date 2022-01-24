@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/menu_profile"
+        <item android:id="@+id/menu_chat"
             android:icon="@drawable/ic_chat_24dp"
             android:title="@string/menu_item_chat"/>
-        <item android:id="@+id/menu_localization"
+        <item android:id="@+id/menu_search"
             android:icon="@drawable/ic_search_24dp"
             android:title="@string/menu_item_search"/>
-        <item android:id="@+id/menu_reward"
+        <item android:id="@+id/menu_notification"
             android:icon="@drawable/ic_notification_24dp"
             android:title="@string/menu_item_notifications"/>
     </group>

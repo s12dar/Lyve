@@ -14,6 +14,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -30,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -55,7 +57,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), OnClickListener {
+class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private var TAG = HomeFragment::class.qualifiedName
 
@@ -198,6 +200,7 @@ class HomeFragment : Fragment(), OnClickListener {
 
         manageHomeUI()
         subscribeUI(VIEW_TYPE_ONE)
+        manageNavigationView()
 
         binding.fabAdd.setOnClickListener {
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -471,6 +474,12 @@ class HomeFragment : Fragment(), OnClickListener {
         }
     }
 
+    private fun manageNavigationView() {
+        val navigation = requireView().findViewById<NavigationView>(R.id.nav_view)
+        navigation.bringToFront()
+        navigation.setNavigationItemSelectedListener(this@HomeFragment)
+    }
+
     private fun getBitmapSquareSize(bitmap: Bitmap): Int {
         return bitmap.width.coerceAtMost(bitmap.height)
     }
@@ -497,4 +506,20 @@ class HomeFragment : Fragment(), OnClickListener {
     override fun onUserClicked(user: User) {}
 
     override fun onUserFollowBtnClicked(user: User, isChecked: Boolean) {}
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_chat -> {
+                Log.d(TAG, "Chat me")
+            }
+            R.id.menu_search -> {
+                Log.d(TAG, "Search me")
+            }
+            R.id.menu_notification -> {
+            }
+        }
+
+        binding.dlHome.closeDrawer(GravityCompat.START)
+        return true
+    }
 }
