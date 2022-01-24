@@ -196,100 +196,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:text="@string/txt_attendees_activity"
             android:textSize="@dimen/subtitle_sixteen"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_line_3" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_attendee_1"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_attendees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sunflower"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
-
-        <TextView
-            android:id="@+id/tv_attendee_name_1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_1"
-            app:layout_constraintStart_toStartOf="@+id/iv_attendee_1"
-            app:layout_constraintTop_toBottomOf="@id/iv_attendee_1"
-            tools:text="Serdar" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_attendee_2"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sunflower"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/iv_attendee_1"
-            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
-
-        <TextView
-            android:id="@+id/tv_attendee_name_2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_2"
-            app:layout_constraintStart_toStartOf="@+id/iv_attendee_2"
-            app:layout_constraintTop_toBottomOf="@id/iv_attendee_2"
-            tools:text="Serdar" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_attendee_3"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sunflower"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/iv_attendee_2"
-            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
-
-        <TextView
-            android:id="@+id/tv_attendee_name_3"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_3"
-            app:layout_constraintStart_toStartOf="@+id/iv_attendee_3"
-            app:layout_constraintTop_toBottomOf="@id/iv_attendee_3"
-            tools:text="Serdar" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_attendee_4"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sunflower"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/iv_attendee_3"
-            app:layout_constraintTop_toBottomOf="@id/tv_attendees" />
-
-        <TextView
-            android:id="@+id/tv_attendee_name_4"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_attendee_4"
-            app:layout_constraintStart_toStartOf="@+id/iv_attendee_4"
-            app:layout_constraintTop_toBottomOf="@id/iv_attendee_4"
-            tools:text="Serdar" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_attendees" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_attend"
@@ -302,7 +224,7 @@
             android:layout_marginBottom="24dp"
             android:text="@string/btn_attend"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_attendee_name_1" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_attendees" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.databinding.FragmentFollowingBinding
 import com.lyvetech.lyve.databinding.UserItemBinding
 import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.User
@@ -60,5 +59,4 @@ class FollowAdapter(
             }
         }
     }
-
 }

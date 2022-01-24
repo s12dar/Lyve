@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_avatar_attendee"
+        android:layout_width="@dimen/card_special_image_height"
+        android:layout_height="@dimen/card_special_image_width"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/in_row_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:strokeColor="@color/goodGray"
+        app:strokeWidth="@dimen/card_stroke"
+        tools:src="@drawable/ic_upload_image" />
+
+    <TextView
+        android:id="@+id/tv_name_attendee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_avatar_attendee"
+        tools:text="Serdar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

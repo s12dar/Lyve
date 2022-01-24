@@ -9,20 +9,23 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
+import com.lyvetech.lyve.adapters.AttendeeAdapter
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.HomeInfoViewModel
 import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.listeners.OnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeInfoFragment : Fragment() {
+class HomeInfoFragment : Fragment(), OnClickListener {
 
     private val TAG = HomeInfoFragment::class.qualifiedName
     private val viewModel: HomeInfoViewModel by viewModels()
@@ -83,34 +86,18 @@ class HomeInfoFragment : Fragment() {
                     attendees.add(user)
                 }
             }
-            when (attendees.size) {
-                0 -> {
-                    binding.tvAttendees.visibility = View.GONE
-                    binding.viewLine3.visibility = View.GONE
-                }
-                1 -> {
-                    binding.ivAttendee1.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.text = attendees[0].name
-                }
-                2 -> {
-                    binding.ivAttendee1.visibility = View.VISIBLE
-                    binding.ivAttendee2.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.visibility = View.VISIBLE
-                    binding.tvAttendeeName2.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.text = attendees[0].name
-                    binding.tvAttendeeName2.text = attendees[1].name
-                }
-                3 -> {
-                    binding.ivAttendee1.visibility = View.VISIBLE
-                    binding.ivAttendee2.visibility = View.VISIBLE
-                    binding.ivAttendee3.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.visibility = View.VISIBLE
-                    binding.tvAttendeeName2.visibility = View.VISIBLE
-                    binding.tvAttendeeName3.visibility = View.VISIBLE
-                    binding.tvAttendeeName1.text = attendees[0].name
-                    binding.tvAttendeeName2.text = attendees[1].name
-                    binding.tvAttendeeName3.text = attendees[2].name
+
+            if (attendees.isNotEmpty()) {
+                binding.tvAttendees.visibility = View.VISIBLE
+                binding.rvAttendees.apply {
+                    adapter = AttendeeAdapter(
+                        attendees,
+                        requireContext(),
+                        this@HomeInfoFragment
+                    )
+
+                    layoutManager = LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.HORIZONTAL, false)
                 }
             }
 
@@ -159,5 +146,21 @@ class HomeInfoFragment : Fragment() {
         (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    override fun onPostClicked(activity: Activity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPostLongClicked(activity: Activity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onUserClicked(user: User) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onUserFollowBtnClicked(user: User, isChecked: Boolean) {
+        TODO("Not yet implemented")
     }
 }

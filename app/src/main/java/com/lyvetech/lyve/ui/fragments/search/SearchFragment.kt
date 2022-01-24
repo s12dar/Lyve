@@ -83,35 +83,33 @@ class SearchFragment : Fragment(), OnClickListener {
         when (viewType) {
             VIEW_TYPE_ONE -> {
                 viewModel.searchActivities(searchQuery).observe(viewLifecycleOwner) {
-                    val searchAdapter = SearchAdapter(
-                        mUser,
-                        mutableListOf(User()),
-                        it,
-                        VIEW_TYPE_ONE,
-                        requireContext(),
-                        this@SearchFragment
-                    )
-                    val linearLayoutManager = LinearLayoutManager(context)
-
-                    binding.rvSearch.layoutManager = linearLayoutManager
-                    binding.rvSearch.adapter = searchAdapter
+                    binding.rvSearch.apply {
+                        adapter = SearchAdapter(
+                            mUser,
+                            mutableListOf(User()),
+                            it,
+                            VIEW_TYPE_ONE,
+                            requireContext(),
+                            this@SearchFragment
+                        )
+                        layoutManager = LinearLayoutManager(context)
+                    }
                 }
             }
 
             VIEW_TYPE_TWO -> {
                 viewModel.searchUsers(searchQuery).observe(viewLifecycleOwner) {
-                    val searchAdapter = SearchAdapter(
-                        mUser,
-                        it,
-                        mutableListOf(Activity()),
-                        VIEW_TYPE_TWO,
-                        requireContext(),
-                        this@SearchFragment
-                    )
-                    val linearLayoutManager = LinearLayoutManager(context)
-
-                    binding.rvSearch.layoutManager = linearLayoutManager
-                    binding.rvSearch.adapter = searchAdapter
+                    binding.rvSearch.apply {
+                        adapter = SearchAdapter(
+                            mUser,
+                            it,
+                            mutableListOf(Activity()),
+                            VIEW_TYPE_TWO,
+                            requireContext(),
+                            this@SearchFragment
+                        )
+                        layoutManager = LinearLayoutManager(context)
+                    }
                 }
             }
         }

@@ -85,10 +85,16 @@
         <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
-    <!-- Circular images -->
-    <style name="roundedImageView">
+    <!-- Special images -->
+    <style name="specialRoundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>
+    </style>
+
+    <!-- Rounded images -->
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="roundedImageView1">

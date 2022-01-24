@@ -387,15 +387,14 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
             VIEW_TYPE_ONE -> {
                 viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
                     activities?.let {
-                        val homeAdapter = HomeAdapter(
-                            activities,
-                            requireContext(),
-                            this@HomeFragment
-                        )
-                        val linearLayoutManager = LinearLayoutManager(context)
-
-                        binding.rvActivity.layoutManager = linearLayoutManager
-                        binding.rvActivity.adapter = homeAdapter
+                        binding.rvActivity.apply {
+                            adapter = HomeAdapter(
+                                activities,
+                                requireContext(),
+                                this@HomeFragment
+                            )
+                            layoutManager = LinearLayoutManager(context)
+                        }
                     }
                 }
             }
@@ -405,15 +404,14 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
                     viewModel.getFollowingActivities(user)
                         .observe(viewLifecycleOwner) { activities ->
                             activities?.let {
-                                val homeAdapter = HomeAdapter(
-                                    activities,
-                                    requireContext(),
-                                    this@HomeFragment
-                                )
-                                val linearLayoutManager = LinearLayoutManager(context)
-
-                                binding.rvActivity.layoutManager = linearLayoutManager
-                                binding.rvActivity.adapter = homeAdapter
+                                binding.rvActivity.apply {
+                                    adapter = HomeAdapter(
+                                        activities,
+                                        requireContext(),
+                                        this@HomeFragment
+                                    )
+                                    layoutManager = LinearLayoutManager(context)
+                                }
                             }
                         }
                 }

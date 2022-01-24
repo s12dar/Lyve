@@ -1,10 +1,10 @@
 package com.lyvetech.lyve.ui.fragments.follow
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,31 +66,29 @@ class FollowFragment : Fragment(), OnClickListener {
                 // Set Top App bar
                 viewModel.getFollowings(user).observe(viewLifecycleOwner) { followings ->
                     mFollowings = followings as MutableList<User>
-                    val followAdapter = FollowAdapter(
-                        mUser,
-                        mFollowings,
-                        requireContext(),
-                        this@FollowFragment
-                    )
-                    val linearLayoutManager = LinearLayoutManager(context)
-
-                    binding.rvFollow.layoutManager = linearLayoutManager
-                    binding.rvFollow.adapter = followAdapter
+                    binding.rvFollow.apply {
+                        adapter = FollowAdapter(
+                            mUser,
+                            mFollowings,
+                            requireContext(),
+                            this@FollowFragment
+                        )
+                        layoutManager = LinearLayoutManager(context)
+                    }
                 }
             } else if (mArgument == BUNDLE_FOLLOWER) {
                 // Set Top App bar
                 viewModel.getFollowers(user).observe(viewLifecycleOwner) { followers ->
                     mFollowers = followers as MutableList<User>
-                    val followAdapter = FollowAdapter(
-                        mUser,
-                        mFollowers,
-                        requireContext(),
-                        this@FollowFragment
-                    )
-                    val linearLayoutManager = LinearLayoutManager(context)
-
-                    binding.rvFollow.layoutManager = linearLayoutManager
-                    binding.rvFollow.adapter = followAdapter
+                    binding.rvFollow.apply {
+                        adapter = FollowAdapter(
+                            mUser,
+                            mFollowers,
+                            requireContext(),
+                            this@FollowFragment
+                        )
+                        layoutManager = LinearLayoutManager(context)
+                    }
                 }
             }
         }
