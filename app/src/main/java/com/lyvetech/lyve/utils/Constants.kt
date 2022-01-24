@@ -39,17 +39,18 @@ class Constants {
         const val COLLECTION_ACTIVITIES = "Activities"
 
         /**
-         * BUNDLE CONSTANTS
-         */
-        const val EXISTING_USER = "existingUser"
-        const val USER_STATUS = "userStatus"
-
-        /**
          * DI CONSTANTS
          */
         const val SHARED_PREFERENCES_NAME = "sharedPref"
         const val KEY_EMAIL = "KEY_EMAIL"
         const val KEY_PASSWORD = "KEY_PASSWORD"
+
+        /**
+         * BUNDLE CONSTANTS
+         */
+        const val BUNDLE_KEY = "bundleKey"
+        const val BUNDLE_FOLLOWING = "bundleFollowing"
+        const val BUNDLE_FOLLOWER = "bundleFollower"
     }
 
 

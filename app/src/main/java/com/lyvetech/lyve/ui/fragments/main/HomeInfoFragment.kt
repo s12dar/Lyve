@@ -51,21 +51,18 @@ class HomeInfoFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeInfoBinding.inflate(inflater, container, false)
-
-        // Set Top App bar
-        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Event")
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeUI()
-        binding.btnAttend.setOnClickListener { manageEventAttending() }
 
-        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        // Set Top App bar
+        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Event")
+        manageTopBarNavigation()
+        subscribeUI()
+
+        binding.btnAttend.setOnClickListener { manageEventAttending() }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -155,6 +152,12 @@ class HomeInfoFragment : Fragment() {
                 .setMessage(resources.getString(R.string.txt_alert_desc_oops))
                 .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
                 .show()
+        }
+    }
+
+    private fun manageTopBarNavigation() {
+        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 }

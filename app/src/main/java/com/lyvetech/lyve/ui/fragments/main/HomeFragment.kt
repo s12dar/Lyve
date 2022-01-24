@@ -46,6 +46,9 @@ import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.HomeViewModel
+import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_FOLLOWER
+import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_FOLLOWING
+import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_KEY
 import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -366,6 +369,17 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
             tvFollowers.text = "${it.followers.size} FOLLOWERS"
             tvFollowing.text = "${it.followings.size} FOLLOWINGS"
         }
+
+        val bundle = Bundle()
+
+        tvFollowers.setOnClickListener {
+            bundle.putString(BUNDLE_KEY, BUNDLE_FOLLOWER)
+            findNavController().navigate(R.id.action_homeFragment_to_followingFragment, bundle)
+        }
+        tvFollowing.setOnClickListener {
+            bundle.putString(BUNDLE_KEY, BUNDLE_FOLLOWING)
+            findNavController().navigate(R.id.action_homeFragment_to_followingFragment, bundle)
+        }
     }
 
     private fun subscribeUI(viewType: Int) {
@@ -509,14 +523,9 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_chat -> {
-                Log.d(TAG, "Chat me")
-            }
-            R.id.menu_search -> {
-                Log.d(TAG, "Search me")
-            }
-            R.id.menu_notification -> {
-            }
+            R.id.menu_chat -> {}
+            R.id.menu_search -> {}
+            R.id.menu_notification -> {}
         }
 
         binding.dlHome.closeDrawer(GravityCompat.START)

@@ -46,9 +46,6 @@ class SearchFragment : Fragment(), OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        // Set Top App bar
-        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Search")
-
         viewModel.currentUser.observe(viewLifecycleOwner) {
             mUser = it
         }
@@ -57,19 +54,12 @@ class SearchFragment : Fragment(), OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Set Top App bar
+        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Search")
+        manageTopBarNavigation()
         manageSearch(VIEW_TYPE_ONE)
-
-        binding.chipGroup.setOnCheckedChangeListener { _, _ ->
-            if (binding.chipEvents.isChecked) {
-                manageSearch(VIEW_TYPE_ONE)
-            } else {
-                manageSearch(VIEW_TYPE_TWO)
-            }
-        }
-
-        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        manageChipGroup()
     }
 
     private fun manageSearch(viewType: Int) {
@@ -124,6 +114,22 @@ class SearchFragment : Fragment(), OnClickListener {
                     binding.rvSearch.adapter = searchAdapter
                 }
             }
+        }
+    }
+
+    private fun manageChipGroup() {
+        binding.chipGroup.setOnCheckedChangeListener { _, _ ->
+            if (binding.chipEvents.isChecked) {
+                manageSearch(VIEW_TYPE_ONE)
+            } else {
+                manageSearch(VIEW_TYPE_TWO)
+            }
+        }
+    }
+
+    private fun manageTopBarNavigation() {
+        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
