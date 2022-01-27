@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.datamanager
+package com.lyvetech.lyve.repositories
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -103,12 +103,12 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
             val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
                 COLLECTION_ACTIVITIES
             ).document(activity.aid)
-//            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-//                COLLECTION_USER
-//            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
+                COLLECTION_USER
+            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
             activityBatch.set(activityDocRef, activity.toMap())
-//            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
+            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
 
             activityBatch.commit().addOnCompleteListener { task ->
                 run {

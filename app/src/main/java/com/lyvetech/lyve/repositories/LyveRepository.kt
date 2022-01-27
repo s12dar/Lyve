@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.datamanager
+package com.lyvetech.lyve.repositories
 
 import androidx.lifecycle.LiveData
 import com.lyvetech.lyve.models.Activity

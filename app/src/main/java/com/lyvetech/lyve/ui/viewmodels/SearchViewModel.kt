@@ -3,8 +3,7 @@ package com.lyvetech.lyve.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lyvetech.lyve.datamanager.DefaultLyveRepository
-import com.lyvetech.lyve.datamanager.LyveRepository
+import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
