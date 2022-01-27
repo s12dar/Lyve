@@ -19,8 +19,8 @@ import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentOnboardingBinding
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.OnboardingViewModel
-import com.lyvetech.lyve.utils.Constants.Companion.KEY_EMAIL
-import com.lyvetech.lyve.utils.Constants.Companion.KEY_PASSWORD
+import com.lyvetech.lyve.utils.Constants.KEY_EMAIL
+import com.lyvetech.lyve.utils.Constants.KEY_PASSWORD
 import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -3,7 +3,7 @@ package com.lyvetech.lyve.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lyvetech.lyve.datamanager.DataManager
+import com.lyvetech.lyve.datamanager.LyveRepository
 import com.lyvetech.lyve.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,19 +11,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FollowViewModel @Inject constructor(
-    private val dataManager: DataManager
+    private val lyveRepository: LyveRepository
 ) : ViewModel() {
-    val currentUser = dataManager.getCurrentUser()
+    val currentUser = lyveRepository.getCurrentUser()
 
     fun getFollowings(user: User): LiveData<List<User>> {
-        return dataManager.getFollowings(user)
+        return lyveRepository.getFollowings(user)
     }
 
     fun getFollowers(user: User): LiveData<List<User>> {
-        return dataManager.getFollowers(user)
+        return lyveRepository.getFollowers(user)
     }
 
     fun updateUser(user: User) = viewModelScope.launch {
-        dataManager.updateUser(user)
+        lyveRepository.updateUser(user)
     }
 }

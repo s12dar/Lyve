@@ -1,14 +1,13 @@
 package com.lyvetech.lyve.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.lyvetech.lyve.datamanager.DataManager
+import com.lyvetech.lyve.datamanager.LyveRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dataManager: DataManager
+    private val lyveRepository: LyveRepository
 ) : ViewModel() {
-
-    val currentUser = dataManager.getCurrentUser()
+    val currentUser = lyveRepository.getCurrentUser()
 }

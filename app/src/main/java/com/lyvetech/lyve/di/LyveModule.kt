@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
-import com.lyvetech.lyve.datamanager.DataManager
-import com.lyvetech.lyve.utils.Constants.Companion.SHARED_PREFERENCES_NAME
+import com.lyvetech.lyve.utils.Constants.SHARED_PREFERENCES_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module

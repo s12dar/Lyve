@@ -16,9 +16,9 @@ import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.viewmodels.FollowViewModel
-import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_FOLLOWER
-import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_FOLLOWING
-import com.lyvetech.lyve.utils.Constants.Companion.BUNDLE_KEY
+import com.lyvetech.lyve.utils.Constants.BUNDLE_FOLLOWER
+import com.lyvetech.lyve.utils.Constants.BUNDLE_FOLLOWING
+import com.lyvetech.lyve.utils.Constants.BUNDLE_KEY
 import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 

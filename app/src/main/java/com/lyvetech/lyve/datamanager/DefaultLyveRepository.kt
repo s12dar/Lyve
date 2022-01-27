@@ -12,18 +12,18 @@ import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_ACTIVITIES
-import com.lyvetech.lyve.utils.Constants.Companion.COLLECTION_USER
+import com.lyvetech.lyve.utils.Constants.COLLECTION_ACTIVITIES
+import com.lyvetech.lyve.utils.Constants.COLLECTION_USER
 import javax.inject.Inject
 
-class DataManager @Inject constructor() : DataManagerInterface {
+class DefaultLyveRepository @Inject constructor() : LyveRepository {
 
-    private val TAG = DataManager::class.qualifiedName
+    private val TAG = DefaultLyveRepository::class.qualifiedName
 
     companion object {
         const val AUTHENTICATION = "Authentication"
         const val INVALID_USER = "Invalid User"
-        var mInstance: DataManager = DataManager()
+        var mInstance: DefaultLyveRepository = DefaultLyveRepository()
     }
 
     override suspend fun createUser(user: User) {

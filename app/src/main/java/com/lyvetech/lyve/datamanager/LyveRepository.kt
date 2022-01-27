@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 
-interface DataManagerInterface {
+interface LyveRepository {
     suspend fun createUser(user: User)
     suspend fun createActivity(activity: Activity, user: User)
     suspend fun updateUser(user: User)

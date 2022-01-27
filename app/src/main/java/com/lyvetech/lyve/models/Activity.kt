@@ -2,16 +2,16 @@ package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_CREATED_AT
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_CREATED_BY_ID
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_DESC
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_ID
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_IMG_REFS
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_LOCATION
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_PARTICIPANTS
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_TIME
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_TITLE
-import com.lyvetech.lyve.utils.Constants.Companion.ACTIVITY_TYPE
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_AT
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_BY_ID
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_DESC
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_ID
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_IMG_REFS
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_LOCATION
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_PARTICIPANTS
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_TIME
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_TITLE
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_TYPE
 import java.util.*
 import kotlin.collections.HashMap
 

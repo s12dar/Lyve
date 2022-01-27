@@ -2,16 +2,16 @@ package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
-import com.lyvetech.lyve.utils.Constants.Companion.AVATAR
-import com.lyvetech.lyve.utils.Constants.Companion.BIO
-import com.lyvetech.lyve.utils.Constants.Companion.CREATED_AT
-import com.lyvetech.lyve.utils.Constants.Companion.EMAIL
-import com.lyvetech.lyve.utils.Constants.Companion.FOLLOWERS
-import com.lyvetech.lyve.utils.Constants.Companion.FOLLOWINGS
-import com.lyvetech.lyve.utils.Constants.Companion.IS_VERIFIED
-import com.lyvetech.lyve.utils.Constants.Companion.NAME
-import com.lyvetech.lyve.utils.Constants.Companion.PASS
-import com.lyvetech.lyve.utils.Constants.Companion.UID
+import com.lyvetech.lyve.utils.Constants.AVATAR
+import com.lyvetech.lyve.utils.Constants.BIO
+import com.lyvetech.lyve.utils.Constants.CREATED_AT
+import com.lyvetech.lyve.utils.Constants.EMAIL
+import com.lyvetech.lyve.utils.Constants.FOLLOWERS
+import com.lyvetech.lyve.utils.Constants.FOLLOWINGS
+import com.lyvetech.lyve.utils.Constants.IS_VERIFIED
+import com.lyvetech.lyve.utils.Constants.NAME
+import com.lyvetech.lyve.utils.Constants.PASS
+import com.lyvetech.lyve.utils.Constants.UID
 import java.util.*
 import kotlin.collections.HashMap
 
