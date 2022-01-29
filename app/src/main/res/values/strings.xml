@@ -79,4 +79,9 @@
     <string name="txt_not_found">Oops.. Nothing found!</string>
     <string name="btn_following">Following</string>
     <string name="btn_follow">Follow</string>
+
+    <!-- PROFILE FRAGMENT -->
+    <string name="tab_1">Events</string>
+    <string name="tab_2">I\'m attending</string>
+    <string name="tab_3">Requests</string>
 </resources>

@@ -159,15 +159,21 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_host_ppic"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_width="@dimen/card_special_image_height"
+            android:layout_height="@dimen/card_special_image_width"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sunflower"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/in_row_padding"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_host_activity" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_host_activity"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            app:strokeColor="@color/goodGray"
+            app:strokeWidth="@dimen/card_stroke"
+            tools:src="@drawable/ic_upload_image" />
 
         <TextView
             android:id="@+id/tv_host_name"

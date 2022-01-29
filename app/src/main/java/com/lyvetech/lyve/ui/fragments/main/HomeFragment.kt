@@ -362,6 +362,7 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
         val tvBio = header.findViewById<TextView>(R.id.tv_bio)
         val tvFollowers = header.findViewById<TextView>(R.id.tv_followers)
         val tvFollowing = header.findViewById<TextView>(R.id.tv_following)
+        val ivAvatar = header.findViewById<ImageView>(R.id.iv_ppic)
 
         viewModel.currentUser.observe(viewLifecycleOwner) {
             tvName.text = it.name
@@ -379,6 +380,9 @@ class HomeFragment : Fragment(), OnClickListener, NavigationView.OnNavigationIte
         tvFollowing.setOnClickListener {
             bundle.putString(BUNDLE_KEY, BUNDLE_FOLLOWING)
             findNavController().navigate(R.id.action_homeFragment_to_followingFragment, bundle)
+        }
+        ivAvatar.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
     }
 

@@ -9,16 +9,25 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_ppic"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/desc_ppic"
-        android:src="@drawable/ic_sunflower"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/in_row_padding"
+        android:src="@drawable/ic_profile_15dp"
+        app:contentPadding="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        app:strokeColor="@color/black_dinner"
+        app:strokeWidth="@dimen/card_stroke" />
 
     <TextView
         android:id="@+id/tv_name"

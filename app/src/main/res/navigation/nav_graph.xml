@@ -93,6 +93,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -142,4 +149,9 @@
         android:name="com.lyvetech.lyve.ui.fragments.follow.FollowFragment"
         android:label="fragment_following"
         tools:layout="@layout/fragment_following" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.onboarding.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

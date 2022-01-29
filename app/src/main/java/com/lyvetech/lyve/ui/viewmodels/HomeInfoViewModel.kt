@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.repositories.DefaultLyveRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeInfoViewModel @Inject constructor(
-    private val lyveRepository: LyveRepository
+    private val lyveRepository: DefaultLyveRepository
 ) : ViewModel() {
     val allActivities = lyveRepository.getActivities()
 
