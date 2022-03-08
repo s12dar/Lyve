@@ -5,31 +5,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
-import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.utils.Constants.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.Constants.COLLECTION_USER
 import javax.inject.Inject
 
-class DefaultLyveRepository @Inject constructor() : LyveRepository {
+class LyveRepositoryImpl(
+    private val auth: FirebaseAuth,
+    private val firebaseUser: FirebaseUser
+) : LyveRepository {
 
-    private val TAG = DefaultLyveRepository::class.qualifiedName
+    private val TAG = LyveRepositoryImpl::class.qualifiedName
 
     companion object {
         const val AUTHENTICATION = "Authentication"
         const val INVALID_USER = "Invalid User"
-        var mInstance: DefaultLyveRepository = DefaultLyveRepository()
     }
 
     override suspend fun createUser(user: User) {
-        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
-
-        firebaseUser?.let {
+        firebaseUser.let {
             val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
             val userDocRef: DocumentReference =
                 FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
@@ -44,16 +41,13 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                     }
                 }
             }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
     override fun getCurrentUser(): LiveData<User> {
-        val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         val liveDataUser = MutableLiveData<User>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val userDocRef: DocumentReference =
                 FirebaseFirestore.getInstance().collection(COLLECTION_USER)
                     .document(it.uid)
@@ -85,10 +79,7 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                     }
                 }
             }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataUser
     }
 
@@ -96,9 +87,7 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
         activity: Activity,
         user: User
     ) {
-        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
-
-        firebaseUser?.let {
+        firebaseUser.let {
             val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
             val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
                 COLLECTION_ACTIVITIES
@@ -119,15 +108,11 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                     }
                 }
             }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
     override suspend fun updateUser(user: User) {
-        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
-
-        firebaseUser?.let {
+        firebaseUser.let {
             val userBatch = FirebaseFirestore.getInstance().batch()
             val userDocRef = FirebaseFirestore.getInstance().collection(
                 COLLECTION_USER
@@ -143,8 +128,6 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                     }
                 }
             }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
@@ -152,9 +135,7 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
         activity: Activity,
         user: User,
     ) {
-        val firebaseUser: FirebaseUser? = Firebase.auth.currentUser
-
-        firebaseUser?.let {
+        firebaseUser.let {
             val activityBatch = FirebaseFirestore.getInstance().batch()
             val activityDocRef = FirebaseFirestore.getInstance().collection(
                 COLLECTION_ACTIVITIES
@@ -170,16 +151,13 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                     }
                 }
             }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
     }
 
     override fun getUsers(): LiveData<List<User>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataUsers = MutableLiveData<List<User>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_USER)
                 .get()
@@ -202,18 +180,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataUsers
     }
 
     override fun getActivities(): LiveData<List<Activity>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataActivities = MutableLiveData<List<Activity>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -240,18 +214,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataActivities
     }
 
     override fun getSearchedActivities(searchQuery: String): LiveData<List<Activity>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataActivities = MutableLiveData<List<Activity>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -277,18 +247,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataActivities
     }
 
     override fun getFollowers(user: User): LiveData<List<User>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val followers = MutableLiveData<List<User>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_USER)
                 .get()
@@ -313,18 +279,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return followers
     }
 
     override fun getFollowings(user: User): LiveData<List<User>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val followings = MutableLiveData<List<User>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_USER)
                 .get()
@@ -349,18 +311,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Followings couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return followings
     }
 
     override fun getFollowingActivities(user: User): LiveData<List<Activity>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataActivities = MutableLiveData<List<Activity>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -387,18 +345,14 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataActivities
     }
 
     override fun getSearchedUsers(searchQuery: String): LiveData<List<User>> {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
         val liveDataUsers = MutableLiveData<List<User>>()
 
-        firebaseUser?.let {
+        firebaseUser.let {
             val db = FirebaseFirestore.getInstance()
             db.collection(COLLECTION_USER)
                 .get()
@@ -425,10 +379,7 @@ class DefaultLyveRepository @Inject constructor() : LyveRepository {
                         Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
                     }
                 }
-        } ?: run {
-            Log.e(TAG, FirebaseAuthInvalidUserException(AUTHENTICATION, INVALID_USER).toString())
         }
-
         return liveDataUsers
     }
 }

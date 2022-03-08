@@ -3,16 +3,16 @@ package com.lyvetech.lyve.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.repositories.DefaultLyveRepository
+import com.lyvetech.lyve.repositories.LyveRepository
+import com.lyvetech.lyve.repositories.LyveRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FollowViewModel @Inject constructor(
-    private val lyveRepository: DefaultLyveRepository
+    private val lyveRepository: LyveRepository
 ) : ViewModel() {
     val currentUser = lyveRepository.getCurrentUser()
 

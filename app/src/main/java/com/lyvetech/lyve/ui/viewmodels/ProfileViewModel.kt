@@ -1,13 +1,14 @@
 package com.lyvetech.lyve.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.lyvetech.lyve.repositories.DefaultLyveRepository
+import com.lyvetech.lyve.repositories.LyveRepository
+import com.lyvetech.lyve.repositories.LyveRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val lyveRepository: DefaultLyveRepository
+    private val lyveRepository: LyveRepository
 ) : ViewModel() {
     val currentUser = lyveRepository.getCurrentUser()
 }
