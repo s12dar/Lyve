@@ -1,385 +1,237 @@
 package com.lyvetech.lyve.repositories
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.toObjects
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_BY_ID
+import com.lyvetech.lyve.utils.Constants.ACTIVITY_TITLE
 import com.lyvetech.lyve.utils.Constants.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.Constants.COLLECTION_USER
+import com.lyvetech.lyve.utils.Constants.NAME
+import com.lyvetech.lyve.utils.Constants.UID
+import com.lyvetech.lyve.utils.Resource
+import com.lyvetech.lyve.utils.SimpleResource
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class LyveRepositoryImpl(
-    private val auth: FirebaseAuth,
-    private val firebaseUser: FirebaseUser
+
+class LyveRepositoryImpl @Inject constructor(
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth,
 ) : LyveRepository {
 
-    private val TAG = LyveRepositoryImpl::class.qualifiedName
-
-    companion object {
-        const val AUTHENTICATION = "Authentication"
-        const val INVALID_USER = "Invalid User"
-    }
-
-    override suspend fun createUser(user: User) {
-        firebaseUser.let {
-            val userBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
+    override suspend fun createUser(user: User): SimpleResource =
+        suspendCoroutine { cont ->
             val userDocRef: DocumentReference =
-                FirebaseFirestore.getInstance().collection(COLLECTION_USER).document(user.uid)
+                firebaseFirestore.collection(COLLECTION_USER).document(user.uid)
 
-            userBatch.set(userDocRef, user.toMap())
-            userBatch.commit().addOnCompleteListener { task ->
-                run {
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User created successfully")
-                    } else {
-                        Log.e(TAG, "User couldn't be created ${task.exception}")
+            firebaseFirestore.batch()
+                .set(userDocRef, user.toMap())
+                .commit().addOnSuccessListener {
+                    cont.resume(Resource.Success(Unit))
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
+                }
+        }
+
+    override suspend fun getCurrentUser(): Resource<User> =
+        suspendCoroutine { cont ->
+            firebaseAuth.currentUser?.let { firebaseUser ->
+                val userDocRef: DocumentReference =
+                    firebaseFirestore.collection(COLLECTION_USER)
+                        .document(firebaseUser.uid)
+                var currentUser: User? = User()
+
+                firebaseFirestore.runTransaction { transaction ->
+                    val userDoc: DocumentSnapshot = transaction.get(userDocRef)
+
+                    userDoc.toObject(User::class.java)?.let { user ->
+                        if (user.email != firebaseUser.email) {
+                            user.email = firebaseUser.email.toString()
+                        }
+                        if (user.email.isEmpty()) {
+                            user.email = firebaseUser.email.toString()
+                        }
+
+                        currentUser = user
+                        transaction.set(userDocRef, user.toMap(), SetOptions.merge())
                     }
+                }.addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(currentUser))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(currentUser, e.toString()))
+                    }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
             }
         }
-    }
-
-    override fun getCurrentUser(): LiveData<User> {
-        val liveDataUser = MutableLiveData<User>()
-
-        firebaseUser.let {
-            val userDocRef: DocumentReference =
-                FirebaseFirestore.getInstance().collection(COLLECTION_USER)
-                    .document(it.uid)
-
-            FirebaseFirestore.getInstance().runTransaction { transaction ->
-                val userDoc: DocumentSnapshot = transaction.get(userDocRef)
-
-                val currentUser: User? = userDoc.toObject(User::class.java)
-                currentUser?.let { user ->
-
-                    if (user.email != it.email) {
-                        user.email = it.email.toString()
-                    }
-                    if (user.email.isEmpty()) {
-                        user.email = it.email.toString()
-                    }
-
-                    transaction.set(userDocRef, user.toMap(), SetOptions.merge())
-                    liveDataUser.postValue(user)
-                } ?: run {
-                    null
-                }
-            }.addOnCompleteListener { task ->
-                run {
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User data retrieved successfully")
-                    } else {
-                        Log.e(TAG, "User data couldn't be retrieved: ${task.exception}")
-                    }
-                }
-            }
-        }
-        return liveDataUser
-    }
 
     override suspend fun createActivity(
         activity: Activity,
         user: User
-    ) {
-        firebaseUser.let {
-            val activityBatch: WriteBatch = FirebaseFirestore.getInstance().batch()
-            val activityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-                COLLECTION_ACTIVITIES
-            ).document(activity.aid)
-            val subActivityDocRef: DocumentReference = FirebaseFirestore.getInstance().collection(
-                COLLECTION_USER
-            ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+    ): SimpleResource = suspendCoroutine { cont ->
+        val activityDocRef: DocumentReference = firebaseFirestore.collection(
+            COLLECTION_ACTIVITIES
+        ).document(activity.aid)
+        val subActivityDocRef: DocumentReference = firebaseFirestore.collection(
+            COLLECTION_USER
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
 
-            activityBatch.set(activityDocRef, activity.toMap())
-            activityBatch.set(subActivityDocRef, activity.toUserActivityMap())
-
-            activityBatch.commit().addOnCompleteListener { task ->
-                run {
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Activity created successfully")
-                    } else {
-                        Log.e(TAG, "Activity couldn't be created: ${task.exception}")
-                    }
-                }
+        firebaseFirestore.batch().set(activityDocRef, activity.toMap())
+            .set(subActivityDocRef, activity.toUserActivityMap())
+            .commit().addOnSuccessListener {
+                cont.resume(Resource.Success(Unit))
+            }.addOnFailureListener {
+                cont.resume(Resource.Error(null, it.toString()))
             }
-        }
     }
 
-    override suspend fun updateUser(user: User) {
-        firebaseUser.let {
-            val userBatch = FirebaseFirestore.getInstance().batch()
-            val userDocRef = FirebaseFirestore.getInstance().collection(
+    override suspend fun updateUser(user: User): SimpleResource =
+        suspendCoroutine { cont ->
+            val activityDocRef = firebaseFirestore.collection(
                 COLLECTION_USER
             ).document(user.uid)
 
-            userBatch.update(userDocRef, user.toMap())
-            userBatch.commit().addOnCompleteListener { task ->
-                run {
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User updated successfully")
-                    } else {
-                        Log.e(TAG, "User couldn't be updated: ${task.exception}")
-                    }
+            firebaseFirestore.batch().update(activityDocRef, user.toMap())
+                .commit()
+                .addOnSuccessListener {
+                    cont.resume(Resource.Success(Unit))
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
-            }
+
         }
-    }
 
     override suspend fun updateActivity(
         activity: Activity,
         user: User,
-    ) {
-        firebaseUser.let {
-            val activityBatch = FirebaseFirestore.getInstance().batch()
-            val activityDocRef = FirebaseFirestore.getInstance().collection(
-                COLLECTION_ACTIVITIES
-            ).document(activity.aid)
+    ): SimpleResource = suspendCoroutine { cont ->
+        val activityDocRef = firebaseFirestore.collection(
+            COLLECTION_ACTIVITIES
+        ).document(activity.aid)
 
-            activityBatch.update(activityDocRef, activity.toMap())
-            activityBatch.commit().addOnCompleteListener { task ->
-                run {
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Activity updated successfully")
-                    } else {
-                        Log.e(TAG, "Activity couldn't be updated: ${task.exception}")
-                    }
-                }
+        firebaseFirestore.batch().update(activityDocRef, activity.toMap())
+            .commit()
+            .addOnSuccessListener {
+                cont.resume(Resource.Success(Unit))
+            }.addOnFailureListener {
+                cont.resume(Resource.Error(null, it.toString()))
             }
-        }
+
     }
 
-    override fun getUsers(): LiveData<List<User>> {
-        val liveDataUsers = MutableLiveData<List<User>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_USER)
+    override suspend fun getUsers(): Resource<List<User>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_USER)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Users are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val usersList = mutableListOf<User>()
-                        for (document in querySnapshot) {
-                            usersList.add(document.toObject(User::class.java))
-                        }
-                        liveDataUsers.value = usersList
-
-                        Log.d(TAG, "Users retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return liveDataUsers
-    }
 
-    override fun getActivities(): LiveData<List<Activity>> {
-        val liveDataActivities = MutableLiveData<List<Activity>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_ACTIVITIES)
+    override suspend fun getActivities(): Resource<List<Activity>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_ACTIVITIES)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Activities are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val activitiesList = mutableListOf<Activity>()
-                        for (document in querySnapshot) {
-                            if ((document.toObject(Activity::class.java).acCreatedByID !=
-                                        firebaseUser.uid)
-                            ) {
-                                activitiesList.add(document.toObject(Activity::class.java))
-                            }
-                        }
-                        liveDataActivities.value = activitiesList
-
-                        Log.d(TAG, "Activities retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return liveDataActivities
-    }
 
-    override fun getSearchedActivities(searchQuery: String): LiveData<List<Activity>> {
-        val liveDataActivities = MutableLiveData<List<Activity>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_ACTIVITIES)
+    override suspend fun getSearchedActivities(searchQuery: String): Resource<List<Activity>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_ACTIVITIES)
+                .whereEqualTo(ACTIVITY_TITLE, searchQuery)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Activities are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-                        val activitiesList = mutableListOf<Activity>()
-                        for (document in querySnapshot) {
-                            if (searchQuery.isNotEmpty() && document.toObject(Activity::class.java)
-                                    .acTitle.lowercase().contains(searchQuery.lowercase())
-                            ) {
-                                activitiesList.add(document.toObject(Activity::class.java))
-                            }
-                        }
-                        liveDataActivities.value = activitiesList
-
-                        Log.d(TAG, "Activities retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return liveDataActivities
-    }
 
-    override fun getFollowers(user: User): LiveData<List<User>> {
-        val followers = MutableLiveData<List<User>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_USER)
+    override suspend fun getFollowers(user: User): Resource<List<User>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_USER)
+                .whereArrayContainsAny(UID, user.followers)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Users are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val usersList = mutableListOf<User>()
-                        for (document in querySnapshot) {
-                            if (document.toObject(User::class.java).uid in user.followers) {
-                                usersList.add(document.toObject(User::class.java))
-                            }
-                        }
-                        followers.value = usersList
-
-                        Log.d(TAG, "Users retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return followers
-    }
 
-    override fun getFollowings(user: User): LiveData<List<User>> {
-        val followings = MutableLiveData<List<User>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_USER)
+    override suspend fun getFollowings(user: User): Resource<List<User>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_USER)
+                .whereArrayContainsAny(UID, user.followings)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Users are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val usersList = mutableListOf<User>()
-                        for (document in querySnapshot) {
-                            if (document.toObject(User::class.java).uid in user.followings) {
-                                usersList.add(document.toObject(User::class.java))
-                            }
-                        }
-                        followings.value = usersList
-
-                        Log.d(TAG, "Followings retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Followings couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return followings
-    }
 
-    override fun getFollowingActivities(user: User): LiveData<List<Activity>> {
-        val liveDataActivities = MutableLiveData<List<Activity>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_ACTIVITIES)
+    override suspend fun getFollowingActivities(user: User): Resource<List<Activity>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_ACTIVITIES)
+                .whereArrayContainsAny(ACTIVITY_CREATED_BY_ID, user.followings)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Activities are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val activitiesList = mutableListOf<Activity>()
-                        for (document in querySnapshot) {
-                            if ((document.toObject(Activity::class.java).acCreatedByID in
-                                        user.followings)
-                            ) {
-                                activitiesList.add(document.toObject(Activity::class.java))
-                            }
-                        }
-                        liveDataActivities.value = activitiesList
-
-                        Log.d(TAG, "Activities retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Activities couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return liveDataActivities
-    }
 
-    override fun getSearchedUsers(searchQuery: String): LiveData<List<User>> {
-        val liveDataUsers = MutableLiveData<List<User>>()
-
-        firebaseUser.let {
-            val db = FirebaseFirestore.getInstance()
-            db.collection(COLLECTION_USER)
+    override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(COLLECTION_USER)
+                .whereEqualTo(NAME, searchQuery)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot?> ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        if (querySnapshot == null || querySnapshot.isEmpty) {
-                            Log.e(TAG, "Users are null, retrying...")
-                            return@addOnCompleteListener
-                        }
-
-                        val usersList = mutableListOf<User>()
-                        for (document in querySnapshot) {
-                            if (searchQuery.isNotEmpty() && (document.toObject(User::class.java))
-                                    .name.lowercase().contains(searchQuery.lowercase())
-                            ) {
-                                usersList.add(document.toObject(User::class.java))
-                            }
-                        }
-                        liveDataUsers.value = usersList
-
-                        Log.d(TAG, "Users retrieved successfully")
-                    } else {
-                        Log.e(TAG, "Users couldn't be retrieved: ${task.exception}")
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
                 }
         }
-        return liveDataUsers
-    }
 }

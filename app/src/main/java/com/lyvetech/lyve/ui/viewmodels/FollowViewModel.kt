@@ -13,17 +13,17 @@ import javax.inject.Inject
 class FollowViewModel @Inject constructor(
     private val lyveRepository: LyveRepository
 ) : ViewModel() {
-    val currentUser = lyveRepository.getCurrentUser()
-
-    fun getFollowings(user: User): LiveData<List<User>> {
-        return lyveRepository.getFollowings(user)
-    }
-
-    fun getFollowers(user: User): LiveData<List<User>> {
-        return lyveRepository.getFollowers(user)
-    }
-
-    fun updateUser(user: User) = viewModelScope.launch {
-        lyveRepository.updateUser(user)
-    }
+//    val currentUser = lyveRepository.getCurrentUser()
+//
+//    fun getFollowings(user: User): LiveData<List<User>> {
+//        return lyveRepository.getFollowings(user)
+//    }
+//
+//    fun getFollowers(user: User): LiveData<List<User>> {
+//        return lyveRepository.getFollowers(user)
+//    }
+//
+//    fun updateUser(user: User) = viewModelScope.launch {
+//        lyveRepository.updateUser(user)
+//    }
 }
