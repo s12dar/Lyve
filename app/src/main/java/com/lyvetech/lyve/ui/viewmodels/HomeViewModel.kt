@@ -1,45 +1,184 @@
 package com.lyvetech.lyve.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.lyvetech.lyve.di.IoDispatcher
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.repositories.LyveRepository
+import com.lyvetech.lyve.utils.Resource
+import com.lyvetech.lyve.utils.SimpleResource
+import com.lyvetech.lyve.utils.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val lyveRepository: LyveRepository
+    private val repository: LyveRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
+    private val coroutineContext = viewModelScope.coroutineContext + ioDispatcher
+
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading = _isLoading as LiveData<Boolean>
+    val isLoading = _isLoading.asLiveData()
 
-    private val _dataFetchedSt
+    private val _dataFetchState = MutableLiveData<Boolean>()
+    val dataFetchState = _dataFetchState.asLiveData()
 
-    private val _allActivities = MutableLiveData<List<Activity>>()
-    val allActivities = _allActivities as LiveData<List<Activity>>
+    fun getCurrentUser(): LiveData<Resource<User>> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
 
-    fun getFollowingActivities(user: User): LiveData<LIs>
+            when (val result = repository.getCurrentUser()) {
+                is Resource.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        _dataFetchState.value = true
+                        emit(Resource.Success(data = result.data))
+                    } else {
+                        _dataFetchState.value = false
+                        emit(
+                            Resource.Error(
+                                data = result.data,
+                                "Current user is not found, it is null"
+                            )
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    _isLoading.value = true
+                    _dataFetchState.value = false
+                    emit(Resource.Loading(data = result.data))
+                }
+            }
+        }
 
+    fun getActivities(): LiveData<Resource<List<Activity>>> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
 
+            when (val result = repository.getActivities()) {
+                is Resource.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        _dataFetchState.value = true
+                        emit(Resource.Success(data = result.data))
+                    } else {
+                        _dataFetchState.value = false
+                        emit(
+                            Resource.Error(
+                                data = result.data,
+                                message = "No activities found, it's null"
+                            )
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    _isLoading.value = true
+                    _dataFetchState.value = false
+                    emit(Resource.Loading(data = result.data))
+                }
+            }
+        }
 
+    fun getUsers(): LiveData<Resource<List<User>>> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
 
+            when (val result = repository.getUsers()) {
+                is Resource.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        _dataFetchState.value = true
+                        emit(Resource.Success(data = result.data))
+                    } else {
+                        _dataFetchState.value = false
+                        emit(
+                            Resource.Error(
+                                data = result.data,
+                                message = "No Users found, it's null"
+                            )
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    _isLoading.value = true
+                    _dataFetchState.value = false
+                    emit(Resource.Loading(data = result.data))
+                }
+            }
+        }
 
+    fun createActivity(activity: Activity, user: User): LiveData<SimpleResource> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
 
-    val currentUser = lyveRepository.getCurrentUser()
-//    val allActivities = lyveRepository.getActivities()
-    val allUsers = lyveRepository.getUsers()
+            when (val result = repository.createActivity(activity, user)) {
+                is Resource.Success -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = true
+                    emit(Resource.Success(Unit))
+                }
+                is Resource.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    _isLoading.value = true
+                    _dataFetchState.value = false
+                    emit(Resource.Loading(Unit))
+                }
 
-    fun createActivity(activity: Activity, user: User) = viewModelScope.launch {
-        lyveRepository.createActivity(activity, user)
-    }
+            }
+        }
 
-//    fun getFollowingActivities(user: User): LiveData<List<Activity>> {
-//        return lyveRepository.getFollowingActivities(user)
-//    }
+    fun getFollowingActivities(user: User): LiveData<Resource<List<Activity>>> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
+
+            when (val result = repository.getFollowingActivities(user)) {
+                is Resource.Success -> {
+                    _isLoading.value = false
+                    if (result.data != null) {
+                        _dataFetchState.value = true
+                        emit(Resource.Success(data = result.data))
+                    } else {
+                        _dataFetchState.value = false
+                        emit(
+                            Resource.Error(
+                                data = result.data,
+                                message = "No activities found, it's null"
+                            )
+                        )
+                    }
+                }
+                is Resource.Error -> {
+                    _isLoading.value = false
+                    _dataFetchState.value = false
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    _isLoading.value = true
+                    _dataFetchState.value = false
+                    emit(Resource.Loading(data = result.data))
+                }
+            }
+        }
 }

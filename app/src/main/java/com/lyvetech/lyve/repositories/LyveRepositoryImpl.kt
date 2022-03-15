@@ -1,7 +1,10 @@
 package com.lyvetech.lyve.repositories
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObjects
 import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
@@ -37,7 +40,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getCurrentUser(): Resource<User> =
+    override suspend fun getCurrentUser(): Resource<User?> =
         suspendCoroutine { cont ->
             firebaseAuth.currentUser?.let { firebaseUser ->
                 val userDocRef: DocumentReference =
@@ -125,7 +128,7 @@ class LyveRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getUsers(): Resource<List<User>> =
+    override suspend fun getUsers(): Resource<List<User>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_USER)
                 .get()
@@ -140,7 +143,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getActivities(): Resource<List<Activity>> =
+    override suspend fun getActivities(): Resource<List<Activity>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -155,7 +158,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getSearchedActivities(searchQuery: String): Resource<List<Activity>> =
+    override suspend fun getSearchedActivities(searchQuery: String): Resource<List<Activity>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
                 .whereEqualTo(ACTIVITY_TITLE, searchQuery)
@@ -171,7 +174,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getFollowers(user: User): Resource<List<User>> =
+    override suspend fun getFollowers(user: User): Resource<List<User>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_USER)
                 .whereArrayContainsAny(UID, user.followers)
@@ -187,7 +190,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getFollowings(user: User): Resource<List<User>> =
+    override suspend fun getFollowings(user: User): Resource<List<User>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_USER)
                 .whereArrayContainsAny(UID, user.followings)
@@ -203,7 +206,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getFollowingActivities(user: User): Resource<List<Activity>> =
+    override suspend fun getFollowingActivities(user: User): Resource<List<Activity>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
                 .whereArrayContainsAny(ACTIVITY_CREATED_BY_ID, user.followings)
@@ -219,7 +222,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>> =
+    override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_USER)
                 .whereEqualTo(NAME, searchQuery)
