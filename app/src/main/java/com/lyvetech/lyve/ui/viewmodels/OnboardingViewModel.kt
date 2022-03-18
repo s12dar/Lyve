@@ -22,8 +22,8 @@ class OnboardingViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading = _isLoading.asLiveData()
 
-    private val _dataFetchState = MutableLiveData<Boolean>()
-    val dataFetchState = _dataFetchState.asLiveData()
+    private val _dataState = MutableLiveData<Boolean>()
+    val dataState = _dataState.asLiveData()
 
     fun createUser(user: User): LiveData<SimpleResource> =
         liveData(coroutineContext) {
@@ -32,17 +32,17 @@ class OnboardingViewModel @Inject constructor(
             when (val result = repository.createUser(user)) {
                 is Resource.Success -> {
                     _isLoading.value = false
-                    _dataFetchState.value = true
+                    _dataState.value = true
                     emit(Resource.Success(Unit))
                 }
                 is Resource.Error -> {
                     _isLoading.value = false
-                    _dataFetchState.value = false
+                    _dataState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
                     _isLoading.value = true
-                    _dataFetchState.value = false
+                    _dataState.value = false
                     emit(Resource.Loading(Unit))
                 }
             }
