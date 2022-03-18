@@ -22,6 +22,7 @@ import com.lyvetech.lyve.ui.viewmodels.OnboardingViewModel
 import com.lyvetech.lyve.utils.Constants.KEY_EMAIL
 import com.lyvetech.lyve.utils.Constants.KEY_PASSWORD
 import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -136,5 +137,13 @@ class OnboardingFragment : Fragment() {
     private fun assignUserDetails() {
         mUser.email = sharedPref.getString(KEY_EMAIL, "").toString()
         mUser.pass = sharedPref.getString(KEY_PASSWORD, "").toString()
+    }
+
+    private fun createUser(user: User) {
+        viewModel.createUser(user = user).observe(viewLifecycleOwner) { result ->
+            if (result is Resource.Success) {
+                findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.lyvetech.lyve.utils.SimpleResource
 interface LyveRepository {
 
     suspend fun createUser(user: User): SimpleResource
+    suspend fun loginUser(user: User): SimpleResource
     suspend fun createActivity(activity: Activity, user: User): SimpleResource
     suspend fun updateUser(user: User): SimpleResource
     suspend fun updateActivity(activity: Activity, user: User): SimpleResource

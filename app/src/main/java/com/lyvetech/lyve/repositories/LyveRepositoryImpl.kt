@@ -28,12 +28,27 @@ class LyveRepositoryImpl @Inject constructor(
 
     override suspend fun createUser(user: User): SimpleResource =
         suspendCoroutine { cont ->
-            val userDocRef: DocumentReference =
-                firebaseFirestore.collection(COLLECTION_USER).document(user.uid)
+            firebaseAuth.createUserWithEmailAndPassword(user.email, user.pass)
+                .addOnSuccessListener {
+                    val userDocRef: DocumentReference =
+                        firebaseFirestore.collection(COLLECTION_USER).document(user.uid)
 
-            firebaseFirestore.batch()
-                .set(userDocRef, user.toMap())
-                .commit().addOnSuccessListener {
+                    firebaseFirestore.batch()
+                        .set(userDocRef, user.toMap())
+                        .commit().addOnSuccessListener {
+                            cont.resume(Resource.Success(Unit))
+                        }.addOnFailureListener {
+                            cont.resume(Resource.Error(null, it.toString()))
+                        }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
+                }
+        }
+
+    override suspend fun loginUser(user: User): SimpleResource =
+        suspendCoroutine { cont ->
+            firebaseAuth.signInWithEmailAndPassword(user.email, user.pass)
+                .addOnSuccessListener {
                     cont.resume(Resource.Success(Unit))
                 }.addOnFailureListener {
                     cont.resume(Resource.Error(null, it.toString()))
