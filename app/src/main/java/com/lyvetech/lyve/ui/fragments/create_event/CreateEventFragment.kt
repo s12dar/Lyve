@@ -164,7 +164,19 @@ class CreateEventFragment : Fragment() {
         getCurrentUser()
         initializePlaces()
         manageBindingViews()
+        assignTextWatchers()
         manageTopBarNavigation()
+    }
+
+    private fun assignTextWatchers() {
+        with(binding) {
+            etName.addTextChangedListener(watcher)
+            etDesc.addTextChangedListener(watcher)
+            etStartTime.addTextChangedListener(watcher)
+            etStartDate.addTextChangedListener(watcher)
+            etLocation.addTextChangedListener(watcher)
+            etEventUrl.addTextChangedListener(watcher)
+        }
     }
 
     private fun manageTopBarNavigation() {
@@ -269,29 +281,29 @@ class CreateEventFragment : Fragment() {
                     when (result) {
                         is Resource.Success -> {
                             mEvent.acImgRefs = result.data.toString()
-                            createEvent(mEvent, mUser)
-                                .observe(viewLifecycleOwner) { eventResult ->
-                                    when (eventResult) {
-                                        is Resource.Success -> {
-                                            findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
-                                            (activity as OnboardingUtils).hideProgressBar()
-                                        }
-                                        is Resource.Error -> {
-                                            (activity as OnboardingUtils).hideProgressBar()
-                                            Snackbar.make(
-                                                requireView(),
-                                                "Oops, something went wrong!",
-                                                Snackbar.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                        else -> {}
-                                    }
-                                }
                         }
                         else -> {}
                     }
                 }
             }
+            createEvent(mEvent, mUser)
+                .observe(viewLifecycleOwner) { eventResult ->
+                    when (eventResult) {
+                        is Resource.Success -> {
+                            findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
+                            (activity as OnboardingUtils).hideProgressBar()
+                        }
+                        is Resource.Error -> {
+                            (activity as OnboardingUtils).hideProgressBar()
+                            Snackbar.make(
+                                requireView(),
+                                "Oops, something went wrong!",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {}
+                    }
+                }
         }
     }
 
@@ -416,6 +428,7 @@ class CreateEventFragment : Fragment() {
         val eventDate = binding.etStartDate.text.toString()
         val eventTime = binding.etStartTime.text.toString()
         val eventLocation = binding.etLocation.text.toString()
+        val eventUrl = binding.etEventUrl.text.toString()
         val isEventOnline = binding.swOnlineEvent.isChecked
 
         if (eventName.isBlank()) {
@@ -438,10 +451,18 @@ class CreateEventFragment : Fragment() {
                 getString(R.string.err_empty_field)
             return
         }
-        if (eventLocation.isBlank()) {
-            binding.tilLocation.error =
-                getString(R.string.err_empty_field)
-            return
+        if (isEventOnline) {
+            if (eventUrl.isBlank()) {
+                binding.tilEventUrl.error =
+                    getString(R.string.err_empty_field)
+                return
+            }
+        } else {
+            if (eventLocation.isBlank()) {
+                binding.tilLocation.error =
+                    getString(R.string.err_empty_field)
+                return
+            }
         }
 
         mEvent.apply {
