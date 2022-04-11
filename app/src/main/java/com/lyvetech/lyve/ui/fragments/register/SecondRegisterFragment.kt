@@ -1,24 +1,20 @@
-package com.lyvetech.lyve.ui.fragments.onboarding
+package com.lyvetech.lyve.ui.fragments.register
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentOnboardingBinding
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.OnboardingViewModel
 import com.lyvetech.lyve.utils.Constants.KEY_EMAIL
 import com.lyvetech.lyve.utils.Constants.KEY_PASSWORD
 import com.lyvetech.lyve.utils.OnboardingUtils
@@ -27,12 +23,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OnboardingFragment : Fragment() {
+class SecondRegisterFragment : Fragment() {
 
-    private val viewModel: OnboardingViewModel by viewModels()
-    private val TAG = OnboardingFragment::class.qualifiedName
+    private val viewModel: RegisterViewModel by viewModels()
     private lateinit var binding: FragmentOnboardingBinding
-    private lateinit var mAuth: FirebaseAuth
     private var mUser = User()
 
     @Inject
@@ -61,7 +55,6 @@ class OnboardingFragment : Fragment() {
                 editable === binding.etInput.editableText -> {
                     val email = binding.etInput.text.toString().trim()
                     if (email.isBlank()) {
-                        // Setting the error on the layout is important to make the properties work. Kotlin synthetics are being used here
                         binding.tilInput.error =
                             getString(R.string.err_empty_field)
                     } else {
@@ -73,9 +66,8 @@ class OnboardingFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mAuth = Firebase.auth
-        assignUserDetails()
         super.onCreate(savedInstanceState)
+        assignUserDetails()
     }
 
     override fun onCreateView(
@@ -89,61 +81,52 @@ class OnboardingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            etInput.addTextChangedListener(watcher)
 
-        binding.etInput.addTextChangedListener(watcher)
+            btnCreateAccount.setOnClickListener {
+                val name = etInput.text.toString().trim()
+                if (name.isEmpty()) {
+                    tilInput.error =
+                        getString(R.string.err_invalid_email)
+                    return@setOnClickListener
+                } else {
+                    mUser.name = name
+                }
 
-        binding.btnCreateAccount.setOnClickListener {
-            val name = binding.etInput.text.toString().trim()
-
-            if (name.isEmpty()) {
-                binding.tilInput.error =
-                    getString(R.string.err_invalid_email)
-                return@setOnClickListener
-            } else {
-                mUser.name = name
+                createAccount()
             }
-            createAccount()
         }
     }
 
     private fun createAccount() {
-        (activity as OnboardingUtils).showProgressBar()
-
-        val user = mUser
-        mAuth.createUserWithEmailAndPassword(user.email, user.pass)
-            .addOnCompleteListener(this.requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "createUserWithEmail:success")
-
-                    val firebaseUser = FirebaseAuth.getInstance().currentUser
-
-                    if (firebaseUser != null) {
-                        user.uid = FirebaseAuth.getInstance().currentUser!!.uid
+        with(viewModel) {
+            createUser(mUser).observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        (activity as OnboardingUtils).showProgressBar()
                     }
-                    viewModel.createUser(user)
-
-                    findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
-                    (activity as OnboardingUtils).hideProgressBar()
-                } else {
-                    Log.e(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        context, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    is Resource.Success -> {
+                        (activity as OnboardingUtils).hideProgressBar()
+                        findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
+                    }
+                    is Resource.Error -> {
+                        (activity as OnboardingUtils).hideProgressBar()
+                        Snackbar.make(
+                            requireView(),
+                            "Oops, something went wrong!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
+        }
     }
 
     private fun assignUserDetails() {
-        mUser.email = sharedPref.getString(KEY_EMAIL, "").toString()
-        mUser.pass = sharedPref.getString(KEY_PASSWORD, "").toString()
-    }
-
-    private fun createUser(user: User) {
-        viewModel.createUser(user = user).observe(viewLifecycleOwner) { result ->
-            if (result is Resource.Success) {
-                findNavController().navigate(R.id.action_onboardingFragment_to_homeFragment)
-            }
+        mUser.apply {
+            email = sharedPref.getString(KEY_EMAIL, "").toString()
+            pass = sharedPref.getString(KEY_PASSWORD, "").toString()
         }
     }
 }

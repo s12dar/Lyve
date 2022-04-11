@@ -1,7 +1,7 @@
 package com.lyvetech.lyve
 
 import android.app.Application
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 import dagger.hilt.android.HiltAndroidApp
 
@@ -13,7 +13,7 @@ class LyveApplication : Application() {
     }
 
     var currentUser: User? = null
-    var activity: Activity? = null
+    var event: Event? = null
     var allActivities = mutableListOf<User>()
     var allUsers = mutableListOf<User>()
 

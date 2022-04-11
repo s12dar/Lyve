@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.ui.fragments.onboarding
+package com.lyvetech.lyve.ui.fragments.splash
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,25 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentSplashBinding
-import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
 
-    private var TAG = SplashFragment::class.qualifiedName
     private lateinit var binding: FragmentSplashBinding
-    private lateinit var mAuth: FirebaseAuth
-    private var mUser: FirebaseUser? = null
+
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
-        mUser = mAuth.currentUser
     }
 
     override fun onCreateView(
@@ -36,26 +33,14 @@ class SplashFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentSplashBinding.inflate(inflater, container, false)
-
         // Deal with app bar from main activity
-        (activity as OnboardingUtils?)?.hideTopAppBar()
-
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-
-//        viewModel.currentUser.observe(viewLifecycleOwner) {
-//            Log.d(TAG, "hi SERDARCHIK")
-//            LyveApplication.mInstance.currentUser = it
-//
-//            viewModel.allActivities.observe(viewLifecycleOwner) { activities ->
-//                LyveApplication.mInstance.allActivities = activities as MutableList<Activity?>?
-//            }
-//        }
-
-        Handler(Looper.getMainLooper()).postDelayed({ goToNextScreen() }, 5000)
+        Handler(Looper.getMainLooper())
+            .postDelayed({ goToNextScreen() }, 2000)
     }
 
     private fun goToNextScreen() {
@@ -63,7 +48,7 @@ class SplashFragment : Fragment() {
             return
         }
 
-        if (mUser != null) {
+        if (auth.currentUser != null) {
             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
         } else {
             findNavController().navigate(R.id.action_splashFragment_to_welcomeFragment)

@@ -1,18 +1,17 @@
 package com.lyvetech.lyve.repositories
 
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObjects
-import com.lyvetech.lyve.models.Activity
+import com.google.firebase.storage.FirebaseStorage
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_BY_ID
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_TITLE
 import com.lyvetech.lyve.utils.Constants.COLLECTION_ACTIVITIES
 import com.lyvetech.lyve.utils.Constants.COLLECTION_USER
-import com.lyvetech.lyve.utils.Constants.NAME
 import com.lyvetech.lyve.utils.Constants.UID
 import com.lyvetech.lyve.utils.Resource
 import com.lyvetech.lyve.utils.SimpleResource
@@ -24,12 +23,14 @@ import kotlin.coroutines.suspendCoroutine
 class LyveRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth,
+    private val firebaseStorage: FirebaseStorage
 ) : LyveRepository {
 
     override suspend fun createUser(user: User): SimpleResource =
         suspendCoroutine { cont ->
             firebaseAuth.createUserWithEmailAndPassword(user.email, user.pass)
                 .addOnSuccessListener {
+                    user.uid = firebaseAuth.currentUser?.uid.toString()
                     val userDocRef: DocumentReference =
                         firebaseFirestore.collection(COLLECTION_USER).document(user.uid)
 
@@ -45,9 +46,9 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun loginUser(user: User): SimpleResource =
+    override suspend fun loginUser(email: String, pass: String): SimpleResource =
         suspendCoroutine { cont ->
-            firebaseAuth.signInWithEmailAndPassword(user.email, user.pass)
+            firebaseAuth.signInWithEmailAndPassword(email, pass)
                 .addOnSuccessListener {
                     cont.resume(Resource.Success(Unit))
                 }.addOnFailureListener {
@@ -90,18 +91,18 @@ class LyveRepositoryImpl @Inject constructor(
         }
 
     override suspend fun createActivity(
-        activity: Activity,
+        event: Event,
         user: User
     ): SimpleResource = suspendCoroutine { cont ->
         val activityDocRef: DocumentReference = firebaseFirestore.collection(
             COLLECTION_ACTIVITIES
-        ).document(activity.aid)
+        ).document(event.aid)
         val subActivityDocRef: DocumentReference = firebaseFirestore.collection(
             COLLECTION_USER
-        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(activity.aid)
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.aid)
 
-        firebaseFirestore.batch().set(activityDocRef, activity.toMap())
-            .set(subActivityDocRef, activity.toUserActivityMap())
+        firebaseFirestore.batch().set(activityDocRef, event.toMap())
+            .set(subActivityDocRef, event.toUserActivityMap())
             .commit().addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
             }.addOnFailureListener {
@@ -126,14 +127,14 @@ class LyveRepositoryImpl @Inject constructor(
         }
 
     override suspend fun updateActivity(
-        activity: Activity,
+        event: Event,
         user: User,
     ): SimpleResource = suspendCoroutine { cont ->
         val activityDocRef = firebaseFirestore.collection(
             COLLECTION_ACTIVITIES
-        ).document(activity.aid)
+        ).document(event.aid)
 
-        firebaseFirestore.batch().update(activityDocRef, activity.toMap())
+        firebaseFirestore.batch().update(activityDocRef, event.toMap())
             .commit()
             .addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
@@ -158,7 +159,7 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getActivities(): Resource<List<Activity>?> =
+    override suspend fun getActivities(): Resource<List<Event>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
                 .get()
@@ -173,14 +174,21 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getSearchedActivities(searchQuery: String): Resource<List<Activity>?> =
+    override suspend fun getSearchedActivities(searchQuery: String): Resource<List<Event>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
-                .whereEqualTo(ACTIVITY_TITLE, searchQuery)
                 .get()
                 .addOnSuccessListener {
                     try {
-                        cont.resume(Resource.Success(it.toObjects()))
+                        val activitiesList = mutableListOf<Event>()
+                        for (document in it) {
+                            if (searchQuery.isNotEmpty() && document.toObject(Event::class.java)
+                                    .acTitle.lowercase().contains(searchQuery.lowercase())
+                            ) {
+                                activitiesList.add(document.toObject(Event::class.java))
+                            }
+                        }
+                        cont.resume(Resource.Success(activitiesList))
                     } catch (e: Exception) {
                         cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
@@ -221,14 +229,21 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
-    override suspend fun getFollowingActivities(user: User): Resource<List<Activity>?> =
+    override suspend fun getFollowingActivities(user: User): Resource<List<Event>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_ACTIVITIES)
-                .whereArrayContainsAny(ACTIVITY_CREATED_BY_ID, user.followings)
                 .get()
                 .addOnSuccessListener {
                     try {
-                        cont.resume(Resource.Success(it.toObjects()))
+                        val activitiesList = mutableListOf<Event>()
+                        for (document in it) {
+                            if ((document.toObject(Event::class.java).acCreatedByID in
+                                        user.followings)
+                            ) {
+                                activitiesList.add(document.toObject(Event::class.java))
+                            }
+                        }
+                        cont.resume(Resource.Success(activitiesList))
                     } catch (e: Exception) {
                         cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }
@@ -237,14 +252,39 @@ class LyveRepositoryImpl @Inject constructor(
                 }
         }
 
+    override suspend fun getUploadImgUriFromFirebaseStorage(imgUri: Uri): Resource<Uri> =
+        suspendCoroutine { cont ->
+            val fileRef = firebaseStorage.getReference(
+                System.currentTimeMillis().toString()
+            )
+            fileRef.putFile(imgUri).addOnSuccessListener {
+                fileRef.downloadUrl.addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(data = it))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(data = it, message = e.toString()))
+                    }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
+                }
+            }
+        }
+
     override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>?> =
         suspendCoroutine { cont ->
             firebaseFirestore.collection(COLLECTION_USER)
-                .whereEqualTo(NAME, searchQuery)
                 .get()
                 .addOnSuccessListener {
                     try {
-                        cont.resume(Resource.Success(it.toObjects()))
+                        val usersList = mutableListOf<User>()
+                        for (document in it) {
+                            if (searchQuery.isNotEmpty() && document.toObject(User::class.java)
+                                    .name.lowercase().contains(searchQuery.lowercase())
+                            ) {
+                                usersList.add(document.toObject(User::class.java))
+                            }
+                        }
+                        cont.resume(Resource.Success(usersList))
                     } catch (e: Exception) {
                         cont.resume(Resource.Error(it.toObjects(), e.toString()))
                     }

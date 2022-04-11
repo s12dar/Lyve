@@ -1,26 +1,26 @@
-package com.lyvetech.lyve.ui.fragments.onboarding
+package com.lyvetech.lyve.ui.fragments.login
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.snackbar.Snackbar
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentLoginBinding
 import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    private var TAG = LoginFragment::class.qualifiedName
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var maAuth: FirebaseAuth
 
     // Validate each field in the form with the same watcher
     private val watcher = object : TextWatcher {
@@ -68,7 +68,6 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        maAuth = Firebase.auth
     }
 
     override fun onCreateView(
@@ -83,45 +82,52 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.etLoginEmail.addTextChangedListener(watcher)
-        binding.etLoginPassword.addTextChangedListener(watcher)
+        binding.apply {
+            etLoginEmail.addTextChangedListener(watcher)
+            etLoginPassword.addTextChangedListener(watcher)
 
-        binding.btnSignIn.setOnClickListener {
-            val email = binding.etLoginEmail.text.toString().trim()
-            val password = binding.etLoginPassword.text.toString().trim()
+            btnSignIn.setOnClickListener {
+                val email = etLoginEmail.text.toString().trim()
+                val password = etLoginPassword.text.toString().trim()
 
-            if (email.isEmpty()) {
-                binding.tilLoginEmail.error =
-                    getString(R.string.err_empty_field)
-                return@setOnClickListener
-            }
-            if (password.isEmpty()) {
-                binding.tilLoginPassword.error =
-                    getString(R.string.err_empty_field)
-                return@setOnClickListener
+                if (email.isEmpty() || password.isEmpty()) {
+                    tilLoginEmail.error =
+                        getString(R.string.err_empty_field)
+                    return@setOnClickListener
+                }
+                loginUser(email, password)
             }
 
-            signIn(email, password)
-        }
-
-        binding.tvJoinUs.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            tvJoinUs.setOnClickListener {
+                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            }
         }
     }
 
-    private fun signIn(
+    private fun loginUser(
         email: String,
-        password: String
+        pass: String
     ) {
-        (activity as OnboardingUtils).showProgressBar()
-        maAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this.requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    (activity as OnboardingUtils).hideProgressBar()
-                } else {
-                    Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
+        with(viewModel) {
+            loginUser(email, pass).observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        (activity as OnboardingUtils).showProgressBar()
+                    }
+                    is Resource.Success -> {
+                        (activity as OnboardingUtils).hideProgressBar()
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    }
+                    is Resource.Error -> {
+                        (activity as OnboardingUtils).showProgressBar()
+                        Snackbar.make(
+                            requireView(),
+                            "Oops, something went wrong!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
+        }
     }
 }

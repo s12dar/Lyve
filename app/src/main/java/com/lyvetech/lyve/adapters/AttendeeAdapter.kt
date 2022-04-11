@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.AttendeeItemBinding
-import com.lyvetech.lyve.listeners.OnClickListener
+import com.lyvetech.lyve.listeners.HomeInfoListener
 import com.lyvetech.lyve.models.User
 
 class AttendeeAdapter(
     private val attendeesList: List<User>, private val context: Context,
-    private val onClickListener: OnClickListener
+    private val homeInfoListener: HomeInfoListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -24,7 +24,7 @@ class AttendeeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val user = attendeesList[position]
-        (holder as AttendeeAdapter.AttendeeViewHolder).bind(user, onClickListener)
+        (holder as AttendeeAdapter.AttendeeViewHolder).bind(user, homeInfoListener)
     }
 
     override fun getItemCount(): Int {
@@ -39,7 +39,7 @@ class AttendeeAdapter(
         private val attendeeName = binding.tvNameAttendee
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(attendee: User, onUserClickListener: OnClickListener) {
+        fun bind(attendee: User, homeInfoListener: HomeInfoListener) {
             attendeeName.text = attendee.name
 
             Glide.with(context)
@@ -47,7 +47,7 @@ class AttendeeAdapter(
                 .into(binding.ivAvatarAttendee)
 
             binding.root.setOnClickListener {
-                onUserClickListener.onUserClicked(attendee)
+                homeInfoListener.onUserClicked(attendee)
             }
         }
     }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.WelcomeFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.welcome.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.LoginFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.RegisterFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.main.HomeFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -100,10 +100,17 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.SplashFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -123,11 +130,11 @@
     </fragment>
     <fragment
         android:id="@+id/homeInfoFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.main.HomeInfoFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.home_info.HomeInfoFragment"
         android:label="HomeInfoFragment" />
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.OnboardingFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.register.SecondRegisterFragment"
         android:label="OnboardingFragment">
         <action
             android:id="@+id/action_onboardingFragment_to_homeFragment"
@@ -151,7 +158,20 @@
         tools:layout="@layout/fragment_following" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.onboarding.ProfileFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.create_event.CreateEventFragment"
+        android:label="Create event"
+        tools:layout="@layout/fragment_create_event" >
+        <action
+            android:id="@+id/action_createEventFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 </navigation>

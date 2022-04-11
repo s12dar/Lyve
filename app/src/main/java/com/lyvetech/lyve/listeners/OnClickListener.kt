@@ -1,11 +1,11 @@
 package com.lyvetech.lyve.listeners
 
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 
 interface OnClickListener {
-    fun onPostClicked(activity: Activity)
-    fun onPostLongClicked(activity: Activity)
+    fun onPostClicked(event: Event)
+    fun onPostLongClicked(event: Event)
     fun onUserClicked(user: User)
     fun onUserFollowBtnClicked(user: User, isChecked: Boolean)
 }
