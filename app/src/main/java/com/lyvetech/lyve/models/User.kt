@@ -2,6 +2,7 @@ package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
+import com.lyvetech.lyve.utils.Constants.ATTENDINGS
 import com.lyvetech.lyve.utils.Constants.AVATAR
 import com.lyvetech.lyve.utils.Constants.BIO
 import com.lyvetech.lyve.utils.Constants.CREATED_AT
@@ -13,7 +14,6 @@ import com.lyvetech.lyve.utils.Constants.NAME
 import com.lyvetech.lyve.utils.Constants.PASS
 import com.lyvetech.lyve.utils.Constants.UID
 import java.util.*
-import kotlin.collections.HashMap
 
 class User {
 
@@ -47,6 +47,8 @@ class User {
     @get: PropertyName(FOLLOWINGS)
     var followings = mutableListOf<String>()
 
+    @get: PropertyName(ATTENDINGS)
+    var attendings = mutableListOf<Basket>()
 
     fun toMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
@@ -59,6 +61,7 @@ class User {
         map[IS_VERIFIED] = isVerified
         map[FOLLOWERS] = followers
         map[FOLLOWINGS] = followings
+        map[ATTENDINGS] = attendings
 
         return map
     }

@@ -1,7 +1,6 @@
 package com.lyvetech.lyve.ui.viewmodels
 
-import org.junit.Assert.*
-import org.junit.Before
+import com.lyvetech.lyve.ui.fragments.home.HomeViewModel
 
 class HomeViewModelTest {
 

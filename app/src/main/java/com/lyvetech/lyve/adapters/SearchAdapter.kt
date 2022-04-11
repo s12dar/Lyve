@@ -10,13 +10,13 @@ import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.databinding.UserItemBinding
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.User
 
 class SearchAdapter(
     private val currentUser: User, private val usersList: List<User>,
-    private val activityList: List<Activity>, private val globalViewType: Int,
+    private val eventList: List<Event>, private val globalViewType: Int,
     private val context: Context, private val onClickListener: OnClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,7 +40,7 @@ class SearchAdapter(
 
     override fun getItemCount(): Int {
         if (globalViewType == VIEW_TYPE_ONE) {
-            activityList.let {
+            eventList.let {
                 return it.size
             }
         }
@@ -53,7 +53,7 @@ class SearchAdapter(
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (globalViewType == VIEW_TYPE_ONE) {
-            val activity = activityList[position]
+            val activity = eventList[position]
             (holder as SearchEventsViewHolder).bind(activity, onClickListener)
         } else {
             val user = usersList[position]
@@ -70,17 +70,17 @@ class SearchAdapter(
         private val activityParticipants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(activity: Activity, onPostClickListener: OnClickListener) {
-            activityTitle.text = activity.acTitle
-            activityLocation.text = activity.acLocation
-            activityDate.text = activity.acTime
-            activityParticipants.text = activity.acParticipants.size.toString()
+        fun bind(event: Event, onPostClickListener: OnClickListener) {
+            activityTitle.text = event.acTitle
+            activityLocation.text = event.acLocation.keys.first()
+            activityDate.text = event.acTime
+            activityParticipants.text = event.acParticipants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
-            if (activity.acImgRefs.isNotEmpty()) {
+            if (event.acImgRefs.isNotEmpty()) {
                 Glide.with(context)
                     .asBitmap()
-                    .load(activity.acImgRefs.toUri())
+                    .load(event.acImgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(context)
@@ -89,7 +89,7 @@ class SearchAdapter(
             }
 
             binding.root.setOnClickListener {
-                onPostClickListener.onPostClicked(activity)
+                onPostClickListener.onPostClicked(event)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.ui.fragments.main
+package com.lyvetech.lyve.ui.fragments.home_info
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,35 +17,24 @@ import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.AttendeeAdapter
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.listeners.HomeInfoListener
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.HomeInfoViewModel
 import com.lyvetech.lyve.utils.OnboardingUtils
-import com.lyvetech.lyve.listeners.OnClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeInfoFragment : Fragment(), OnClickListener {
+class HomeInfoFragment : Fragment(), HomeInfoListener {
 
-    private val TAG = HomeInfoFragment::class.qualifiedName
     private val viewModel: HomeInfoViewModel by viewModels()
     private lateinit var binding: FragmentHomeInfoBinding
-    private var mActivity = Activity()
+    private var mEvent = Event()
     private var mUser: User = User()
     private var mUsers = mutableListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        LyveApplication.mInstance.currentUser?.let {
-            mUser = it
-        }
-        LyveApplication.mInstance.activity?.let {
-            mActivity = it
-        }
-        LyveApplication.mInstance.allUsers.let {
-            mUsers = it
-        }
+        getApplicationLevelData()
     }
 
     override fun onCreateView(
@@ -54,23 +43,21 @@ class HomeInfoFragment : Fragment(), OnClickListener {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeInfoBinding.inflate(inflater, container, false)
+        (activity as OnboardingUtils).showTopAppBar("Event")
+        (activity as OnboardingUtils).hideBottomNav()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set Top App bar
-        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Event")
         manageTopBarNavigation()
         subscribeUI()
-
         binding.btnAttend.setOnClickListener { manageEventAttending() }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeUI() {
-        mActivity.let {
+        mEvent.let {
             binding.tvTitle.text = it.acTitle
             binding.tvDate.text = it.acTime
             binding.tvAboutContent.text = it.acDesc
@@ -114,12 +101,13 @@ class HomeInfoFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun isUserAlreadyAttending() = mActivity.acParticipants.contains(mUser.uid)
+    private fun isUserAlreadyAttending() =
+        mEvent.acParticipants.contains(mUser.uid)
 
     private fun manageEventAttending() {
         if (!isUserAlreadyAttending()) {
-            mActivity.acParticipants.add(mUser.uid)
-            viewModel.updateActivity(mActivity, mUser)
+            mEvent.acParticipants.add(mUser.uid)
+            viewModel.updateActivity(mEvent, mUser)
             showAlertMessage(true)
         } else {
             showAlertMessage(false)
@@ -143,24 +131,27 @@ class HomeInfoFragment : Fragment(), OnClickListener {
     }
 
     private fun manageTopBarNavigation() {
-        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+        (requireActivity().findViewById<View>(R.id.toolbar)
+                as MaterialToolbar).setNavigationOnClickListener {
             findNavController().navigateUp()
         }
     }
 
-    override fun onPostClicked(activity: Activity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPostLongClicked(activity: Activity) {
-        TODO("Not yet implemented")
+    private fun getApplicationLevelData() {
+        LyveApplication.mInstance.apply {
+            currentUser?.let {
+                mUser = it
+            }
+            event?.let {
+                mEvent = it
+            }
+            allUsers.let {
+                mUsers = it
+            }
+        }
     }
 
     override fun onUserClicked(user: User) {
-        TODO("Not yet implemented")
-    }
 
-    override fun onUserFollowBtnClicked(user: User, isChecked: Boolean) {
-        TODO("Not yet implemented")
     }
 }

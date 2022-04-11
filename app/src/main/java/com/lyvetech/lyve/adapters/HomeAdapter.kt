@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
-import com.lyvetech.lyve.models.Activity
-import com.lyvetech.lyve.listeners.OnClickListener
+import com.lyvetech.lyve.listeners.HomeListener
+import com.lyvetech.lyve.models.Event
 
 class HomeAdapter(
-    private val activityList: List<Activity>, private val context: Context,
-    private val onPostClickListener: OnClickListener
+    private val eventList: List<Event>, private val context: Context,
+    private val homeListener: HomeListener
 ) :
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
@@ -24,12 +24,12 @@ class HomeAdapter(
         return HomeViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = activityList.size
+    override fun getItemCount(): Int = eventList.size
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val activity = activityList[position]
-        holder.bind(activity, onPostClickListener)
+        val activity = eventList[position]
+        holder.bind(activity, homeListener)
     }
 
     inner class HomeViewHolder(private val binding: ActivityItemBinding) :
@@ -41,17 +41,17 @@ class HomeAdapter(
         private val activityParticipants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(activity: Activity, onPostClickListener: OnClickListener) {
-            activityTitle.text = activity.acTitle
-            activityLocation.text = activity.acLocation
-            activityDate.text = activity.acTime
-            activityParticipants.text = activity.acParticipants.size.toString()
+        fun bind(event: Event, homeListener: HomeListener) {
+            activityTitle.text = event.acTitle
+            activityLocation.text = event.acLocation.keys.first()
+            activityDate.text = event.acTime
+            activityParticipants.text = event.acParticipants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
-            if (activity.acImgRefs.isNotEmpty()) {
+            if (event.acImgRefs.isNotEmpty()) {
                 Glide.with(context)
                     .asBitmap()
-                    .load(activity.acImgRefs.toUri())
+                    .load(event.acImgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(context)
@@ -60,7 +60,7 @@ class HomeAdapter(
             }
 
             binding.root.setOnClickListener {
-                onPostClickListener.onPostClicked(activity)
+                homeListener.onPostClicked(event)
             }
         }
     }

@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/textColorSecondary</item>
         <item name="colorOnSecondary">@color/black_dinner</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Font family. -->
         <item name="fontFamily">@font/poppins_regular</item>
         <!-- Text color. -->
@@ -19,6 +19,27 @@
         <item name="android:textSize">@dimen/twelve</item>
         <!-- Bottom sheet -->
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
+
+    <!-- Headline1 text. -->
+    <style name="TextAppearance.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black_dinner</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Headline2 text. -->
+    <style name="TextAppearance.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black_dinner</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Headline2 text. -->
+    <style name="TextAppearance.Headline3" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/black_dinner</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- Main Button. -->
@@ -88,7 +109,7 @@
     <!-- Special images -->
     <style name="specialRoundedImageView">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">10%</item>
+        <item name="cornerSize">5%</item>
     </style>
 
     <!-- Rounded images -->

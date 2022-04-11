@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.ui.fragments.onboarding
+package com.lyvetech.lyve.ui.fragments.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,38 +51,46 @@ class WelcomeFragment : Fragment() {
             }
         })
 
-        binding.btnSignIn.setOnClickListener {
-            findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
-        }
-
-        binding.btnSignUp.setOnClickListener {
-            findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+        binding.apply {
+            btnSignIn.setOnClickListener {
+                findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
+            }
+            btnSignUp.setOnClickListener {
+                findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+            }
         }
     }
 
     private fun setUpWelcomeAdapter() {
-        val welcomeItemList = mutableListOf<WelcomeItem>()
-
         val firstPage = WelcomeItem()
-        firstPage.setTitle(resources.getString(R.string.txt_title_welcome))
-        firstPage.setDescription(resources.getString(R.string.txt_desc_welcome))
-        firstPage.setImage(R.drawable.lyve)
+            .apply {
+                setTitle(resources.getString(R.string.txt_title_welcome))
+                setDescription(resources.getString(R.string.txt_desc_welcome))
+                setImage(R.drawable.lyve)
+            }
 
         val secondPage = WelcomeItem()
-        secondPage.setTitle(resources.getString(R.string.txt_title_welcome2))
-        secondPage.setDescription(resources.getString(R.string.txt_desc_welcome2))
-        secondPage.setImage(R.drawable.lyve)
+            .apply {
+                setTitle(resources.getString(R.string.txt_title_welcome2))
+                setDescription(resources.getString(R.string.txt_desc_welcome2))
+                setImage(R.drawable.lyve)
+            }
 
         val thirdPage = WelcomeItem()
-        thirdPage.setTitle(resources.getString(R.string.txt_title_welcome3))
-        thirdPage.setDescription(resources.getString(R.string.txt_desc_welcome3))
-        thirdPage.setImage(R.drawable.lyve)
+            .apply {
+                setTitle(resources.getString(R.string.txt_title_welcome3))
+                setDescription(resources.getString(R.string.txt_desc_welcome3))
+                setImage(R.drawable.lyve)
+            }
 
-        welcomeItemList.add(firstPage)
-        welcomeItemList.add(secondPage)
-        welcomeItemList.add(thirdPage)
-
-        welcomeAdapter = WelcomeAdapter(requireContext(), welcomeItemList)
+        val welcomeItemList = mutableListOf<WelcomeItem>()
+            .apply {
+                add(firstPage)
+                add(secondPage)
+                add(thirdPage)
+            }
+        welcomeAdapter =
+            WelcomeAdapter(requireContext(), welcomeItemList)
     }
 
     private fun setUpIndicators() {

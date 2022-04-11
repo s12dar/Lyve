@@ -1,23 +1,23 @@
 package com.lyvetech.lyve.ui.fragments.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.MaterialToolbar
-import com.lyvetech.lyve.R
+import com.google.android.material.snackbar.Snackbar
+import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.adapters.SearchAdapter
 import com.lyvetech.lyve.databinding.FragmentSearchBinding
 import com.lyvetech.lyve.listeners.OnClickListener
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.SearchViewModel
 import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,19 +45,12 @@ class SearchFragment : Fragment(), OnClickListener {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-
-        viewModel.currentUser.observe(viewLifecycleOwner) {
-            mUser = it
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set Top App bar
-        (activity as OnboardingUtils?)?.showAndSetTopAppBar("Search")
-        manageTopBarNavigation()
+        getCurrentUser()
         manageSearch(VIEW_TYPE_ONE)
         manageChipGroup()
     }
@@ -82,33 +75,73 @@ class SearchFragment : Fragment(), OnClickListener {
     private fun handlingSearchProcedure(viewType: Int, searchQuery: String) {
         when (viewType) {
             VIEW_TYPE_ONE -> {
-                viewModel.searchActivities(searchQuery).observe(viewLifecycleOwner) {
-                    binding.rvSearch.apply {
-                        adapter = SearchAdapter(
-                            mUser,
-                            mutableListOf(User()),
-                            it,
-                            VIEW_TYPE_ONE,
-                            requireContext(),
-                            this@SearchFragment
-                        )
-                        layoutManager = LinearLayoutManager(context)
+                with(viewModel) {
+                    getSearchedActivities(searchQuery).observe(viewLifecycleOwner) { result ->
+                        when (result) {
+                            is Resource.Loading -> {
+                                (activity as OnboardingUtils).showProgressBar()
+                            }
+                            is Resource.Success -> {
+                                (activity as OnboardingUtils).hideProgressBar()
+                                result.data?.let {
+                                    binding.rvSearch.apply {
+                                        adapter = SearchAdapter(
+                                            mUser,
+                                            mutableListOf(User()),
+                                            it,
+                                            VIEW_TYPE_ONE,
+                                            requireContext(),
+                                            this@SearchFragment
+                                        )
+                                        layoutManager = LinearLayoutManager(context)
+                                    }
+                                }
+                            }
+                            is Resource.Error -> {
+                                (activity as OnboardingUtils).hideProgressBar()
+                                Snackbar.make(
+                                    requireView(),
+                                    "Oops, something went wrong!",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
             }
 
             VIEW_TYPE_TWO -> {
-                viewModel.searchUsers(searchQuery).observe(viewLifecycleOwner) {
-                    binding.rvSearch.apply {
-                        adapter = SearchAdapter(
-                            mUser,
-                            it,
-                            mutableListOf(Activity()),
-                            VIEW_TYPE_TWO,
-                            requireContext(),
-                            this@SearchFragment
-                        )
-                        layoutManager = LinearLayoutManager(context)
+                with(viewModel) {
+                    getSearchedUsers(searchQuery).observe(viewLifecycleOwner) { result ->
+                        when (result) {
+                            is Resource.Loading -> {
+                                (activity as OnboardingUtils).showProgressBar()
+                            }
+                            is Resource.Success -> {
+                                (activity as OnboardingUtils).hideProgressBar()
+                                result.data?.let {
+                                    binding.rvSearch.apply {
+                                        adapter = SearchAdapter(
+                                            mUser,
+                                            it,
+                                            mutableListOf(Event()),
+                                            VIEW_TYPE_TWO,
+                                            requireContext(),
+                                            this@SearchFragment
+                                        )
+                                        layoutManager = LinearLayoutManager(context)
+                                    }
+                                }
+                            }
+                            is Resource.Error -> {
+                                (activity as OnboardingUtils).hideProgressBar()
+                                Snackbar.make(
+                                    requireView(),
+                                    "Oops, something went wrong!",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
             }
@@ -125,15 +158,25 @@ class SearchFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun manageTopBarNavigation() {
-        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
-            findNavController().navigateUp()
+    private fun getCurrentUser() {
+        with(viewModel) {
+            getCurrentUser().observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        result.data?.let {
+                            mUser = result.data
+                            LyveApplication.mInstance.currentUser = mUser
+                        }
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 
-    override fun onPostClicked(activity: Activity) {}
+    override fun onPostClicked(event: Event) {}
 
-    override fun onPostLongClicked(activity: Activity) {}
+    override fun onPostLongClicked(event: Event) {}
 
     override fun onUserClicked(user: User) {}
 
@@ -146,7 +189,19 @@ class SearchFragment : Fragment(), OnClickListener {
             user.followers.remove(mUser.uid)
         }
 
-        viewModel.updateUser(mUser)
-        viewModel.updateUser(user)
+        with(viewModel) {
+            updateUser(mUser).observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Resource.Success -> Log.d(TAG, "user is updated")
+                    else -> {}
+                }
+            }
+            updateUser(user).observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is Resource.Success -> Log.d(TAG, "user is updated")
+                    else -> {}
+                }
+            }
+        }
     }
 }

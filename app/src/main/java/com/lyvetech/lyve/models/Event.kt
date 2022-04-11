@@ -1,6 +1,7 @@
 package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.PropertyName
 import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_AT
 import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_BY_ID
@@ -13,9 +14,8 @@ import com.lyvetech.lyve.utils.Constants.ACTIVITY_TIME
 import com.lyvetech.lyve.utils.Constants.ACTIVITY_TITLE
 import com.lyvetech.lyve.utils.Constants.ACTIVITY_TYPE
 import java.util.*
-import kotlin.collections.HashMap
 
-class Activity {
+class Event {
 
     @get:PropertyName(ACTIVITY_ID)
     var aid = ""
@@ -27,7 +27,7 @@ class Activity {
     var acDesc = ""
 
     @get:PropertyName(ACTIVITY_TYPE)
-    var acType = ""
+    var isOnline = false
 
     @get:PropertyName(ACTIVITY_IMG_REFS)
     var acImgRefs = ""
@@ -39,19 +39,19 @@ class Activity {
     var acTime = ""
 
     @get:PropertyName(ACTIVITY_LOCATION)
-    var acLocation = ""
+    var acLocation = HashMap<String, GeoPoint>()
 
     @get:PropertyName(ACTIVITY_CREATED_BY_ID)
-    var acCreatedByID = ""
+    var acCreatedByID: String? = ""
 
     @get:PropertyName(ACTIVITY_PARTICIPANTS)
     var acParticipants = mutableListOf<String>()
 
-    fun toMap(): Map<String, Any> {
-        val map = HashMap<String, Any>()
+    fun toMap(): HashMap<String, Any?> {
+        val map = HashMap<String, Any?>()
         map[ACTIVITY_TITLE] = acTitle
         map[ACTIVITY_DESC] = acDesc
-        map[ACTIVITY_TYPE] = acType
+        map[ACTIVITY_TYPE] = isOnline
         map[ACTIVITY_CREATED_AT] = acCreatedAt
         map[ACTIVITY_TIME] = acTime
         map[ACTIVITY_LOCATION] = acLocation
@@ -67,7 +67,7 @@ class Activity {
         val map = HashMap<String, Any>()
         map[ACTIVITY_ID] = aid
         map[ACTIVITY_TITLE] = acTitle
-        map[ACTIVITY_TYPE] = acType
+        map[ACTIVITY_TYPE] = isOnline
         map[ACTIVITY_LOCATION] = acLocation
 
         return map

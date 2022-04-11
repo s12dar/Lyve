@@ -1,8 +1,7 @@
-package com.lyvetech.lyve.ui.viewmodels
+package com.lyvetech.lyve.ui.fragments.follow
 
 import androidx.lifecycle.*
 import com.lyvetech.lyve.di.IoDispatcher
-import com.lyvetech.lyve.models.Activity
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.utils.Resource
@@ -13,7 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+class FollowViewModel @Inject constructor(
     private val repository: LyveRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -59,11 +58,11 @@ class SearchViewModel @Inject constructor(
             }
         }
 
-    fun getSearchedUsers(searchQuery: String): LiveData<Resource<List<User>>> =
+    fun getFollowings(user: User): LiveData<Resource<List<User>>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.getSearchedUsers(searchQuery)) {
+            when (val result = repository.getFollowings(user)) {
                 is Resource.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
@@ -74,7 +73,7 @@ class SearchViewModel @Inject constructor(
                         emit(
                             Resource.Error(
                                 data = result.data,
-                                message = "No Users found, it's null"
+                                message = "No Followings found, it's null"
                             )
                         )
                     }
@@ -92,11 +91,11 @@ class SearchViewModel @Inject constructor(
             }
         }
 
-    fun getSearchedActivities(searchQuery: String): LiveData<Resource<List<Activity>>> =
+    fun getFollowers(user: User): LiveData<Resource<List<User>>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.getSearchedActivities(searchQuery)) {
+            when (val result = repository.getFollowings(user)) {
                 is Resource.Success -> {
                     _isLoading.value = false
                     if (result.data != null) {
@@ -107,7 +106,7 @@ class SearchViewModel @Inject constructor(
                         emit(
                             Resource.Error(
                                 data = result.data,
-                                message = "No activities found, it's null"
+                                message = "No Followers found, it's null"
                             )
                         )
                     }

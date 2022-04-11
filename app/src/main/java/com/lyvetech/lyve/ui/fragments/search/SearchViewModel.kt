@@ -1,29 +1,26 @@
-package com.lyvetech.lyve.ui.viewmodels
+package com.lyvetech.lyve.ui.fragments.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.lyvetech.lyve.di.IoDispatcher
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.utils.Resource
 import com.lyvetech.lyve.utils.SimpleResource
-import com.lyvetech.lyve.utils.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
-class FollowViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val repository: LyveRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val coroutineContext = viewModelScope.coroutineContext + ioDispatcher
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading = _isLoading.asLiveData()
-
-    private val _dataFetchState = MutableLiveData<Boolean>()
-    val dataFetchState = _dataFetchState.asLiveData()
 
     fun getCurrentUser(): LiveData<Resource<User>> =
         liveData(coroutineContext) {
@@ -31,12 +28,9 @@ class FollowViewModel @Inject constructor(
 
             when (val result = repository.getCurrentUser()) {
                 is Resource.Success -> {
-                    _isLoading.value = false
                     if (result.data != null) {
-                        _dataFetchState.value = true
                         emit(Resource.Success(data = result.data))
                     } else {
-                        _dataFetchState.value = false
                         emit(
                             Resource.Error(
                                 data = result.data,
@@ -46,79 +40,61 @@ class FollowViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
-                    _isLoading.value = true
-                    _dataFetchState.value = false
                     emit(Resource.Loading(data = result.data))
                 }
             }
         }
 
-    fun getFollowings(user: User): LiveData<Resource<List<User>>> =
+    fun getSearchedUsers(searchQuery: String): LiveData<Resource<List<User>>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.getFollowings(user)) {
+            when (val result = repository.getSearchedUsers(searchQuery)) {
                 is Resource.Success -> {
-                    _isLoading.value = false
                     if (result.data != null) {
-                        _dataFetchState.value = true
                         emit(Resource.Success(data = result.data))
                     } else {
-                        _dataFetchState.value = false
                         emit(
                             Resource.Error(
                                 data = result.data,
-                                message = "No Followings found, it's null"
+                                message = "No Users found, it's null"
                             )
                         )
                     }
                 }
                 is Resource.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
-                    _isLoading.value = true
-                    _dataFetchState.value = false
                     emit(Resource.Loading(data = result.data))
                 }
             }
         }
 
-    fun getFollowers(user: User): LiveData<Resource<List<User>>> =
+    fun getSearchedActivities(searchQuery: String): LiveData<Resource<List<Event>>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.getFollowings(user)) {
+            when (val result = repository.getSearchedActivities(searchQuery)) {
                 is Resource.Success -> {
-                    _isLoading.value = false
                     if (result.data != null) {
-                        _dataFetchState.value = true
                         emit(Resource.Success(data = result.data))
                     } else {
-                        _dataFetchState.value = false
                         emit(
                             Resource.Error(
                                 data = result.data,
-                                message = "No Followers found, it's null"
+                                message = "No activities found, it's null"
                             )
                         )
                     }
                 }
                 is Resource.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
-                    _isLoading.value = true
-                    _dataFetchState.value = false
                     emit(Resource.Loading(data = result.data))
                 }
             }
@@ -130,21 +106,14 @@ class FollowViewModel @Inject constructor(
 
             when (val result = repository.updateUser(user)) {
                 is Resource.Success -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = true
                     emit(Resource.Success(Unit))
                 }
                 is Resource.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
-                    _isLoading.value = true
-                    _dataFetchState.value = false
                     emit(Resource.Loading(Unit))
                 }
-
             }
         }
 }

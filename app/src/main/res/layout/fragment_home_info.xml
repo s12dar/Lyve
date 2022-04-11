@@ -14,9 +14,9 @@
             android:id="@+id/iv_ac"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="56dp"
             android:scaleType="centerCrop"
             android:src="@drawable/lyve"
-            android:layout_marginTop="56dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="percent"
             app:layout_constraintHeight_percent="0.3"
@@ -163,8 +163,8 @@
             android:layout_height="@dimen/card_special_image_width"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/in_row_padding"
@@ -202,10 +202,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             android:text="@string/txt_attendees_activity"
             android:textSize="@dimen/subtitle_sixteen"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_line_3" />
 
@@ -214,8 +214,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_attendees" />
 

@@ -7,15 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.adapters.FollowAdapter
 import com.lyvetech.lyve.databinding.FragmentFollowingBinding
 import com.lyvetech.lyve.listeners.OnClickListener
-import com.lyvetech.lyve.models.Activity
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
-import com.lyvetech.lyve.ui.viewmodels.FollowViewModel
 import com.lyvetech.lyve.utils.Constants.BUNDLE_FOLLOWER
 import com.lyvetech.lyve.utils.Constants.BUNDLE_FOLLOWING
 import com.lyvetech.lyve.utils.Constants.BUNDLE_KEY
@@ -59,58 +56,58 @@ class FollowFragment : Fragment(), OnClickListener {
     }
 
     private fun subscribeUI() {
-        viewModel.currentUser.observe(viewLifecycleOwner) { user ->
-            mUser = user
-
-            if (mArgument == BUNDLE_FOLLOWING) {
-                // Set Top App bar
-                viewModel.getFollowings(user).observe(viewLifecycleOwner) { followings ->
-                    mFollowings = followings as MutableList<User>
-                    binding.rvFollow.apply {
-                        adapter = FollowAdapter(
-                            mUser,
-                            mFollowings,
-                            requireContext(),
-                            this@FollowFragment
-                        )
-                        layoutManager = LinearLayoutManager(context)
-                    }
-                }
-            } else if (mArgument == BUNDLE_FOLLOWER) {
-                // Set Top App bar
-                viewModel.getFollowers(user).observe(viewLifecycleOwner) { followers ->
-                    mFollowers = followers as MutableList<User>
-                    binding.rvFollow.apply {
-                        adapter = FollowAdapter(
-                            mUser,
-                            mFollowers,
-                            requireContext(),
-                            this@FollowFragment
-                        )
-                        layoutManager = LinearLayoutManager(context)
-                    }
-                }
-            }
-        }
+//        viewModel.currentUser.observe(viewLifecycleOwner) { user ->
+//            mUser = user
+//
+//            if (mArgument == BUNDLE_FOLLOWING) {
+//                // Set Top App bar
+//                viewModel.getFollowings(user).observe(viewLifecycleOwner) { followings ->
+//                    mFollowings = followings as MutableList<User>
+//                    binding.rvFollow.apply {
+//                        adapter = FollowAdapter(
+//                            mUser,
+//                            mFollowings,
+//                            requireContext(),
+//                            this@FollowFragment
+//                        )
+//                        layoutManager = LinearLayoutManager(context)
+//                    }
+//                }
+//            } else if (mArgument == BUNDLE_FOLLOWER) {
+//                // Set Top App bar
+//                viewModel.getFollowers(user).observe(viewLifecycleOwner) { followers ->
+//                    mFollowers = followers as MutableList<User>
+//                    binding.rvFollow.apply {
+//                        adapter = FollowAdapter(
+//                            mUser,
+//                            mFollowers,
+//                            requireContext(),
+//                            this@FollowFragment
+//                        )
+//                        layoutManager = LinearLayoutManager(context)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun manageTopAppBar() {
         if (mArgument == BUNDLE_FOLLOWING) {
-            (activity as OnboardingUtils?)?.showAndSetTopAppBar("Following")
+            (activity as OnboardingUtils).showTopAppBar("Followings")
         } else if (mArgument == BUNDLE_FOLLOWER) {
-            (activity as OnboardingUtils?)?.showAndSetTopAppBar("Follower")
+            (activity as OnboardingUtils).showTopAppBar("Followers")
         }
     }
 
     private fun manageTopBarNavigation() {
-        (requireActivity().findViewById<View>(R.id.top_app_bar) as MaterialToolbar).setNavigationOnClickListener {
+        (requireActivity().findViewById<View>(R.id.app_bar_layout) as MaterialToolbar).setNavigationOnClickListener {
             findNavController().navigateUp()
         }
     }
 
-    override fun onPostClicked(activity: Activity) {}
+    override fun onPostClicked(event: Event) {}
 
-    override fun onPostLongClicked(activity: Activity) {}
+    override fun onPostLongClicked(event: Event) {}
 
     override fun onUserClicked(user: User) {}
 

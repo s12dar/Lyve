@@ -15,6 +15,7 @@ object Constants {
     const val IS_VERIFIED = "isVerified"
     const val FOLLOWERS = "followers"
     const val FOLLOWINGS = "followings"
+    const val ATTENDINGS = "attendings"
 
     /**
      * ACTIVITY DATA
@@ -22,7 +23,7 @@ object Constants {
     const val ACTIVITY_ID = "aid"
     const val ACTIVITY_TITLE = "acTitle"
     const val ACTIVITY_DESC = "acDesc"
-    const val ACTIVITY_TYPE = "acType"
+    const val ACTIVITY_TYPE = "isOnline"
     const val ACTIVITY_IMG_REFS = "acImgRefs"
     const val ACTIVITY_CREATED_AT = "acCreatedAt"
     const val ACTIVITY_TIME = "acTime"
@@ -42,6 +43,7 @@ object Constants {
     const val SHARED_PREFERENCES_NAME = "sharedPref"
     const val KEY_EMAIL = "KEY_EMAIL"
     const val KEY_PASSWORD = "KEY_PASSWORD"
+    const val KEY_UID = "uid"
 
     /**
      * BUNDLE CONSTANTS

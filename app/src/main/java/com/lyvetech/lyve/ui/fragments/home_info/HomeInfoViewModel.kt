@@ -1,59 +1,68 @@
-package com.lyvetech.lyve.ui.viewmodels
+package com.lyvetech.lyve.ui.fragments.home_info
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.lyvetech.lyve.di.IoDispatcher
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.repositories.LyveRepository
 import com.lyvetech.lyve.utils.Resource
-import com.lyvetech.lyve.utils.asLiveData
+import com.lyvetech.lyve.utils.SimpleResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeInfoViewModel @Inject constructor(
     private val repository: LyveRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val coroutineContext = viewModelScope.coroutineContext + ioDispatcher
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading = _isLoading.asLiveData()
-
-    private val _dataFetchState = MutableLiveData<Boolean>()
-    val dataFetchState = _dataFetchState.asLiveData()
-
-    fun getCurrentUser(): LiveData<Resource<User>> =
+    fun getActivities(): LiveData<Resource<List<Event>>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.getCurrentUser()) {
+            when (val result = repository.getActivities()) {
                 is Resource.Success -> {
-                    _isLoading.value = false
                     if (result.data != null) {
-                        _dataFetchState.value = true
                         emit(Resource.Success(data = result.data))
                     } else {
-                        _dataFetchState.value = false
                         emit(
                             Resource.Error(
                                 data = result.data,
-                                "Current user is not found, it is null"
+                                message = "No activities found, it's null"
                             )
                         )
                     }
                 }
                 is Resource.Error -> {
-                    _isLoading.value = false
-                    _dataFetchState.value = false
                     emit(Resource.Error(message = result.message))
                 }
                 is Resource.Loading -> {
-                    _isLoading.value = true
-                    _dataFetchState.value = false
                     emit(Resource.Loading(data = result.data))
                 }
+            }
+        }
+
+    fun updateActivity(event: Event, user: User): LiveData<SimpleResource> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
+
+            when (val result = repository.updateActivity(event, user)) {
+                is Resource.Success -> {
+                    emit(Resource.Success(Unit))
+                }
+                is Resource.Error -> {
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    emit(Resource.Loading(Unit))
+                }
+
             }
         }
 }

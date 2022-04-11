@@ -7,19 +7,15 @@
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_exit_24dp"
+    <View
+        android:id="@+id/view_line_1"
+        android:layout_width="48dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/roundedImageView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_vertical_fifteen"
@@ -91,12 +87,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:hint="@string/txt_activity_name"
-            app:boxBackgroundColor="@color/transparent"
-            app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
-            app:boxCornerRadiusBottomStart="@dimen/text_field_corner"
-            app:boxCornerRadiusTopEnd="@dimen/text_field_corner"
-            app:boxCornerRadiusTopStart="@dimen/text_field_corner"
-            app:boxStrokeColor="@color/textColorSecondary"
             app:errorEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintTextColor="@color/black_dinner"
@@ -119,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:hint="@string/txt_activity_date"
+            android:hint="@string/title_date_time"
             app:boxBackgroundColor="@color/transparent"
             app:boxCornerRadiusBottomEnd="@dimen/text_field_corner"
             app:boxCornerRadiusBottomStart="@dimen/text_field_corner"

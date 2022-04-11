@@ -1,4 +1,4 @@
-package com.lyvetech.lyve.ui.viewmodels
+package com.lyvetech.lyve.ui.fragments.profile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
