@@ -69,6 +69,7 @@ class CreateEventFragment : Fragment() {
     private var localImgUri: Uri? = null
     private var mUser = User()
     private var mEvent = Event()
+    private var mDateAndTime = StringBuilder()
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -246,6 +247,7 @@ class CreateEventFragment : Fragment() {
                     editText.setText(eventDateValue.format(formatter))
                     // The last selected date is saved if the dialog is reopened
                     lastDate.set(year, month - 1, day)
+                    mDateAndTime.append(eventDateValue.format(formatter).toString())
                 }
             }
             // Show the picker and wait to reset the variable
@@ -321,6 +323,7 @@ class CreateEventFragment : Fragment() {
         timeDialog.addOnPositiveButtonClickListener {
             val time = "${timeDialog.hour} : ${timeDialog.minute}"
             editText.setText(time)
+            mDateAndTime.append(" $time")
         }
 
         // Show the picker
@@ -447,6 +450,7 @@ class CreateEventFragment : Fragment() {
             acDesc = eventDesc
             isOnline = isEventOnline
             acCreatedAt = Timestamp(Date())
+            acTime = mDateAndTime.toString()
             acCreatedByID = mUser.uid
             acParticipants = mutableListOf()
         }
