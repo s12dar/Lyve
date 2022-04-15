@@ -37,21 +37,21 @@ class HomeAdapter(
 
         private val activityTitle = binding.tvTitleActivity
         private val activityLocation = binding.tvLocation
-        private val activityDate = binding.tvDateAndTime
+        private val activityDateAndTime = binding.tvDateAndTime
         private val activityParticipants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, homeListener: HomeListener) {
-            activityTitle.text = event.acTitle
-            activityLocation.text = event.acLocation.keys.first()
-            activityDate.text = event.acTime
-            activityParticipants.text = event.acParticipants.size.toString()
+            activityTitle.text = event.title
+            activityLocation.text = event.location.keys.first()
+            activityDateAndTime.text = event.time
+            activityParticipants.text = event.participants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
-            if (event.acImgRefs.isNotEmpty()) {
+            if (event.imgRefs.isNotEmpty()) {
                 Glide.with(context)
                     .asBitmap()
-                    .load(event.acImgRefs.toUri())
+                    .load(event.imgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(context)

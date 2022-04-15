@@ -266,7 +266,7 @@ class CreateEventFragment : Fragment() {
                 getImgUri(it).observe(viewLifecycleOwner) { result ->
                     when (result) {
                         is Resource.Success -> {
-                            mEvent.acImgRefs = result.data.toString()
+                            mEvent.imgRefs = result.data.toString()
                             createEvent(mEvent, mUser)
                                 .observe(viewLifecycleOwner) { eventResult ->
                                     when (eventResult) {
@@ -383,7 +383,7 @@ class CreateEventFragment : Fragment() {
                 if (it.resultCode == Activity.RESULT_OK) {
                     val place: Place = Autocomplete.getPlaceFromIntent(it.data)
                     binding.etLocation.setText(place.address)
-                    mEvent.acLocation.put(
+                    mEvent.location.put(
                         place.address,
                         GeoPoint(place.latLng.latitude, place.latLng.longitude)
                     )
@@ -442,13 +442,13 @@ class CreateEventFragment : Fragment() {
         }
 
         mEvent.apply {
-            aid = firestore.collection(Constants.COLLECTION_ACTIVITIES).document().id
-            acTitle = eventName
-            acDesc = eventDesc
+            uid = firestore.collection(Constants.COLLECTION_ACTIVITIES).document().id
+            title = eventName
+            desc = eventDesc
             isOnline = isEventOnline
-            acCreatedAt = Timestamp(Date())
-            acCreatedByID = mUser.uid
-            acParticipants = mutableListOf()
+            createdAt = Timestamp(Date())
+            createdByID = mUser.uid
+            participants = mutableListOf()
         }
         createEvent()
     }

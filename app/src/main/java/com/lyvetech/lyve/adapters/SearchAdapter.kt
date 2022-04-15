@@ -71,16 +71,16 @@ class SearchAdapter(
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, onPostClickListener: OnClickListener) {
-            activityTitle.text = event.acTitle
-            activityLocation.text = event.acLocation.keys.first()
-            activityDate.text = event.acTime
-            activityParticipants.text = event.acParticipants.size.toString()
+            activityTitle.text = event.title
+            activityLocation.text = event.location.keys.first()
+            activityDate.text = event.time
+            activityParticipants.text = event.participants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
-            if (event.acImgRefs.isNotEmpty()) {
+            if (event.imgRefs.isNotEmpty()) {
                 Glide.with(context)
                     .asBitmap()
-                    .load(event.acImgRefs.toUri())
+                    .load(event.imgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(context)
