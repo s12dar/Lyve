@@ -333,7 +333,7 @@ class CreateEventFragment : Fragment() {
                 .build()
 
         timeDialog.addOnPositiveButtonClickListener {
-            val time = "${timeDialog.hour} : ${timeDialog.minute}"
+            val time = "${timeDialog.hour}:${timeDialog.minute}"
             editText.setText(time)
             mDateAndTime.append(" $time")
         }

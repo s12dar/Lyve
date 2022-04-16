@@ -43,7 +43,11 @@ class HomeAdapter(
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, homeListener: HomeListener) {
             activityTitle.text = event.acTitle
-            activityLocation.text = event.acLocation.keys.first()
+            if (event.isOnline) {
+                activityLocation.text = "Online event"
+            } else {
+                activityLocation.text = event.acLocation.keys.first()
+            }
             activityDate.text = event.acTime
             activityParticipants.text = event.acParticipants.size.toString()
 
