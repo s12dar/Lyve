@@ -67,35 +67,60 @@
             app:layout_constraintTop_toBottomOf="@id/tv_date_time" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_icon_online_activity"
+            android:id="@+id/iv_icon_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:visibility="visible"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_online_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_time_desc" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_online_24dp"
+            android:src="@drawable/ic_location_24dp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_time_desc" />
 
         <TextView
-            android:id="@+id/tv_online_activity"
+            android:id="@+id/tv_online"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/txt_online_activity"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon_online_activity"
-            app:layout_constraintStart_toEndOf="@+id/iv_icon_online_activity"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon_online_activity" />
+            android:text="@string/txt_online_event"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon_online"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_online"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_online" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon_location"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_location"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_location" />
 
         <TextView
             android:id="@+id/tv_activity_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_activity_link"
+            android:text="@string/txt_click_to_navigate"
             android:textColor="@color/goodGray"
-            app:layout_constraintStart_toStartOf="@+id/tv_online_activity"
-            app:layout_constraintTop_toBottomOf="@id/tv_online_activity" />
+            app:layout_constraintStart_toStartOf="@+id/tv_online"
+            app:layout_constraintTop_toBottomOf="@id/tv_online" />
 
         <View
             android:id="@+id/view_line_1"

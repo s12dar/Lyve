@@ -43,7 +43,6 @@ import com.google.firebase.firestore.GeoPoint
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentCreateEventBinding
-import com.lyvetech.lyve.di.MainDispatcher
 import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.fragments.home.HomeFragment
@@ -51,7 +50,6 @@ import com.lyvetech.lyve.utils.Constants
 import com.lyvetech.lyve.utils.OnboardingUtils
 import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineDispatcher
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -433,7 +431,7 @@ class CreateEventFragment : Fragment() {
         val eventDate = binding.etStartDate.text.toString()
         val eventTime = binding.etStartTime.text.toString()
         val eventLocation = binding.etLocation.text.toString()
-        val eventUrl = binding.etEventUrl.text.toString()
+        var eventUrl = binding.etEventUrl.text.toString()
         val isEventOnline = binding.swOnlineEvent.isChecked
 
         if (eventName.isBlank()) {
@@ -468,6 +466,10 @@ class CreateEventFragment : Fragment() {
                     getString(R.string.err_empty_field)
                 return
             }
+        }
+
+        if (eventUrl.startsWith("http://") || eventUrl.startsWith("https://")) {
+            eventUrl = "http:// + $eventUrl"
         }
 
         mEvent.apply {

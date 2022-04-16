@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.ActivityItemBinding
 import com.lyvetech.lyve.databinding.UserItemBinding
-import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.listeners.OnClickListener
+import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 
 class SearchAdapter(
@@ -64,17 +64,17 @@ class SearchAdapter(
     inner class SearchEventsViewHolder(private val binding: ActivityItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val activityTitle = binding.tvTitle
-        private val activityLocation = binding.tvLocation
-        private val activityDate = binding.tvDateAndTime
-        private val activityParticipants = binding.tvParticipants
+        private val title = binding.tvTitle
+        private val location = binding.tvLocation
+        private val dateAndTime = binding.tvDateAndTime
+        private val participants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, onPostClickListener: OnClickListener) {
-            activityTitle.text = event.title
-            activityLocation.text = event.location.keys.first()
-            activityDate.text = event.time
-            activityParticipants.text = event.participants.size.toString()
+            title.text = event.title
+            location.text = event.location.keys.first()
+            dateAndTime.text = event.time
+            participants.text = event.participants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
             if (event.imgRefs.isNotEmpty()) {

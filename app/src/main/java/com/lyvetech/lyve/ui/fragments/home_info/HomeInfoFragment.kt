@@ -1,6 +1,8 @@
 package com.lyvetech.lyve.ui.fragments.home_info
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +53,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
         super.onViewCreated(view, savedInstanceState)
         manageTopBarNavigation()
         subscribeUI()
-        binding.btnAttend.setOnClickListener { manageEventAttending() }
+        manageBindingViews()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -60,6 +62,13 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
             binding.tvTitle.text = it.title
             binding.tvDateTime.text = "${it.date}, ${it.time} (GMT+3)"
             binding.tvAboutContent.text = it.desc
+            if (!it.isOnline) {
+                binding.ivIconOnline.visibility = View.INVISIBLE
+                binding.tvOnline.visibility = View.INVISIBLE
+                binding.ivIconLocation.visibility = View.VISIBLE
+                binding.tvLocation.visibility = View.VISIBLE
+                binding.tvLocation.text = it.location.keys.first()
+            }
             for (user in mUsers) {
                 if (user.uid == it.createdByID) {
                     binding.tvHostName.text = user.name
@@ -113,26 +122,35 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
         }
     }
 
-//    private fun showAlertMessage(isOK: Boolean) {
-//        if (isOK) {
-//            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-//                .setTitle(resources.getString(R.string.txt_alert_title_yay))
-//                .setMessage(resources.getString(R.string.txt_alert_desc_yay))
-//                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
-//                .show()
-//        } else {
-//            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-//                .setTitle(resources.getString(R.string.txt_alert_title_oops))
-//                .setMessage(resources.getString(R.string.txt_alert_desc_oops))
-//                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
-//                .show()
-//        }
-//    }
-
     private fun manageTopBarNavigation() {
         (requireActivity().findViewById<View>(R.id.toolbar)
                 as MaterialToolbar).setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun launchGoogleMaps() {
+        val lng = mEvent.location.values.first().longitude
+        val lat = mEvent.location.values.first().latitude
+
+        val googleMapsIntentUri = Uri.parse("google.navigation:q=$lat,$lng")
+        val googleMapsIntent = Intent(Intent.ACTION_VIEW, googleMapsIntentUri)
+
+        googleMapsIntent.setPackage("com.google.android.apps.maps")
+        googleMapsIntent.resolveActivity(requireActivity().packageManager)?.let {
+            startActivity(googleMapsIntent)
+        }
+    }
+
+    private fun launchBrowser() {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mEvent.url))
+        startActivity(browserIntent)
+    }
+
+    private fun manageBindingViews() {
+        with(binding) {
+            tvLocation.setOnClickListener { launchGoogleMaps() }
+            tvOnline.setOnClickListener { launchBrowser() }
         }
     }
 
