@@ -48,7 +48,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -58,22 +58,13 @@
             tools:text="Tuesday, August 21, 2021" />
 
         <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/goodGray"
-            app:layout_constraintStart_toStartOf="@+id/tv_date"
-            app:layout_constraintTop_toBottomOf="@id/tv_date"
-            tools:text="10:00 AM - 11:00 AM GMT+08:00" />
-
-        <TextView
             android:id="@+id/tv_time_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txt_time_desc"
             android:textColor="@color/goodGray"
-            app:layout_constraintStart_toStartOf="@+id/tv_time"
-            app:layout_constraintTop_toBottomOf="@id/tv_time" />
+            app:layout_constraintStart_toStartOf="@+id/tv_date_time"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_time" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon_online_activity"

@@ -58,8 +58,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     private fun subscribeUI() {
         mEvent.let {
             binding.tvTitle.text = it.title
-            binding.tvDate.text = it.time
-            binding.tvTime.text = it.time
+            binding.tvDateTime.text = "${it.date}, ${it.time} (GMT+3)"
             binding.tvAboutContent.text = it.desc
             for (user in mUsers) {
                 if (user.uid == it.createdByID) {
