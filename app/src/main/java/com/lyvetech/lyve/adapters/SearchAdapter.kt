@@ -64,7 +64,7 @@ class SearchAdapter(
     inner class SearchEventsViewHolder(private val binding: ActivityItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val activityTitle = binding.tvTitleActivity
+        private val activityTitle = binding.tvTitle
         private val activityLocation = binding.tvLocation
         private val activityDate = binding.tvDateAndTime
         private val activityParticipants = binding.tvParticipants

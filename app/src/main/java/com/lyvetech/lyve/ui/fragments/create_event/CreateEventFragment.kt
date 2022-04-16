@@ -43,6 +43,7 @@ import com.google.firebase.firestore.GeoPoint
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.databinding.FragmentCreateEventBinding
+import com.lyvetech.lyve.di.MainDispatcher
 import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
 import com.lyvetech.lyve.ui.fragments.home.HomeFragment
@@ -50,6 +51,7 @@ import com.lyvetech.lyve.utils.Constants
 import com.lyvetech.lyve.utils.OnboardingUtils
 import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -69,7 +71,6 @@ class CreateEventFragment : Fragment() {
     private var localImgUri: Uri? = null
     private var mUser = User()
     private var mEvent = Event()
-    private var mDateAndTime = StringBuilder()
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -259,7 +260,7 @@ class CreateEventFragment : Fragment() {
                     editText.setText(eventDateValue.format(formatter))
                     // The last selected date is saved if the dialog is reopened
                     lastDate.set(year, month - 1, day)
-                    mDateAndTime.append(eventDateValue.format(formatter).toString())
+                    mEvent.date = eventDateValue.format(formatter).toString()
                 }
             }
             // Show the picker and wait to reset the variable
@@ -273,7 +274,7 @@ class CreateEventFragment : Fragment() {
         }
     }
 
-    private fun createEvent() {
+    private fun createEventProcess() {
         (activity as OnboardingUtils).showProgressBar()
         with(viewModel) {
             localImgUri?.let {
@@ -281,48 +282,36 @@ class CreateEventFragment : Fragment() {
                     when (result) {
                         is Resource.Success -> {
                             mEvent.imgRefs = result.data.toString()
-                            createEvent(mEvent, mUser)
-                                .observe(viewLifecycleOwner) { eventResult ->
-                                    when (eventResult) {
-                                        is Resource.Success -> {
-                                            findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
-                                            (activity as OnboardingUtils).hideProgressBar()
-                                        }
-                                        is Resource.Error -> {
-                                            (activity as OnboardingUtils).hideProgressBar()
-                                            Snackbar.make(
-                                                requireView(),
-                                                "Oops, something went wrong!",
-                                                Snackbar.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                        else -> {}
-                                    }
-                                }
+                            createEvent()
                         }
                         else -> {}
                     }
+                }
+            } ?: run {
+                createEvent()
+            }
+        }
+    }
+
+    private fun createEvent() {
+        viewModel.createEvent(mEvent, mUser)
+            .observe(viewLifecycleOwner) { eventResult ->
+                when (eventResult) {
+                    is Resource.Success -> {
+                        findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
+                        (activity as OnboardingUtils).hideProgressBar()
+                    }
+                    is Resource.Error -> {
+                        (activity as OnboardingUtils).hideProgressBar()
+                        Snackbar.make(
+                            requireView(),
+                            "Oops, something went wrong!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {}
                 }
             }
-            createEvent(mEvent, mUser)
-                .observe(viewLifecycleOwner) { eventResult ->
-                    when (eventResult) {
-                        is Resource.Success -> {
-                            findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
-                            (activity as OnboardingUtils).hideProgressBar()
-                        }
-                        is Resource.Error -> {
-                            (activity as OnboardingUtils).hideProgressBar()
-                            Snackbar.make(
-                                requireView(),
-                                "Oops, something went wrong!",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        else -> {}
-                    }
-                }
-        }
     }
 
     private fun getCurrentUser() {
@@ -353,7 +342,7 @@ class CreateEventFragment : Fragment() {
         timeDialog.addOnPositiveButtonClickListener {
             val time = "${timeDialog.hour}:${timeDialog.minute}"
             editText.setText(time)
-            mDateAndTime.append(" $time")
+            mEvent.time = time
         }
 
         // Show the picker
@@ -416,10 +405,8 @@ class CreateEventFragment : Fragment() {
                 if (it.resultCode == Activity.RESULT_OK) {
                     val place: Place = Autocomplete.getPlaceFromIntent(it.data)
                     binding.etLocation.setText(place.address)
-                    mEvent.location.put(
-                        place.address,
+                    mEvent.location[place.address] =
                         GeoPoint(place.latLng.latitude, place.latLng.longitude)
-                    )
                 }
             }
     }
@@ -489,9 +476,10 @@ class CreateEventFragment : Fragment() {
             desc = eventDesc
             isOnline = isEventOnline
             createdAt = Timestamp(Date())
+            url = eventUrl
             createdByID = mUser.uid
             participants = mutableListOf()
         }
-        createEvent()
+        createEventProcess()
     }
 }

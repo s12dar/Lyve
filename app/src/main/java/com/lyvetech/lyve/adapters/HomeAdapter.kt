@@ -35,22 +35,21 @@ class HomeAdapter(
     inner class HomeViewHolder(private val binding: ActivityItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val activityTitle = binding.tvTitleActivity
-        private val activityLocation = binding.tvLocation
-        private val activityDateAndTime = binding.tvDateAndTime
-        private val activityParticipants = binding.tvParticipants
+        private val title = binding.tvTitle
+        private val location = binding.tvLocation
+        private val dateAndTime = binding.tvDateAndTime
+        private val participants = binding.tvParticipants
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, homeListener: HomeListener) {
-            activityTitle.text = event.acTitle
+            title.text = event.title
             if (event.isOnline) {
-                activityLocation.text = "Online event"
+                location.text = "Online event"
             } else {
-                activityLocation.text = event.acLocation.keys.first()
+                location.text = event.location.keys.first()
             }
-            activityDate.text = event.acTime
-            activityDateAndTime.text = event.time
-            activityParticipants.text = event.acParticipants.size.toString()
+            dateAndTime.text = "${event.date} ${event.time}"
+            participants.text = event.participants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
             if (event.imgRefs.isNotEmpty()) {

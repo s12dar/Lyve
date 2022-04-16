@@ -29,6 +29,7 @@ object Constants {
     const val EVENT_DATE = "date"
     const val EVENT_TIME = "time"
     const val EVENT_LOCATION = "location"
+    const val EVENT_URL = "url"
     const val EVENT_CREATED_BY_ID = "createdByID"
     const val EVENT_PARTICIPANTS = "participants"
 

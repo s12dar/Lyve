@@ -14,6 +14,7 @@ import com.lyvetech.lyve.utils.Constants.EVENT_PARTICIPANTS
 import com.lyvetech.lyve.utils.Constants.EVENT_TIME
 import com.lyvetech.lyve.utils.Constants.EVENT_TITLE
 import com.lyvetech.lyve.utils.Constants.EVENT_TYPE
+import com.lyvetech.lyve.utils.Constants.EVENT_URL
 import java.util.*
 
 class Event {
@@ -45,6 +46,9 @@ class Event {
     @get:PropertyName(EVENT_LOCATION)
     var location = HashMap<String, GeoPoint>()
 
+    @get:PropertyName(EVENT_URL)
+    var url = ""
+
     @get:PropertyName(EVENT_CREATED_BY_ID)
     var createdByID: String? = ""
 
@@ -60,6 +64,7 @@ class Event {
         map[EVENT_DATE] = date
         map[EVENT_TIME] = time
         map[EVENT_LOCATION] = location
+        map[EVENT_URL] = url
         map[EVENT_CREATED_BY_ID] = createdByID
         map[EVENT_PARTICIPANTS] = participants
         map[EVENT_IMG_REFS] = imgRefs
