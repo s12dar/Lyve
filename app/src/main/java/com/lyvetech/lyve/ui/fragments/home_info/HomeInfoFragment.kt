@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lyvetech.lyve.LyveApplication
 import com.lyvetech.lyve.R
 import com.lyvetech.lyve.adapters.AttendeeAdapter
@@ -58,18 +57,19 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun subscribeUI() {
         mEvent.let {
-            binding.tvTitle.text = it.acTitle
-            binding.tvDate.text = it.acTime
-            binding.tvAboutContent.text = it.acDesc
+            binding.tvTitle.text = it.title
+            binding.tvDate.text = it.time
+            binding.tvTime.text = it.time
+            binding.tvAboutContent.text = it.desc
             for (user in mUsers) {
-                if (user.uid == it.acCreatedByID) {
+                if (user.uid == it.createdByID) {
                     binding.tvHostName.text = user.name
                 }
             }
 
             val attendees = mutableListOf<User>()
             for (user in mUsers) {
-                if (user.uid in it.acParticipants) {
+                if (user.uid in it.participants) {
                     attendees.add(user)
                 }
             }
@@ -88,10 +88,10 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
                 }
             }
 
-            if (it.acImgRefs.isNotEmpty()) {
+            if (it.imgRefs.isNotEmpty()) {
                 Glide.with(requireContext())
                     .asBitmap()
-                    .load(it.acImgRefs.toUri())
+                    .load(it.imgRefs.toUri())
                     .into(binding.ivAc)
             } else {
                 Glide.with(requireActivity())
@@ -102,33 +102,33 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     }
 
     private fun isUserAlreadyAttending() =
-        mEvent.acParticipants.contains(mUser.uid)
+        mEvent.participants.contains(mUser.uid)
 
     private fun manageEventAttending() {
         if (!isUserAlreadyAttending()) {
-            mEvent.acParticipants.add(mUser.uid)
+            mEvent.participants.add(mUser.uid)
             viewModel.updateActivity(mEvent, mUser)
-            showAlertMessage(true)
+//            showAlertMessage(true)
         } else {
-            showAlertMessage(false)
+//            showAlertMessage(false)
         }
     }
 
-    private fun showAlertMessage(isOK: Boolean) {
-        if (isOK) {
-            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-                .setTitle(resources.getString(R.string.txt_alert_title_yay))
-                .setMessage(resources.getString(R.string.txt_alert_desc_yay))
-                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
-                .show()
-        } else {
-            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-                .setTitle(resources.getString(R.string.txt_alert_title_oops))
-                .setMessage(resources.getString(R.string.txt_alert_desc_oops))
-                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
-                .show()
-        }
-    }
+//    private fun showAlertMessage(isOK: Boolean) {
+//        if (isOK) {
+//            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+//                .setTitle(resources.getString(R.string.txt_alert_title_yay))
+//                .setMessage(resources.getString(R.string.txt_alert_desc_yay))
+//                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
+//                .show()
+//        } else {
+//            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+//                .setTitle(resources.getString(R.string.txt_alert_title_oops))
+//                .setMessage(resources.getString(R.string.txt_alert_desc_oops))
+//                .setPositiveButton(resources.getString(R.string.btn_alert_positive)) { _, _ -> }
+//                .show()
+//        }
+//    }
 
     private fun manageTopBarNavigation() {
         (requireActivity().findViewById<View>(R.id.toolbar)

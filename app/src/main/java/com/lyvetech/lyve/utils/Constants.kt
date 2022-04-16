@@ -20,16 +20,17 @@ object Constants {
     /**
      * ACTIVITY DATA
      */
-    const val ACTIVITY_ID = "aid"
-    const val ACTIVITY_TITLE = "acTitle"
-    const val ACTIVITY_DESC = "acDesc"
-    const val ACTIVITY_TYPE = "isOnline"
-    const val ACTIVITY_IMG_REFS = "acImgRefs"
-    const val ACTIVITY_CREATED_AT = "acCreatedAt"
-    const val ACTIVITY_TIME = "acTime"
-    const val ACTIVITY_LOCATION = "acLocation"
-    const val ACTIVITY_CREATED_BY_ID = "acCreatedByID"
-    const val ACTIVITY_PARTICIPANTS = "acParticipants"
+    const val EVENT_ID = "uid"
+    const val EVENT_TITLE = "title"
+    const val EVENT_DESC = "desc"
+    const val EVENT_TYPE = "isOnline"
+    const val EVENT_IMG_REFS = "imgRefs"
+    const val EVENT_CREATED_AT = "createdAt"
+    const val EVENT_DATE = "date"
+    const val EVENT_TIME = "time"
+    const val EVENT_LOCATION = "location"
+    const val EVENT_CREATED_BY_ID = "createdByID"
+    const val EVENT_PARTICIPANTS = "participants"
 
     /**
      * FIREBASE DATA

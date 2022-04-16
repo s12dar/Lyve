@@ -96,13 +96,13 @@ class LyveRepositoryImpl @Inject constructor(
     ): SimpleResource = suspendCoroutine { cont ->
         val activityDocRef: DocumentReference = firebaseFirestore.collection(
             COLLECTION_ACTIVITIES
-        ).document(event.aid)
+        ).document(event.uid)
         val subActivityDocRef: DocumentReference = firebaseFirestore.collection(
             COLLECTION_USER
-        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.aid)
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.uid)
 
         firebaseFirestore.batch().set(activityDocRef, event.toMap())
-            .set(subActivityDocRef, event.toUserActivityMap())
+            .set(subActivityDocRef, event.toUserEventMap())
             .commit().addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
             }.addOnFailureListener {
@@ -132,7 +132,7 @@ class LyveRepositoryImpl @Inject constructor(
     ): SimpleResource = suspendCoroutine { cont ->
         val activityDocRef = firebaseFirestore.collection(
             COLLECTION_ACTIVITIES
-        ).document(event.aid)
+        ).document(event.uid)
 
         firebaseFirestore.batch().update(activityDocRef, event.toMap())
             .commit()
@@ -183,7 +183,7 @@ class LyveRepositoryImpl @Inject constructor(
                         val activitiesList = mutableListOf<Event>()
                         for (document in it) {
                             if (searchQuery.isNotEmpty() && document.toObject(Event::class.java)
-                                    .acTitle.lowercase().contains(searchQuery.lowercase())
+                                    .title.lowercase().contains(searchQuery.lowercase())
                             ) {
                                 activitiesList.add(document.toObject(Event::class.java))
                             }
@@ -237,7 +237,7 @@ class LyveRepositoryImpl @Inject constructor(
                     try {
                         val activitiesList = mutableListOf<Event>()
                         for (document in it) {
-                            if ((document.toObject(Event::class.java).acCreatedByID in
+                            if ((document.toObject(Event::class.java).createdByID in
                                         user.followings)
                             ) {
                                 activitiesList.add(document.toObject(Event::class.java))

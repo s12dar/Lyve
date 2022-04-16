@@ -3,72 +3,77 @@ package com.lyvetech.lyve.models
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.PropertyName
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_AT
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_CREATED_BY_ID
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_DESC
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_ID
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_IMG_REFS
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_LOCATION
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_PARTICIPANTS
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_TIME
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_TITLE
-import com.lyvetech.lyve.utils.Constants.ACTIVITY_TYPE
+import com.lyvetech.lyve.utils.Constants.EVENT_CREATED_AT
+import com.lyvetech.lyve.utils.Constants.EVENT_CREATED_BY_ID
+import com.lyvetech.lyve.utils.Constants.EVENT_DATE
+import com.lyvetech.lyve.utils.Constants.EVENT_DESC
+import com.lyvetech.lyve.utils.Constants.EVENT_ID
+import com.lyvetech.lyve.utils.Constants.EVENT_IMG_REFS
+import com.lyvetech.lyve.utils.Constants.EVENT_LOCATION
+import com.lyvetech.lyve.utils.Constants.EVENT_PARTICIPANTS
+import com.lyvetech.lyve.utils.Constants.EVENT_TIME
+import com.lyvetech.lyve.utils.Constants.EVENT_TITLE
+import com.lyvetech.lyve.utils.Constants.EVENT_TYPE
 import java.util.*
 
 class Event {
 
-    @get:PropertyName(ACTIVITY_ID)
-    var aid = ""
+    @get:PropertyName(EVENT_ID)
+    var uid = ""
 
-    @get:PropertyName(ACTIVITY_TITLE)
-    var acTitle = ""
+    @get:PropertyName(EVENT_TITLE)
+    var title = ""
 
-    @get:PropertyName(ACTIVITY_DESC)
-    var acDesc = ""
+    @get:PropertyName(EVENT_DESC)
+    var desc = ""
 
-    @get:PropertyName(ACTIVITY_TYPE)
+    @get:PropertyName(EVENT_TYPE)
     var isOnline = false
 
-    @get:PropertyName(ACTIVITY_IMG_REFS)
-    var acImgRefs = ""
+    @get:PropertyName(EVENT_IMG_REFS)
+    var imgRefs = ""
 
-    @get:PropertyName(ACTIVITY_CREATED_AT)
-    var acCreatedAt = Timestamp(Date())
+    @get:PropertyName(EVENT_CREATED_AT)
+    var createdAt = Timestamp(Date())
 
-    @get:PropertyName(ACTIVITY_TIME)
-    var acTime = ""
+    @get:PropertyName(EVENT_TIME)
+    var time = ""
 
-    @get:PropertyName(ACTIVITY_LOCATION)
-    var acLocation = HashMap<String, GeoPoint>()
+    @get:PropertyName(EVENT_DATE)
+    var date = ""
 
-    @get:PropertyName(ACTIVITY_CREATED_BY_ID)
-    var acCreatedByID: String? = ""
+    @get:PropertyName(EVENT_LOCATION)
+    var location = HashMap<String, GeoPoint>()
 
-    @get:PropertyName(ACTIVITY_PARTICIPANTS)
-    var acParticipants = mutableListOf<String>()
+    @get:PropertyName(EVENT_CREATED_BY_ID)
+    var createdByID: String? = ""
+
+    @get:PropertyName(EVENT_PARTICIPANTS)
+    var participants = mutableListOf<String>()
 
     fun toMap(): HashMap<String, Any?> {
         val map = HashMap<String, Any?>()
-        map[ACTIVITY_TITLE] = acTitle
-        map[ACTIVITY_DESC] = acDesc
-        map[ACTIVITY_TYPE] = isOnline
-        map[ACTIVITY_CREATED_AT] = acCreatedAt
-        map[ACTIVITY_TIME] = acTime
-        map[ACTIVITY_LOCATION] = acLocation
-        map[ACTIVITY_CREATED_BY_ID] = acCreatedByID
-        map[ACTIVITY_PARTICIPANTS] = acParticipants
-        map[ACTIVITY_IMG_REFS] = acImgRefs
-        map[ACTIVITY_ID] = aid
+        map[EVENT_TITLE] = title
+        map[EVENT_DESC] = desc
+        map[EVENT_TYPE] = isOnline
+        map[EVENT_CREATED_AT] = createdAt
+        map[EVENT_DATE] = date
+        map[EVENT_TIME] = time
+        map[EVENT_LOCATION] = location
+        map[EVENT_CREATED_BY_ID] = createdByID
+        map[EVENT_PARTICIPANTS] = participants
+        map[EVENT_IMG_REFS] = imgRefs
+        map[EVENT_ID] = uid
 
         return map
     }
 
-    fun toUserActivityMap(): Map<String, Any> {
+    fun toUserEventMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
-        map[ACTIVITY_ID] = aid
-        map[ACTIVITY_TITLE] = acTitle
-        map[ACTIVITY_TYPE] = isOnline
-        map[ACTIVITY_LOCATION] = acLocation
+        map[EVENT_ID] = uid
+        map[EVENT_TITLE] = title
+        map[EVENT_TYPE] = isOnline
+        map[EVENT_LOCATION] = location
 
         return map
     }
