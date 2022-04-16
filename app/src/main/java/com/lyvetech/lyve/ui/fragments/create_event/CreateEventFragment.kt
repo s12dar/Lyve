@@ -69,6 +69,7 @@ class CreateEventFragment : Fragment() {
     private var localImgUri: Uri? = null
     private var mUser = User()
     private var mEvent = Event()
+    private var mDateAndTime = StringBuilder()
 
     @Inject
     lateinit var auth: FirebaseAuth
@@ -163,7 +164,19 @@ class CreateEventFragment : Fragment() {
         getCurrentUser()
         initializePlaces()
         manageBindingViews()
+        assignTextWatchers()
         manageTopBarNavigation()
+    }
+
+    private fun assignTextWatchers() {
+        with(binding) {
+            etName.addTextChangedListener(watcher)
+            etDesc.addTextChangedListener(watcher)
+            etStartTime.addTextChangedListener(watcher)
+            etStartDate.addTextChangedListener(watcher)
+            etLocation.addTextChangedListener(watcher)
+            etEventUrl.addTextChangedListener(watcher)
+        }
     }
 
     private fun manageTopBarNavigation() {
@@ -246,6 +259,7 @@ class CreateEventFragment : Fragment() {
                     editText.setText(eventDateValue.format(formatter))
                     // The last selected date is saved if the dialog is reopened
                     lastDate.set(year, month - 1, day)
+                    mDateAndTime.append(eventDateValue.format(formatter).toString())
                 }
             }
             // Show the picker and wait to reset the variable
@@ -290,6 +304,24 @@ class CreateEventFragment : Fragment() {
                     }
                 }
             }
+            createEvent(mEvent, mUser)
+                .observe(viewLifecycleOwner) { eventResult ->
+                    when (eventResult) {
+                        is Resource.Success -> {
+                            findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
+                            (activity as OnboardingUtils).hideProgressBar()
+                        }
+                        is Resource.Error -> {
+                            (activity as OnboardingUtils).hideProgressBar()
+                            Snackbar.make(
+                                requireView(),
+                                "Oops, something went wrong!",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {}
+                    }
+                }
         }
     }
 
@@ -319,8 +351,9 @@ class CreateEventFragment : Fragment() {
                 .build()
 
         timeDialog.addOnPositiveButtonClickListener {
-            val time = "${timeDialog.hour} : ${timeDialog.minute}"
+            val time = "${timeDialog.hour}:${timeDialog.minute}"
             editText.setText(time)
+            mDateAndTime.append(" $time")
         }
 
         // Show the picker
@@ -413,6 +446,7 @@ class CreateEventFragment : Fragment() {
         val eventDate = binding.etStartDate.text.toString()
         val eventTime = binding.etStartTime.text.toString()
         val eventLocation = binding.etLocation.text.toString()
+        val eventUrl = binding.etEventUrl.text.toString()
         val isEventOnline = binding.swOnlineEvent.isChecked
 
         if (eventName.isBlank()) {
@@ -435,10 +469,18 @@ class CreateEventFragment : Fragment() {
                 getString(R.string.err_empty_field)
             return
         }
-        if (eventLocation.isBlank()) {
-            binding.tilLocation.error =
-                getString(R.string.err_empty_field)
-            return
+        if (isEventOnline) {
+            if (eventUrl.isBlank()) {
+                binding.tilEventUrl.error =
+                    getString(R.string.err_empty_field)
+                return
+            }
+        } else {
+            if (eventLocation.isBlank()) {
+                binding.tilLocation.error =
+                    getString(R.string.err_empty_field)
+                return
+            }
         }
 
         mEvent.apply {

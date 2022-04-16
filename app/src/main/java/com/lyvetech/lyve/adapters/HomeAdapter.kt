@@ -42,10 +42,15 @@ class HomeAdapter(
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(event: Event, homeListener: HomeListener) {
-            activityTitle.text = event.title
-            activityLocation.text = event.location.keys.first()
+            activityTitle.text = event.acTitle
+            if (event.isOnline) {
+                activityLocation.text = "Online event"
+            } else {
+                activityLocation.text = event.acLocation.keys.first()
+            }
+            activityDate.text = event.acTime
             activityDateAndTime.text = event.time
-            activityParticipants.text = event.participants.size.toString()
+            activityParticipants.text = event.acParticipants.size.toString()
 
             // Glide takes care of setting fetched image uri to holder
             if (event.imgRefs.isNotEmpty()) {
