@@ -53,4 +53,9 @@ object Constants {
     const val BUNDLE_KEY = "bundleKey"
     const val BUNDLE_FOLLOWING = "bundleFollowing"
     const val BUNDLE_FOLLOWER = "bundleFollower"
+
+    /**
+     * INTENTS
+     */
+    const val INTENT_GOOGLE_MAPS = "com.google.android.apps.maps"
 }

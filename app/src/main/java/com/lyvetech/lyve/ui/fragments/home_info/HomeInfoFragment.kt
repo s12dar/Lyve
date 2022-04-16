@@ -21,6 +21,7 @@ import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.listeners.HomeInfoListener
 import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.utils.Constants.INTENT_GOOGLE_MAPS
 import com.lyvetech.lyve.utils.OnboardingUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -136,7 +137,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
         val googleMapsIntentUri = Uri.parse("google.navigation:q=$lat,$lng")
         val googleMapsIntent = Intent(Intent.ACTION_VIEW, googleMapsIntentUri)
 
-        googleMapsIntent.setPackage("com.google.android.apps.maps")
+        googleMapsIntent.setPackage(INTENT_GOOGLE_MAPS)
         googleMapsIntent.resolveActivity(requireActivity().packageManager)?.let {
             startActivity(googleMapsIntent)
         }
