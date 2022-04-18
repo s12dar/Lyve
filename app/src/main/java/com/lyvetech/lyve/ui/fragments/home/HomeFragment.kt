@@ -20,6 +20,9 @@ import com.lyvetech.lyve.databinding.FragmentHomeBinding
 import com.lyvetech.lyve.listeners.HomeListener
 import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.utils.Constants.BUNDLE_CURRENT_USER_KEY
+import com.lyvetech.lyve.utils.Constants.BUNDLE_EVENT_KEY
+import com.lyvetech.lyve.utils.Constants.BUNDLE_HOST_USER_KEY
 import com.lyvetech.lyve.utils.OnboardingUtils
 import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,12 +35,16 @@ class HomeFragment : Fragment(), HomeListener {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
     private var mUser = User()
+    private var mUsers = mutableListOf<User>()
 
     @Inject
     lateinit var auth: FirebaseAuth
 
     @Inject
     lateinit var firestore: FirebaseFirestore
+
+    @Inject
+    lateinit var bundle: Bundle
 
     companion object {
         const val VIEW_TYPE_ONE = 1
@@ -63,16 +70,16 @@ class HomeFragment : Fragment(), HomeListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getCurrentUser()
-        getUsersForHomeInfo()
+        getUsers()
         subscribeUI(VIEW_TYPE_ONE)
         manageUserInteraction()
     }
 
-    private fun getUsersForHomeInfo() {
+    private fun getUsers() {
         viewModel.getUsers().observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Success -> {
-                    LyveApplication.mInstance.allUsers = result.data as MutableList<User>
+                    mUsers = result.data as MutableList<User>
                 }
                 else -> {}
             }
@@ -186,8 +193,23 @@ class HomeFragment : Fragment(), HomeListener {
         }
     }
 
+    private fun getHostOfActivity(event: Event): User {
+        var hostUser = User()
+        for (user in mUsers) {
+            if (user.uid == event.createdByID) {
+                hostUser = user
+            }
+        }
+        return hostUser
+    }
+
     override fun onPostClicked(event: Event) {
-        LyveApplication.mInstance.event = event
-        findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment)
+        bundle.apply {
+            putSerializable(BUNDLE_EVENT_KEY, event)
+            putSerializable(BUNDLE_HOST_USER_KEY, getHostOfActivity(event))
+            putSerializable(BUNDLE_CURRENT_USER_KEY, mUser)
+        }
+        bundle.putSerializable(BUNDLE_EVENT_KEY, event)
+        findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment, bundle)
     }
 }

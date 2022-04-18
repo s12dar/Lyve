@@ -152,7 +152,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Hello friends! This weekend I will be eating pizza at home, if anyone of you are interested, feel free to join"
+            tools:text="Hello friends! This weekend I will be eating pizza at home."
             android:textColor="@color/goodGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="parent"
@@ -221,29 +221,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_host_name" />
 
-        <TextView
-            android:id="@+id/tv_attendees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/txt_attendees_activity"
-            android:textSize="@dimen/subtitle_sixteen"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_line_3" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_attendees"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_attendees" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_attend"
             style="@style/Buttons.MainAndDisabled"
@@ -255,7 +232,7 @@
             android:layout_marginBottom="24dp"
             android:text="@string/btn_attend"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_attendees" />
+            app:layout_constraintTop_toBottomOf="@+id/view_line_3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

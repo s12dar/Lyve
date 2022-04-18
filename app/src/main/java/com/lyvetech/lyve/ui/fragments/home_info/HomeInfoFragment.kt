@@ -11,18 +11,20 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
-import com.lyvetech.lyve.LyveApplication
+import com.google.android.material.snackbar.Snackbar
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.adapters.AttendeeAdapter
 import com.lyvetech.lyve.databinding.FragmentHomeInfoBinding
 import com.lyvetech.lyve.listeners.HomeInfoListener
 import com.lyvetech.lyve.models.Event
 import com.lyvetech.lyve.models.User
+import com.lyvetech.lyve.utils.Constants.BUNDLE_CURRENT_USER_KEY
+import com.lyvetech.lyve.utils.Constants.BUNDLE_EVENT_KEY
+import com.lyvetech.lyve.utils.Constants.BUNDLE_HOST_USER_KEY
 import com.lyvetech.lyve.utils.Constants.INTENT_GOOGLE_MAPS
 import com.lyvetech.lyve.utils.OnboardingUtils
+import com.lyvetech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,12 +33,11 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     private val viewModel: HomeInfoViewModel by viewModels()
     private lateinit var binding: FragmentHomeInfoBinding
     private var mEvent = Event()
-    private var mUser: User = User()
-    private var mUsers = mutableListOf<User>()
+    private var mHostUser = User()
+    private var mCurrentUser = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getApplicationLevelData()
     }
 
     override fun onCreateView(
@@ -45,16 +46,16 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeInfoBinding.inflate(inflater, container, false)
-        (activity as OnboardingUtils).showTopAppBar("Event")
-        (activity as OnboardingUtils).hideBottomNav()
+        manageBottomAndTopBar()
+        managePassedArguments(arguments)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         manageTopBarNavigation()
-        subscribeUI()
         manageBindingViews()
+        subscribeUI()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -63,38 +64,13 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
             binding.tvTitle.text = it.title
             binding.tvDateTime.text = "${it.date}, ${it.time} (GMT+3)"
             binding.tvAboutContent.text = it.desc
+            binding.tvHostName.text = mHostUser.name
             if (!it.isOnline) {
                 binding.ivIconOnline.visibility = View.INVISIBLE
                 binding.tvOnline.visibility = View.INVISIBLE
                 binding.ivIconLocation.visibility = View.VISIBLE
                 binding.tvLocation.visibility = View.VISIBLE
                 binding.tvLocation.text = it.location.keys.first()
-            }
-            for (user in mUsers) {
-                if (user.uid == it.createdByID) {
-                    binding.tvHostName.text = user.name
-                }
-            }
-
-            val attendees = mutableListOf<User>()
-            for (user in mUsers) {
-                if (user.uid in it.participants) {
-                    attendees.add(user)
-                }
-            }
-
-            if (attendees.isNotEmpty()) {
-                binding.tvAttendees.visibility = View.VISIBLE
-                binding.rvAttendees.apply {
-                    adapter = AttendeeAdapter(
-                        attendees,
-                        requireContext(),
-                        this@HomeInfoFragment
-                    )
-
-                    layoutManager = LinearLayoutManager(requireContext(),
-                        LinearLayoutManager.HORIZONTAL, false)
-                }
             }
 
             if (it.imgRefs.isNotEmpty()) {
@@ -111,15 +87,41 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     }
 
     private fun isUserAlreadyAttending() =
-        mEvent.participants.contains(mUser.uid)
+        mEvent.participants.contains(mCurrentUser.uid)
 
     private fun manageEventAttending() {
+        (activity as OnboardingUtils).showProgressBar()
         if (!isUserAlreadyAttending()) {
-            mEvent.participants.add(mUser.uid)
-            viewModel.updateActivity(mEvent, mUser)
-//            showAlertMessage(true)
+            mEvent.participants.add(mCurrentUser.uid)
+            viewModel.updateEvent(mEvent, mCurrentUser)
+                .observe(viewLifecycleOwner) { eventResult ->
+                    when (eventResult) {
+                        is Resource.Success -> {
+                            (activity as OnboardingUtils).hideProgressBar()
+                            Snackbar.make(
+                                requireView(),
+                                "Yaay, we sent your request!",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        is Resource.Error -> {
+                            (activity as OnboardingUtils).hideProgressBar()
+                            Snackbar.make(
+                                requireView(),
+                                "Oops, something went wrong!",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {}
+                    }
+                }
         } else {
-//            showAlertMessage(false)
+            (activity as OnboardingUtils).hideProgressBar()
+            Snackbar.make(
+                requireView(),
+                "Oops, you've already requested attendence!",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -152,24 +154,22 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
         with(binding) {
             tvLocation.setOnClickListener { launchGoogleMaps() }
             tvOnline.setOnClickListener { launchBrowser() }
+            btnAttend.setOnClickListener { manageEventAttending() }
         }
     }
 
-    private fun getApplicationLevelData() {
-        LyveApplication.mInstance.apply {
-            currentUser?.let {
-                mUser = it
-            }
-            event?.let {
-                mEvent = it
-            }
-            allUsers.let {
-                mUsers = it
-            }
+    private fun manageBottomAndTopBar() {
+        (activity as OnboardingUtils).showTopAppBar("Event")
+        (activity as OnboardingUtils).hideBottomNav()
+    }
+
+    private fun managePassedArguments(argument: Bundle?) {
+        argument?.let {
+            mEvent = it.getSerializable(BUNDLE_EVENT_KEY) as Event
+            mHostUser = it.getSerializable(BUNDLE_HOST_USER_KEY) as User
+            mCurrentUser = it.getSerializable(BUNDLE_CURRENT_USER_KEY) as User
         }
     }
 
-    override fun onUserClicked(user: User) {
-
-    }
+    override fun onUserClicked(user: User) {}
 }

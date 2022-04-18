@@ -24,6 +24,9 @@
     <string name="txt_desc_onboarding">What do you want to be called?</string>
     <string name="hint_name">Enter your preferred name</string>
 
+    <!-- SPLASH -->
+    <string name="desc_splash">Welcome back</string>
+
     <!-- HOME PAGE -->
     <string name="desc_ppic">Profile picture</string>
     <string name="txt_following">Following</string>
@@ -38,9 +41,9 @@
     <string name="txt_alert_desc_yay">You\'re attending to this activity</string>
     <string name="txt_online_event">Online event</string>
     <string name="txt_click_to_navigate">Click to navigate</string>
-    <string name="txt_about_activity">About the activity</string>
+    <string name="txt_about_activity">About the event</string>
     <string name="txt_time_desc">Times are displayed in your local time zone</string>
-    <string name="txt_host_activity">Host of activity</string>
+    <string name="txt_host_activity">Host of event</string>
     <string name="txt_attendees_activity">Attendees</string>
 
     <!-- CREATE EVENT -->

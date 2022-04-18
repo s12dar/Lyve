@@ -43,9 +43,8 @@ object Constants {
      * DI CONSTANTS
      */
     const val SHARED_PREFERENCES_NAME = "sharedPref"
-    const val KEY_EMAIL = "KEY_EMAIL"
-    const val KEY_PASSWORD = "KEY_PASSWORD"
-    const val KEY_UID = "uid"
+    const val KEY_EMAIL = "keyEmail"
+    const val KEY_PASSWORD = "keyPassword"
 
     /**
      * BUNDLE CONSTANTS
@@ -53,6 +52,9 @@ object Constants {
     const val BUNDLE_KEY = "bundleKey"
     const val BUNDLE_FOLLOWING = "bundleFollowing"
     const val BUNDLE_FOLLOWER = "bundleFollower"
+    const val BUNDLE_EVENT_KEY = "bundleEventKey"
+    const val BUNDLE_HOST_USER_KEY = "bundleHostUserKey"
+    const val BUNDLE_CURRENT_USER_KEY = "bundleCurrentUserKey"
 
     /**
      * INTENTS

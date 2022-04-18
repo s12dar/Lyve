@@ -66,7 +66,7 @@ class WelcomeFragment : Fragment() {
             .apply {
                 setTitle(resources.getString(R.string.txt_title_welcome))
                 setDescription(resources.getString(R.string.txt_desc_welcome))
-                setImage(R.drawable.lyve)
+                setImage(R.drawable.ic_parachute)
             }
 
         val secondPage = WelcomeItem()

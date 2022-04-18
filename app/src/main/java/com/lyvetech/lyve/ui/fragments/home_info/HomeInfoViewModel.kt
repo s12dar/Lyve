@@ -48,7 +48,7 @@ class HomeInfoViewModel @Inject constructor(
             }
         }
 
-    fun updateActivity(event: Event, user: User): LiveData<SimpleResource> =
+    fun updateEvent(event: Event, user: User): LiveData<SimpleResource> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 

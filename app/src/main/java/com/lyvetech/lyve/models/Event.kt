@@ -15,9 +15,10 @@ import com.lyvetech.lyve.utils.Constants.EVENT_TIME
 import com.lyvetech.lyve.utils.Constants.EVENT_TITLE
 import com.lyvetech.lyve.utils.Constants.EVENT_TYPE
 import com.lyvetech.lyve.utils.Constants.EVENT_URL
+import java.io.Serializable
 import java.util.*
 
-class Event {
+class Event : Serializable {
 
     @get:PropertyName(EVENT_ID)
     var uid = ""

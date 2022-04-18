@@ -13,9 +13,10 @@ import com.lyvetech.lyve.utils.Constants.IS_VERIFIED
 import com.lyvetech.lyve.utils.Constants.NAME
 import com.lyvetech.lyve.utils.Constants.PASS
 import com.lyvetech.lyve.utils.Constants.UID
+import java.io.Serializable
 import java.util.*
 
-class User {
+class User : Serializable {
 
     @get:PropertyName(UID)
     var uid = ""

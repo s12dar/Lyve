@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.databinding.ActivityItemBinding
+import com.lyvetech.lyve.databinding.EventItemBinding
 import com.lyvetech.lyve.listeners.HomeListener
 import com.lyvetech.lyve.models.Event
 
@@ -19,7 +19,7 @@ class HomeAdapter(
     RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val binding = ActivityItemBinding
+        val binding = EventItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return HomeViewHolder(binding)
     }
@@ -28,11 +28,11 @@ class HomeAdapter(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val activity = eventList[position]
-        holder.bind(activity, homeListener)
+        val event = eventList[position]
+        holder.bind(event, homeListener)
     }
 
-    inner class HomeViewHolder(private val binding: ActivityItemBinding) :
+    inner class HomeViewHolder(private val binding: EventItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val title = binding.tvTitle
@@ -40,7 +40,7 @@ class HomeAdapter(
         private val dateAndTime = binding.tvDateAndTime
         private val participants = binding.tvParticipants
 
-        @SuppressLint("UseCompatLoadingForDrawables")
+        @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
         fun bind(event: Event, homeListener: HomeListener) {
             title.text = event.title
             if (event.isOnline) {

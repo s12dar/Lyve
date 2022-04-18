@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lyvetech.lyve.R
-import com.lyvetech.lyve.databinding.ActivityItemBinding
+import com.lyvetech.lyve.databinding.EventItemBinding
 import com.lyvetech.lyve.databinding.UserItemBinding
 import com.lyvetech.lyve.listeners.OnClickListener
 import com.lyvetech.lyve.models.Event
@@ -27,7 +27,7 @@ class SearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val activityBinding = ActivityItemBinding
+        val activityBinding = EventItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         val userBinding = UserItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -61,7 +61,7 @@ class SearchAdapter(
         }
     }
 
-    inner class SearchEventsViewHolder(private val binding: ActivityItemBinding) :
+    inner class SearchEventsViewHolder(private val binding: EventItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val title = binding.tvTitle
