@@ -54,7 +54,7 @@ class Event : Serializable {
     var createdByID: String? = ""
 
     @get:PropertyName(EVENT_PARTICIPANTS)
-    var participants = mutableListOf<String>()
+    var participants = mutableMapOf<String, String>()
 
     fun toMap(): HashMap<String, Any?> {
         val map = HashMap<String, Any?>()
