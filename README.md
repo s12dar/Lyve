@@ -1,6 +1,14 @@
 ## Lyve 🪂
 Lyve is event discovery application, using modern Android development techniques. The aim of the application is to connect people through a shared passion for different social activities where individuals can create their own profiles, add people as friends, create social activities, see/search activities around them and send a request to join.
 
+## Architecture 🏗
+The architecture of the application relies and compiles with following points:
+* A single-activity architecture with [Navigation library](https://developer.android.com/guide/navigation) to manage multiple fragment operations.
+* [Model-View-ViewModel (MVVM)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) pattern to separate UI logic from business logic.
+* [Android app architecture best practices](https://developer.android.com/topic/architecture) that allows the app to scale, increases the app's robustness, and makes the app easier to test.
+
+<p align="center"><a><img src="/arts/mvvm-diagram.png" width="850"></a></p>
+
 ## Tech stack 🏗
 * [Kotlin](https://kotlinlang.org/)
 * [Firebase](https://firebase.google.com/)
