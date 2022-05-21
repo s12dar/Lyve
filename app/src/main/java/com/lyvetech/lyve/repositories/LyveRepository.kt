@@ -22,7 +22,5 @@ interface LyveRepository {
     suspend fun getFollowers(user: User): Resource<List<User>?>
     suspend fun getFollowingActivities(user: User): Resource<List<Event>?>
     suspend fun getUploadImgUriFromFirebaseStorage(imgUri: Uri): Resource<Uri>
-//    suspend fun getAttendanceRequests(): Resource<Map<User, Event>>
-//    suspend fun getCurrentUsersEvent(user: User): Resource<Event>
-//    suspend fun getAttendanceRequestsForEvent(event: Event): Resource<Map<>>
+    suspend fun getEventBelongingToCurrentUser(user: User): Resource<List<Event>>
 }

@@ -80,6 +80,7 @@ class Event : Serializable {
         map[EVENT_TITLE] = title
         map[EVENT_TYPE] = isOnline
         map[EVENT_LOCATION] = location
+        map[EVENT_PARTICIPANTS] = participants
 
         return map
     }

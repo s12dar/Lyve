@@ -51,6 +51,7 @@
         <entry key="app/src/main/res/layout/fragment_main_nav.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_onboarding2.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/layout/fragment_ping.xml" value="0.1671875" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.32838038632986627" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.2563405797101449" />
         <entry key="app/src/main/res/layout/fragment_schedule.xml" value="0.1" />

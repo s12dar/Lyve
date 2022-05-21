@@ -107,6 +107,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_pingFragment"
+            app:destination="@id/pingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -174,4 +181,9 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/pingFragment"
+        android:name="com.lyvetech.lyve.ui.fragments.ping.PingFragment"
+        android:label="fragment_ping"
+        tools:layout="@layout/fragment_ping" />
 </navigation>

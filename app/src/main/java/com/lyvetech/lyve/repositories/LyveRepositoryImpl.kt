@@ -133,7 +133,12 @@ class LyveRepositoryImpl @Inject constructor(
             COLLECTION_ACTIVITIES
         ).document(event.uid)
 
+        val subActivityDocRef: DocumentReference = firebaseFirestore.collection(
+            COLLECTION_USER
+        ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.uid)
+
         firebaseFirestore.batch().update(activityDocRef, event.toMap())
+            .update(subActivityDocRef, event.toUserEventMap())
             .commit()
             .addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
@@ -269,21 +274,24 @@ class LyveRepositoryImpl @Inject constructor(
             }
         }
 
-//    override suspend fun getAttendanceRequests(): Resource<Map<User, Event>> =
-//        suspendCoroutine { cont ->
-//            firebaseFirestore.collection(COLLECTION_USER)
-//                .whereArrayContainsAny(UID, user.followings)
-//                .get()
-//                .addOnSuccessListener {
-//                    try {
-//                        cont.resume(Resource.Success(it.toObjects()))
-//                    } catch (e: Exception) {
-//                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
-//                    }
-//                }.addOnFailureListener {
-//                    cont.resume(Resource.Error(null, it.toString()))
-//                }
-//        }
+    override suspend fun getEventBelongingToCurrentUser(
+        user: User
+    ): Resource<List<Event>> =
+        suspendCoroutine { cont ->
+            firebaseFirestore.collection(
+                COLLECTION_USER
+            ).document(user.uid).collection(COLLECTION_ACTIVITIES)
+                .get()
+                .addOnSuccessListener {
+                    try {
+                        cont.resume(Resource.Success(it.toObjects()))
+                    } catch (e: Exception) {
+                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
+                    }
+                }.addOnFailureListener {
+                    cont.resume(Resource.Error(null, it.toString()))
+                }
+        }
 
     override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>?> =
         suspendCoroutine { cont ->
