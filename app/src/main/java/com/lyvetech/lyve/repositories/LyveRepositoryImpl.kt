@@ -123,7 +123,6 @@ class LyveRepositoryImpl @Inject constructor(
                 }.addOnFailureListener {
                     cont.resume(Resource.Error(null, it.toString()))
                 }
-
         }
 
     override suspend fun updateActivity(
@@ -269,6 +268,22 @@ class LyveRepositoryImpl @Inject constructor(
                 }
             }
         }
+
+//    override suspend fun getAttendanceRequests(): Resource<Map<User, Event>> =
+//        suspendCoroutine { cont ->
+//            firebaseFirestore.collection(COLLECTION_USER)
+//                .whereArrayContainsAny(UID, user.followings)
+//                .get()
+//                .addOnSuccessListener {
+//                    try {
+//                        cont.resume(Resource.Success(it.toObjects()))
+//                    } catch (e: Exception) {
+//                        cont.resume(Resource.Error(it.toObjects(), e.toString()))
+//                    }
+//                }.addOnFailureListener {
+//                    cont.resume(Resource.Error(null, it.toString()))
+//                }
+//        }
 
     override suspend fun getSearchedUsers(searchQuery: String): Resource<List<User>?> =
         suspendCoroutine { cont ->

@@ -90,16 +90,4 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.87" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cdl_bsh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible">
-
-        <include
-            android:id="@+id/bottom_sheet"
-            layout="@layout/bottom_sheet_create_activity" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

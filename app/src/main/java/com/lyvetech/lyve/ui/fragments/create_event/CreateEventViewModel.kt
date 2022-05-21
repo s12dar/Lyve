@@ -40,6 +40,23 @@ class CreateEventViewModel @Inject constructor(
             }
         }
 
+    fun updateUser(user: User): LiveData<SimpleResource> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
+
+            when (val result = repository.updateUser(user)) {
+                is Resource.Success -> {
+                    emit(Resource.Success(Unit))
+                }
+                is Resource.Error -> {
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    emit(Resource.Loading(Unit))
+                }
+            }
+        }
+
     fun getImgUri(imgUri: Uri): LiveData<Resource<Uri>> =
         liveData(coroutineContext) {
             emit(Resource.Loading())

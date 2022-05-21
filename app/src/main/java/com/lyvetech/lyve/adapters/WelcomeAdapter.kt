@@ -43,7 +43,5 @@ class WelcomeAdapter(
             tvSubtitle.text = rewardItem.getDescription()
             ivReward.setImageResource(rewardItem.getImage())
         }
-
     }
-
 }

@@ -68,6 +68,9 @@
     <string name="txt_end_time">Select end time</string>
     <string name="txt_select_image">Tap to select an image</string>
     <string name="btn_create_activity">Create event</string>
+    <string name="alert_title">Limited events</string>
+    <string name="alert_subtitle">Oops, you already have an event published!</string>
+    <string name="alert_pos_btn">OK</string>
 
     <!-- NAV DRAWER -->
     <string name="menu_group_settings">Configure Lyve</string>

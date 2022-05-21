@@ -297,6 +297,7 @@ class CreateEventFragment : Fragment() {
                 when (eventResult) {
                     is Resource.Success -> {
                         findNavController().navigate(R.id.action_createEventFragment_to_homeFragment)
+                        updateUser()
                         (activity as OnboardingUtils).hideProgressBar()
                     }
                     is Resource.Error -> {
@@ -310,6 +311,17 @@ class CreateEventFragment : Fragment() {
                     else -> {}
                 }
             }
+    }
+
+    private fun updateUser() {
+        mUser.nrOfEvents++
+        viewModel.updateUser(mUser).observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Success -> Log.d(TAG, "user is updated")
+                is Resource.Error -> Log.e(TAG, "user cannot be updated")
+                else -> {}
+            }
+        }
     }
 
     private fun getCurrentUser() {
@@ -480,7 +492,7 @@ class CreateEventFragment : Fragment() {
             createdAt = Timestamp(Date())
             url = eventUrl
             createdByID = mUser.uid
-            participants = mutableListOf()
+            participants = mutableMapOf()
         }
         createEventProcess()
     }

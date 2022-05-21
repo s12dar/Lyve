@@ -1,6 +1,7 @@
 package com.lyvetech.lyve.models
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.PropertyName
 import com.lyvetech.lyve.utils.Constants.ATTENDINGS
 import com.lyvetech.lyve.utils.Constants.AVATAR
@@ -10,7 +11,9 @@ import com.lyvetech.lyve.utils.Constants.EMAIL
 import com.lyvetech.lyve.utils.Constants.FOLLOWERS
 import com.lyvetech.lyve.utils.Constants.FOLLOWINGS
 import com.lyvetech.lyve.utils.Constants.IS_VERIFIED
+import com.lyvetech.lyve.utils.Constants.LAST_LOCATION
 import com.lyvetech.lyve.utils.Constants.NAME
+import com.lyvetech.lyve.utils.Constants.NR_OF_EVENTS
 import com.lyvetech.lyve.utils.Constants.PASS
 import com.lyvetech.lyve.utils.Constants.UID
 import java.io.Serializable
@@ -51,6 +54,12 @@ class User : Serializable {
     @get: PropertyName(ATTENDINGS)
     var attendings = mutableListOf<Basket>()
 
+    @get: PropertyName(LAST_LOCATION)
+    var lastLocation = GeoPoint(0.0, 0.0)
+
+    @get: PropertyName(NR_OF_EVENTS)
+    var nrOfEvents = 0;
+
     fun toMap(): Map<String, Any> {
         val map = HashMap<String, Any>()
         map[UID] = uid
@@ -63,6 +72,8 @@ class User : Serializable {
         map[FOLLOWERS] = followers
         map[FOLLOWINGS] = followings
         map[ATTENDINGS] = attendings
+        map[LAST_LOCATION] = lastLocation
+        map[NR_OF_EVENTS] = nrOfEvents
 
         return map
     }

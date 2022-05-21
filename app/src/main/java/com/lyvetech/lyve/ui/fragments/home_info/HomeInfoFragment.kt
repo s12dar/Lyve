@@ -92,7 +92,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     private fun manageEventAttending() {
         (activity as OnboardingUtils).showProgressBar()
         if (!isUserAlreadyAttending()) {
-            mEvent.participants.add(mCurrentUser.uid)
+            mEvent.participants[mCurrentUser.uid] = "pending"
             viewModel.updateEvent(mEvent, mCurrentUser)
                 .observe(viewLifecycleOwner) { eventResult ->
                     when (eventResult) {

@@ -1,6 +1,5 @@
 package com.lyvetech.lyve.ui.fragments.home
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -101,11 +100,11 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-    fun createActivity(event: Event, user: User): LiveData<SimpleResource> =
+    fun updateUser(user: User): LiveData<SimpleResource> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
 
-            when (val result = repository.createActivity(event, user)) {
+            when (val result = repository.updateUser(user)) {
                 is Resource.Success -> {
                     emit(Resource.Success(Unit))
                 }
@@ -115,7 +114,6 @@ class HomeViewModel @Inject constructor(
                 is Resource.Loading -> {
                     emit(Resource.Loading(Unit))
                 }
-
             }
         }
 
@@ -135,23 +133,6 @@ class HomeViewModel @Inject constructor(
                             )
                         )
                     }
-                }
-                is Resource.Error -> {
-                    emit(Resource.Error(message = result.message))
-                }
-                is Resource.Loading -> {
-                    emit(Resource.Loading(data = result.data))
-                }
-            }
-        }
-
-    fun getImgUri(imgUri: Uri): LiveData<Resource<Uri>> =
-        liveData(coroutineContext) {
-            emit(Resource.Loading())
-
-            when (val result = repository.getUploadImgUriFromFirebaseStorage(imgUri)) {
-                is Resource.Success -> {
-                    emit(Resource.Success(data = result.data))
                 }
                 is Resource.Error -> {
                     emit(Resource.Error(message = result.message))

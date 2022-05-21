@@ -16,6 +16,8 @@ object Constants {
     const val FOLLOWERS = "followers"
     const val FOLLOWINGS = "followings"
     const val ATTENDINGS = "attendings"
+    const val LAST_LOCATION = "lastLocation"
+    const val NR_OF_EVENTS = "nrOfEvents"
 
     /**
      * ACTIVITY DATA
@@ -60,4 +62,9 @@ object Constants {
      * INTENTS
      */
     const val INTENT_GOOGLE_MAPS = "com.google.android.apps.maps"
+
+    /**
+     * LOCATION PERMISSIONS
+     */
+    const val REQUEST_LOCATION_PERMISSION = 0
 }
