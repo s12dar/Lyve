@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.welcome.WelcomeFragment"
+        android:name="com.tech.lyve.ui.fragments.welcome.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.login.LoginFragment"
+        android:name="com.tech.lyve.ui.fragments.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.register.RegisterFragment"
+        android:name="com.tech.lyve.ui.fragments.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.home.HomeFragment"
+        android:name="com.tech.lyve.ui.fragments.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -117,7 +117,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.splash.SplashFragment"
+        android:name="com.tech.lyve.ui.fragments.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -137,11 +137,11 @@
     </fragment>
     <fragment
         android:id="@+id/homeInfoFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.home_info.HomeInfoFragment"
+        android:name="com.tech.lyve.ui.fragments.home_info.HomeInfoFragment"
         android:label="HomeInfoFragment" />
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.register.SecondRegisterFragment"
+        android:name="com.tech.lyve.ui.fragments.register.SecondRegisterFragment"
         android:label="OnboardingFragment">
         <action
             android:id="@+id/action_onboardingFragment_to_homeFragment"
@@ -155,22 +155,22 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.search.SearchFragment"
+        android:name="com.tech.lyve.ui.fragments.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/followingFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.follow.FollowFragment"
+        android:name="com.tech.lyve.ui.fragments.follow.FollowFragment"
         android:label="fragment_following"
         tools:layout="@layout/fragment_following" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.profile.ProfileFragment"
+        android:name="com.tech.lyve.ui.fragments.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/createEventFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.create_event.CreateEventFragment"
+        android:name="com.tech.lyve.ui.fragments.create_event.CreateEventFragment"
         android:label="Create event"
         tools:layout="@layout/fragment_create_event" >
         <action
@@ -183,7 +183,7 @@
     </fragment>
     <fragment
         android:id="@+id/pingFragment"
-        android:name="com.lyvetech.lyve.ui.fragments.ping.PingFragment"
+        android:name="com.tech.lyve.ui.fragments.ping.PingFragment"
         android:label="fragment_ping"
         tools:layout="@layout/fragment_ping" />
 </navigation>

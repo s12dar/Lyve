@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/iv_ping"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/desc_ppic"
+        android:src="@drawable/ic_sunflower"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_requester_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ping"
+        app:layout_constraintStart_toEndOf="@+id/iv_ping"
+        app:layout_constraintTop_toTopOf="@+id/iv_ping"
+        tools:text="Name" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ping"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_ping">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_accept"
+            style="@style/Widget.MyApp.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chip_accept" />
+
+        <!--    csi -> business career program (10 aylyk opt 1 yyl (her 2.5 ay 1.5K)) -> skokie, lombort-->
+        <!--    eb2-niw-->
+        <!--    cdl prep-->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_decline"
+            style="@style/Widget.MyApp.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chip_decline" />
+
+    </com.google.android.material.chip.ChipGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
