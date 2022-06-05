@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lyve</string>
 
-    <!-- ONBOARDING PROCESS -->
+    <!-- Onboarding process -->
     <string name="btn_login">Login</string>
     <string name="btn_signup">Sign Up</string>
     <string name="btn_continue">Continue</string>
@@ -24,15 +24,15 @@
     <string name="txt_desc_onboarding">What do you want to be called?</string>
     <string name="hint_name">Enter your preferred name</string>
 
-    <!-- SPLASH -->
+    <!-- Splash fragment -->
     <string name="desc_splash">Welcome back</string>
 
-    <!-- HOME PAGE -->
+    <!-- Home fragment -->
     <string name="desc_ppic">Profile picture</string>
     <string name="txt_following">Following</string>
     <string name="txt_all">All events</string>
 
-    <!-- HOME INFO -->
+    <!-- Home info fragment -->
     <string name="btn_attend">Attend</string>
     <string name="btn_alert_positive">OK</string>
     <string name="txt_alert_title_oops">Oops..</string>
@@ -46,7 +46,7 @@
     <string name="txt_host_activity">Host of event</string>
     <string name="txt_attendees_activity">Attendees</string>
 
-    <!-- CREATE EVENT -->
+    <!-- Create event fragment -->
     <string name="title_bsh">Alright, let\'s create one</string>
     <string name="subtitle_bsh">But first..</string>
     <string name="btn_virtual_ac">Virtual</string>
@@ -72,16 +72,7 @@
     <string name="alert_subtitle">Oops, you already have an event published!</string>
     <string name="alert_pos_btn">OK</string>
 
-    <!-- NAV DRAWER -->
-    <string name="menu_group_settings">Configure Lyve</string>
-    <string name="menu_item_account">Account</string>
-    <string name="menu_item_notifications">Notifications</string>
-    <string name="menu_item_dark_mode">Dark mode</string>
-    <string name="menu_item_logout">Log out</string>
-    <string name="menu_item_chat">Chat</string>
-    <string name="menu_item_search">Search</string>
-
-    <!-- WELCOME PAGE -->
+    <!-- Welcome fragment -->
     <string name="txt_title_welcome">Oh hey!</string>
     <string name="txt_desc_welcome">Welcome abroad.</string>
     <string name="txt_title_welcome2">Our goal is</string>
@@ -89,26 +80,32 @@
     <string name="txt_title_welcome3">Here we go..</string>
     <string name="txt_desc_welcome3">Let\'s make it happen</string>
 
-    <!-- MENU -->
+    <!-- Top app bar menu -->
     <string name="menu_app_bar_search">Search</string>
 
-    <!-- SEARCH FRAGMENT -->
+    <!-- Search fragment -->
     <string name="txt_lyve_members">Lyve members</string>
     <string name="txt_lyve_events">Lyve events</string>
     <string name="txt_not_found">Oops.. Nothing found!</string>
     <string name="btn_following">Following</string>
     <string name="btn_follow">Follow</string>
 
-    <!-- PROFILE FRAGMENT -->
+    <!-- Profile fragment -->
     <string name="tab_1">Events</string>
     <string name="tab_2">I\'m attending</string>
     <string name="tab_3">Requests</string>
 
-    <!-- BOTTOM NAV -->
+    <!-- Bottom nav menu -->
     <string name="title_menu_home">Home</string>
     <string name="title_menu_search">Explore</string>
     <string name="title_menu_pings">Pings</string>
     <string name="title_menu_profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Ping fragment -->
+    <string name="chip_accept">Accept</string>
+    <string name="chip_decline">Decline</string>
+    <string name="chip_accepted">Accepted</string>
+    <string name="chip_declined">Declined</string>
+
+
 </resources>
