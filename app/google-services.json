@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "509415824522",
+    "project_id": "thinking-avenue-346310",
+    "storage_bucket": "thinking-avenue-346310.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509415824522:android:417f0c019008ba57ade173",
+        "android_client_info": {
+          "package_name": "com.tech.lyve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509415824522-hv00s88l0shjogu89bpmoa0qpn666p6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOQ5xKFTORCit0qQO7FWf2M7_9FOlDiqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509415824522-hv00s88l0shjogu89bpmoa0qpn666p6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
