@@ -51,7 +51,7 @@ class Event : Serializable {
     var url = ""
 
     @get:PropertyName(EVENT_CREATED_BY_ID)
-    var createdByID: String? = ""
+    var createdByID: String = ""
 
     @get:PropertyName(EVENT_PARTICIPANTS)
     var participants = mutableListOf<BasketTypeUser>()

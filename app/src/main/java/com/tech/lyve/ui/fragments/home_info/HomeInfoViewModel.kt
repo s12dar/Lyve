@@ -22,32 +22,6 @@ class HomeInfoViewModel @Inject constructor(
 
     private val coroutineContext = viewModelScope.coroutineContext + ioDispatcher
 
-    fun getActivities(): LiveData<Resource<List<Event>>> =
-        liveData(coroutineContext) {
-            emit(Resource.Loading())
-
-            when (val result = repository.getActivities()) {
-                is Resource.Success -> {
-                    if (result.data != null) {
-                        emit(Resource.Success(data = result.data))
-                    } else {
-                        emit(
-                            Resource.Error(
-                                data = result.data,
-                                message = "No activities found, it's null"
-                            )
-                        )
-                    }
-                }
-                is Resource.Error -> {
-                    emit(Resource.Error(message = result.message))
-                }
-                is Resource.Loading -> {
-                    emit(Resource.Loading(data = result.data))
-                }
-            }
-        }
-
     fun updateEvent(event: Event, user: User): LiveData<SimpleResource> =
         liveData(coroutineContext) {
             emit(Resource.Loading())
@@ -63,6 +37,23 @@ class HomeInfoViewModel @Inject constructor(
                     emit(Resource.Loading(Unit))
                 }
 
+            }
+        }
+
+    fun updateUser(user: User): LiveData<SimpleResource> =
+        liveData(coroutineContext) {
+            emit(Resource.Loading())
+
+            when (val result = repository.updateUser(user)) {
+                is Resource.Success -> {
+                    emit(Resource.Success(Unit))
+                }
+                is Resource.Error -> {
+                    emit(Resource.Error(message = result.message))
+                }
+                is Resource.Loading -> {
+                    emit(Resource.Loading(Unit))
+                }
             }
         }
 }

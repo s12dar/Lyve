@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.tech.lyve.R
 import com.tech.lyve.databinding.FragmentHomeInfoBinding
 import com.tech.lyve.listeners.HomeInfoListener
+import com.tech.lyve.models.BasketTypeEvent
 import com.tech.lyve.models.BasketTypeUser
 import com.tech.lyve.models.Event
 import com.tech.lyve.models.User
@@ -107,34 +107,53 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
                     status = "pending"
                 )
             )
-            viewModel.updateEvent(mEvent, mHostUser)
-                .observe(viewLifecycleOwner) { eventResult ->
-                    when (eventResult) {
-                        is Resource.Success -> {
-                            (activity as OnboardingUtils).hideProgressBar()
-                            Snackbar.make(
-                                requireView(),
-                                "Yaay, we sent your request!",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
+            mCurrentUser.attendings.add(
+                BasketTypeEvent(
+                    uid = mEvent.uid,
+                    imgUrl = mEvent.imgRefs,
+                    title = mEvent.title,
+                    desc = mEvent.desc,
+                    createdBy = mEvent.createdByID,
+                    date = mEvent.date
+                )
+            )
+            viewModel.apply {
+                updateEvent(mEvent, mHostUser)
+                    .observe(viewLifecycleOwner) { eventResult ->
+                        when (eventResult) {
+                            is Resource.Success -> {
+                                updateUser(mCurrentUser)
+                                    .observe(viewLifecycleOwner) { userResult ->
+                                        when (userResult) {
+                                            is Resource.Success -> {
+                                                (activity as OnboardingUtils).hideProgressBar()
+                                                Snackbar.make(
+                                                    requireView(),
+                                                    "Yaay, we sent your request!",
+                                                    Snackbar.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+                            }
+                            is Resource.Error -> {
+                                (activity as OnboardingUtils).hideProgressBar()
+                                Snackbar.make(
+                                    requireView(),
+                                    "Oops, something went wrong!",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
+                            else -> {}
                         }
-                        is Resource.Error -> {
-                            (activity as OnboardingUtils).hideProgressBar()
-                            Log.i("hi SERDAR", eventResult.message.toString())
-                            Snackbar.make(
-                                requireView(),
-                                "Oops, something went wrong!",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        else -> {}
                     }
-                }
+            }
         } else {
             (activity as OnboardingUtils).hideProgressBar()
             Snackbar.make(
                 requireView(),
-                "Oops, you've already requested attendence!",
+                "Oops, you've already requested attendance!",
                 Snackbar.LENGTH_SHORT
             ).show()
         }
