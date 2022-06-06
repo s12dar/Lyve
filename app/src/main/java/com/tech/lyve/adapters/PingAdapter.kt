@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tech.lyve.R
 import com.tech.lyve.databinding.PingItemBinding
 import com.tech.lyve.models.BasketTypeUser
+import com.tech.lyve.utils.Constants.REQUEST_ACCEPTED
+import com.tech.lyve.utils.Constants.REQUEST_DECLINED
 
 class PingAdapter(
     private val context: Context
@@ -26,7 +28,20 @@ class PingAdapter(
 
         @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
         fun bind(user: BasketTypeUser) {
-            requesterName.text = "${user.name} wants to attend to your event"
+            requesterName.text = "${user.name} sent a request to attend"
+
+            when (user.status) {
+                REQUEST_ACCEPTED -> {
+                    binding.chipDecline.visibility = View.INVISIBLE
+                    binding.chipAccept.isChecked = true
+                    binding.chipAccept.text = context.resources.getString(R.string.chip_accepted)
+                }
+                REQUEST_DECLINED -> {
+                    binding.chipAccept.visibility = View.INVISIBLE
+                    binding.chipDecline.isChecked = true
+                    binding.chipDecline.text = context.resources.getString(R.string.chip_declined)
+                }
+            }
 
             binding.chipDecline.setOnClickListener {
                 if (binding.chipDecline.isChecked) {

@@ -415,24 +415,26 @@ class CreateEventFragment : Fragment() {
                 if (it.resultCode == Activity.RESULT_OK) {
                     val place: Place = Autocomplete.getPlaceFromIntent(it.data)
                     binding.etLocation.setText(place.address)
-                    mEvent.location[place.address] =
+                    mEvent.location[place.address as String] =
                         GeoPoint(place.latLng.latitude, place.latLng.longitude)
                 }
             }
     }
 
     private fun initializePlaces() {
-        Places.initialize(context, "AIzaSyD1XxkbKiroHe9kDY-JbvSjEeR_L0aUEM0")
+        context?.let { Places.initialize(it, "AIzaSyD1XxkbKiroHe9kDY-JbvSjEeR_L0aUEM0") }
         binding.etLocation.setOnClickListener {
             val fieldList: List<Place.Field> = mutableListOf(
                 Place.Field.ADDRESS,
                 Place.Field.LAT_LNG,
                 Place.Field.NAME
             )
-            val intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY,
-                fieldList
-            ).build(context)
+            val intent = context?.let { it1 ->
+                Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.OVERLAY,
+                    fieldList
+                ).build(it1)
+            }
             placeResultLauncher.launch(intent)
         }
     }

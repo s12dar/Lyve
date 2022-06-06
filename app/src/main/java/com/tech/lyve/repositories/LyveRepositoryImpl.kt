@@ -102,7 +102,7 @@ class LyveRepositoryImpl @Inject constructor(
         ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.uid)
 
         firebaseFirestore.batch().set(activityDocRef, event.toMap())
-            .set(subActivityDocRef, event.toUserEventMap())
+            .set(subActivityDocRef, event.toMap())
             .commit().addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
             }.addOnFailureListener {
@@ -138,7 +138,7 @@ class LyveRepositoryImpl @Inject constructor(
         ).document(user.uid).collection(COLLECTION_ACTIVITIES).document(event.uid)
 
         firebaseFirestore.batch().update(activityDocRef, event.toMap())
-            .update(subActivityDocRef, event.toUserEventMap())
+            .update(subActivityDocRef, event.toMap())
             .commit()
             .addOnSuccessListener {
                 cont.resume(Resource.Success(Unit))
