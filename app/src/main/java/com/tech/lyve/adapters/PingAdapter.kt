@@ -28,7 +28,7 @@ class PingAdapter(
 
         @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
         fun bind(user: BasketTypeUser) {
-            requesterName.text = "${user.name} wants to attend to your event"
+            requesterName.text = "${user.name} sent a request to attend"
 
             when (user.status) {
                 REQUEST_ACCEPTED -> {
