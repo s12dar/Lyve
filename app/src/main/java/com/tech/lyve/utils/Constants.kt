@@ -3,7 +3,7 @@ package com.tech.lyve.utils
 object Constants {
 
     /**
-     * USER DATA
+     * User data
      */
     const val NAME = "name"
     const val EMAIL = "email"
@@ -18,9 +18,10 @@ object Constants {
     const val ATTENDINGS = "attendings"
     const val LAST_LOCATION = "lastLocation"
     const val NR_OF_EVENTS = "nrOfEvents"
+    const val COLLECTION_USER = "Users"
 
     /**
-     * ACTIVITY DATA
+     * Event data
      */
     const val EVENT_ID = "uid"
     const val EVENT_TITLE = "title"
@@ -34,22 +35,17 @@ object Constants {
     const val EVENT_URL = "url"
     const val EVENT_CREATED_BY_ID = "createdByID"
     const val EVENT_PARTICIPANTS = "participants"
-
-    /**
-     * FIREBASE DATA
-     */
-    const val COLLECTION_USER = "Users"
     const val COLLECTION_ACTIVITIES = "Activities"
 
     /**
-     * DI CONSTANTS
+     * DI constants
      */
     const val SHARED_PREFERENCES_NAME = "sharedPref"
     const val KEY_EMAIL = "keyEmail"
     const val KEY_PASSWORD = "keyPassword"
 
     /**
-     * BUNDLE CONSTANTS
+     * Bundle constants
      */
     const val BUNDLE_KEY = "bundleKey"
     const val BUNDLE_FOLLOWING = "bundleFollowing"
@@ -59,17 +55,23 @@ object Constants {
     const val BUNDLE_CURRENT_USER_KEY = "bundleCurrentUserKey"
 
     /**
-     * INTENTS
+     * Intent constants
      */
     const val INTENT_GOOGLE_MAPS = "com.google.android.apps.maps"
 
     /**
-     * LOCATION PERMISSIONS
+     * Permission contants
      */
     const val REQUEST_LOCATION_PERMISSION = 0
 
     /**
-     * PAGINATION
+     * Pagination constants
      */
     const val QUERY_PAGE_SIZE = 20
+
+    /**
+     * Ping constants
+     */
+    const val REQUEST_DECLINED = "declined"
+    const val REQUEST_ACCEPTED = "accepted"
 }

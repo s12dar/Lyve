@@ -59,6 +59,7 @@
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.1" />
         <entry key="app/src/main/res/layout/header_drawer.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/ping_item.xml" value="0.2009286618826509" />
         <entry key="app/src/main/res/layout/user_item.xml" value="0.3321678321678322" />
         <entry key="app/src/main/res/layout/welcome_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.6047244094488189" />

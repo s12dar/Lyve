@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,7 +107,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
                     status = "pending"
                 )
             )
-            viewModel.updateEvent(mEvent, mCurrentUser)
+            viewModel.updateEvent(mEvent, mHostUser)
                 .observe(viewLifecycleOwner) { eventResult ->
                     when (eventResult) {
                         is Resource.Success -> {
@@ -119,6 +120,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
                         }
                         is Resource.Error -> {
                             (activity as OnboardingUtils).hideProgressBar()
+                            Log.i("hi SERDAR", eventResult.message.toString())
                             Snackbar.make(
                                 requireView(),
                                 "Oops, something went wrong!",
@@ -159,7 +161,7 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
     }
 
     private fun launchBrowser() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(mEvent.url))
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://${mEvent.url}"))
         startActivity(browserIntent)
     }
 

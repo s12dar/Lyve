@@ -73,15 +73,4 @@ class Event : Serializable {
 
         return map
     }
-
-    fun toUserEventMap(): Map<String, Any> {
-        val map = HashMap<String, Any>()
-        map[EVENT_ID] = uid
-        map[EVENT_TITLE] = title
-        map[EVENT_TYPE] = isOnline
-        map[EVENT_LOCATION] = location
-        map[EVENT_PARTICIPANTS] = participants
-
-        return map
-    }
 }
