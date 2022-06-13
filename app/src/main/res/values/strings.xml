@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lyve</string>
+    <string name="app_name">Splash</string>
 
     <!-- Onboarding process -->
     <string name="btn_login">Login</string>
@@ -84,8 +84,8 @@
     <string name="menu_app_bar_search">Search</string>
 
     <!-- Search fragment -->
-    <string name="txt_lyve_members">Lyve members</string>
-    <string name="txt_lyve_events">Lyve events</string>
+    <string name="txt_lyve_members">Members</string>
+    <string name="txt_lyve_events">Events</string>
     <string name="txt_not_found">Oops.. Nothing found!</string>
     <string name="btn_following">Following</string>
     <string name="btn_follow">Follow</string>

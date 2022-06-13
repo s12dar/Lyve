@@ -73,14 +73,14 @@ class WelcomeFragment : Fragment() {
             .apply {
                 setTitle(resources.getString(R.string.txt_title_welcome2))
                 setDescription(resources.getString(R.string.txt_desc_welcome2))
-                setImage(R.drawable.lyve)
+                setImage(R.drawable.ic_parachute)
             }
 
         val thirdPage = WelcomeItem()
             .apply {
                 setTitle(resources.getString(R.string.txt_title_welcome3))
                 setDescription(resources.getString(R.string.txt_desc_welcome3))
-                setImage(R.drawable.lyve)
+                setImage(R.drawable.ic_parachute)
             }
 
         val welcomeItemList = mutableListOf<WelcomeItem>()

@@ -11,6 +11,7 @@ import com.tech.lyve.R
 import com.tech.lyve.databinding.EventItemBinding
 import com.tech.lyve.listeners.HomeListener
 import com.tech.lyve.models.Event
+import com.tech.lyve.utils.Constants.REQUEST_ACCEPTED
 
 class HomeAdapter(
     private val eventList: List<Event>, private val context: Context,
@@ -35,6 +36,7 @@ class HomeAdapter(
     inner class HomeViewHolder(private val binding: EventItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private var acceptedParticipants = 0
         private val title = binding.tvTitle
         private val location = binding.tvLocation
         private val dateAndTime = binding.tvDateAndTime
@@ -49,7 +51,13 @@ class HomeAdapter(
                 location.text = event.location.keys.first()
             }
             dateAndTime.text = "${event.date} ${event.time}"
-            participants.text = event.participants.size.toString()
+
+            for (participant in event.participants) {
+                if (participant.status == REQUEST_ACCEPTED) {
+                    acceptedParticipants++
+                }
+            }
+            participants.text = acceptedParticipants.toString()
 
             // Glide takes care of setting fetched image uri to holder
             if (event.imgRefs.isNotEmpty()) {

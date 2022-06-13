@@ -1,9 +1,7 @@
 package com.tech.lyve.ui.fragments.home
 
-import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,17 +26,13 @@ import com.tech.lyve.ui.fragments.search.SearchFragment
 import com.tech.lyve.utils.Constants.BUNDLE_CURRENT_USER_KEY
 import com.tech.lyve.utils.Constants.BUNDLE_EVENT_KEY
 import com.tech.lyve.utils.Constants.BUNDLE_HOST_USER_KEY
-import com.tech.lyve.utils.Constants.REQUEST_LOCATION_PERMISSION
-import com.tech.lyve.utils.LocationUtils
 import com.tech.lyve.utils.OnboardingUtils
 import com.tech.lyve.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), HomeListener, EasyPermissions.PermissionCallbacks {
+class HomeFragment : Fragment(), HomeListener {
 
     private val TAG = SearchFragment::class.qualifiedName
     private val viewModel: HomeViewModel by viewModels()
@@ -82,7 +76,6 @@ class HomeFragment : Fragment(), HomeListener, EasyPermissions.PermissionCallbac
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestLocationPermissions()
         getUsers()
         subscribeUI(VIEW_TYPE_ONE)
         manageUserInteraction()
@@ -93,7 +86,6 @@ class HomeFragment : Fragment(), HomeListener, EasyPermissions.PermissionCallbac
             when (result) {
                 is Resource.Success -> {
                     mUsers = result.data as MutableList<User>
-//                    saveCurrentLocation(mUser)
                 }
                 else -> {}
             }
@@ -237,76 +229,5 @@ class HomeFragment : Fragment(), HomeListener, EasyPermissions.PermissionCallbac
         findNavController().navigate(R.id.action_homeFragment_to_homeInfoFragment, bundle)
     }
 
-    private fun requestLocationPermissions() {
-        if (LocationUtils.hasLocationPermissions(requireContext())) {
-            return
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app",
-                REQUEST_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app",
-                REQUEST_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            )
-        }
-    }
-
-    private fun saveCurrentLocation(user: User) {
-        user.bio = "hjiiiii"
-//        fusedLocationClient.lastLocation
-//            .addOnSuccessListener { location: Location ->
-////                user.lastLocation = GeoPoint(
-////                    1.2,
-////                    3.4
-////                )
-//                Log.i("Hello Serdar", location.latitude.toString())
-//                updateCurrentUser(user)
-//            }
-//            .addOnFailureListener {
-//                Log.e(TAG, it.toString())
-//            }
-        viewModel.updateUser(user).observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Success -> Log.d(TAG, "user is updated")
-                is Resource.Error -> Log.e(TAG, "user cannot be updated")
-                else -> {}
-            }
-        }
-    }
-
-    private fun isUserAlreadyHasOneEvent(): Boolean {
-        if (mUser.nrOfEvents >= 1) {
-            return true
-        }
-        return false
-    }
-
-    private fun updateCurrentUser(user: User) {
-        viewModel.updateUser(user).observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Success -> Log.d(TAG, "user is updated")
-                is Resource.Error -> Log.e(TAG, "user cannot be updated")
-                else -> {}
-            }
-        }
-    }
-
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-//        saveCurrentLocation()
-    }
-
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            AppSettingsDialog.Builder(this).build().show()
-        } else {
-            requestLocationPermissions()
-        }
-    }
+    private fun isUserAlreadyHasOneEvent() = mUser.nrOfEvents >= 1
 }

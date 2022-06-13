@@ -122,9 +122,9 @@ class HomeInfoFragment : Fragment(), HomeInfoListener {
                     .observe(viewLifecycleOwner) { eventResult ->
                         when (eventResult) {
                             is Resource.Success -> {
-                                updateUser(mCurrentUser)
-                                    .observe(viewLifecycleOwner) { userResult ->
-                                        when (userResult) {
+                                viewModel.updateUser(mCurrentUser)
+                                    .observe(viewLifecycleOwner) { result ->
+                                        when (result) {
                                             is Resource.Success -> {
                                                 (activity as OnboardingUtils).hideProgressBar()
                                                 Snackbar.make(
