@@ -21,7 +21,7 @@ The architecture of the application relies and compiles with following points:
 
 ## Screenshots 📷
 <img src="/arts/onboarding.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/register.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/home.png" width="260" color="#DBE1FC">
-<img src="/arts/create_event.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/search.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/ping.png" width="260" color="#DBE1FC">
+<img src="/arts/home_info.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/create_event.png" width="260" color="#DBE1FC"> &emsp;<img src="/arts/search.png" width="260" color="#DBE1FC">
 
 ## Contribution 🙌
 All contributions are welcome! Feel free to jump to the issues and pick one for yourself! Please write a comment inside of the issue before you start working.
